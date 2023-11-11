@@ -1,0 +1,6 @@
+<resources>
+
+    <style name="Widget.Theme.PoolPredictor.MyView" parent="">
+        <item name="android:background">@color/gray_600</item>
+    </style>
+</resources>

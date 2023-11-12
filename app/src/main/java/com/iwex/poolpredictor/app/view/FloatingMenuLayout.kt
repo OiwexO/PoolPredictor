@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.util.Base64
-import android.util.Log
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
@@ -16,11 +15,12 @@ import com.iwex.poolpredictor.app.NativeBridge
 import com.iwex.poolpredictor.app.util.MenuDesign
 import com.iwex.poolpredictor.app.util.MenuWidgetFactory
 
-@SuppressLint("ViewConstructor", "SetTextI18n")
+@SuppressLint("ViewConstructor")
 class FloatingMenuLayout(
-    context: Context, private val aimTabLayout: AimTabLayout, private val espTabLayout: EspTabLayout
+    context: Context,
+    private val aimTabLayout: AimTabLayout,
+    private val espTabLayout: EspTabLayout
 ) : RelativeLayout(context) {
-
 
     private val floatingIconView: ImageView
     private val floatingMenuLayout: LinearLayout
@@ -69,6 +69,7 @@ class FloatingMenuLayout(
             floatingMenuLayout
         )
         closeMenuButton.setOnClickListener {
+            setActiveTab(TabTypes.AIM)
             floatingMenuLayout.visibility = GONE
             floatingIconView.visibility = VISIBLE
         }
@@ -111,7 +112,11 @@ class FloatingMenuLayout(
 
     private fun initTabHolderScrollView(context: Context): ScrollView {
         return ScrollView(context).apply {
-            layoutParams = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                0,
+                1f
+            ).apply {
                 setMargins(MenuDesign.Measurements.BUTTON_MARGIN)
             }
         }
@@ -122,9 +127,7 @@ class FloatingMenuLayout(
         when (tab) {
             TabTypes.AIM -> tabHolderScrollView.addView(aimTabLayout)
             TabTypes.ESP -> tabHolderScrollView.addView(espTabLayout)
-            TabTypes.OTHER -> Log.d(
-                TAG, "Tab layout for tag OTHER not implemented yet"
-            ) //tabHolderScrollView.addView(otherTabLayout)
+            TabTypes.OTHER -> {}
         }
 
     }
@@ -137,13 +140,15 @@ class FloatingMenuLayout(
         }
         val marginPx = MenuDesign.Measurements.BUTTON_MARGIN
         MenuWidgetFactory.addButton(label, false, context, tabButtonsLayout).apply {
-            layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                1f
+            ).apply {
                 setMargins(marginPx, 0, marginPx, 0)
             }
             setOnClickListener { setActiveTab(tab) }
         }
     }
-
-
 
 }

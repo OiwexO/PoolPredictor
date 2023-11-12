@@ -12,17 +12,25 @@ import com.iwex.poolpredictor.app.util.interfaces.OnButtonClickListener
 import kotlin.math.roundToInt
 
 class TablePositionViewModel(private val repository: TablePositionRepository): ViewModel() {
+
     var onButtonClickListener: OnButtonClickListener? = null
 
     private val defaultPosition: TablePosition
+
     private val _position = MutableLiveData<TablePosition>()
+
     val position: LiveData<TablePosition> get() = _position
 
     private var isTopLeftPointSet = false
+
     private var left: Int
+
     private var top: Int
+
     private var right: Int
+
     private var bottom: Int
+
     private var scale = 0f
 
     private val tableShape = arrayOf(
@@ -74,6 +82,36 @@ class TablePositionViewModel(private val repository: TablePositionRepository): V
         PointF(-127f, -53.5f)
     )
 
+    val isTableSet: Boolean
+        get() {
+            return repository.getIsTableSet()
+        }
+
+    val tablePosition: TablePosition
+        get() {
+            return repository.getTablePosition()
+        }
+
+    val pointNumber: Int
+        get() {
+            return if (isTopLeftPointSet) 2 else 1
+        }
+
+    val tableShapePath: Path
+        get() {
+            val path = Path()
+            val start = toScreen(tableShape[0])
+            var nextPoint: PointF
+            path.moveTo(start.x, start.y)
+            for (i in 1..tableShape.lastIndex) {
+                nextPoint = toScreen(tableShape[i])
+                path.lineTo(nextPoint.x, nextPoint.y)
+            }
+            path.close()
+            return path
+        }
+
+
     init {
         val displayWidth = MenuDesign.displayWidth
         val displayHeight = MenuDesign.displayHeight
@@ -89,40 +127,27 @@ class TablePositionViewModel(private val repository: TablePositionRepository): V
         right = defaultRight
         bottom = defaultBottom
 
-        updatePosition()
+        updatePositionAndScale()
     }
 
     fun decreaseX() {
         if (isTopLeftPointSet) right-- else left--
-        updatePosition()
+        updatePositionAndScale()
     }
 
     fun increaseX() {
         if (isTopLeftPointSet) right++ else left++
-        updatePosition()
+        updatePositionAndScale()
     }
 
     fun decreaseY() {
         if (isTopLeftPointSet) bottom-- else top--
-        updatePosition()
+        updatePositionAndScale()
     }
 
     fun increaseY() {
         if (isTopLeftPointSet) bottom++ else top++
-        updatePosition()
-    }
-
-    private fun updatePosition() {
-        scale = (right - left) / 254f
-        _position.value = TablePosition(left, top, right, bottom)
-    }
-
-    fun getIsTableSet(): Boolean {
-        return repository.getIsTableSet()
-    }
-
-    fun getTablePosition(): TablePosition {
-        return repository.getTablePosition()
+        updatePositionAndScale()
     }
 
     fun resetPosition() {
@@ -131,7 +156,7 @@ class TablePositionViewModel(private val repository: TablePositionRepository): V
         top = defaultPosition.top
         right = defaultPosition.right
         bottom = defaultPosition.bottom
-        updatePosition()
+        updatePositionAndScale()
     }
 
     fun savePosition() {
@@ -148,27 +173,22 @@ class TablePositionViewModel(private val repository: TablePositionRepository): V
 
     }
 
-    fun getPointNumber(): Int {
-        return if (isTopLeftPointSet) 2 else 1
-    }
-
-    fun getTableShapePath(): Path {
-        val path = Path()
-        val start = toScreen(tableShape[0])
-        var nextPoint: PointF
-        path.moveTo(start.x, start.y)
-        for (i in 1 .. tableShape.lastIndex) {
-            nextPoint = toScreen(tableShape[i])
-            path.lineTo(nextPoint.x, nextPoint.y)
-        }
-        path.close()
-        return path
+    private fun updatePositionAndScale() {
+        scale = (right - left) / TABLE_WIDTH
+        _position.value = TablePosition(left, top, right, bottom)
     }
 
     private fun toScreen(point: PointF) : PointF {
-        val srcX = (left + (point.x + 127.0f) * scale)
-        val srcY = (top  + (point.y + 63.5f) * scale)
+        val srcX = (left + (point.x + TABLE_HALF_WIDTH) * scale)
+        val srcY = (top + (point.y + TABLE_HALF_HEIGHT) * scale)
         return PointF(srcX, srcY)
+    }
+
+    companion object {
+        private const val TABLE_WIDTH = 254f
+        private const val TABLE_HALF_WIDTH = TABLE_WIDTH / 2f
+        private const val TABLE_HEIGHT = 127f
+        private const val TABLE_HALF_HEIGHT = TABLE_HEIGHT / 2f
     }
 
 }

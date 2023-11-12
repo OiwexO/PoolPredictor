@@ -5,40 +5,57 @@ import android.content.Context
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.constraintlayout.widget.ConstraintSet.*
 import com.iwex.poolpredictor.app.util.MenuDesign
 import com.iwex.poolpredictor.app.util.MenuWidgetFactory
 import com.iwex.poolpredictor.app.viewmodel.TablePositionViewModel
 
 @SuppressLint("ViewConstructor")
-class TablePositionView(context: Context, private val viewModel: TablePositionViewModel) :
-    ConstraintLayout(context) {
+class TablePositionView(
+    context: Context,
+    private val viewModel: TablePositionViewModel
+    ) : ConstraintLayout(context) {
+
     private val buttonLeft = ArrowButton(
         context,
         MenuDesign.Measurements.ARROW_BUTTON_SIZE,
         ArrowButton.ArrowDirection.LEFT
     )
+
     private val buttonTop = ArrowButton(
         context,
         MenuDesign.Measurements.ARROW_BUTTON_SIZE,
         ArrowButton.ArrowDirection.TOP
     )
+
     private val buttonRight = ArrowButton(
         context,
         MenuDesign.Measurements.ARROW_BUTTON_SIZE,
         ArrowButton.ArrowDirection.RIGHT
     )
+
     private val buttonBottom = ArrowButton(
         context,
         MenuDesign.Measurements.ARROW_BUTTON_SIZE,
         ArrowButton.ArrowDirection.BOTTOM
     )
-    private val buttonReset = MenuWidgetFactory.addButton(LABEL_RESET_BUTTON, true, context, this)
-    private val buttonSave = MenuWidgetFactory.addButton(
-        String.format(LABEL_SAVE_BUTTON, viewModel.getPointNumber()),
+
+    private val buttonReset = MenuWidgetFactory.addButton(
+        LABEL_RESET_BUTTON,
         true,
         context,
         this
     )
+
+    private val buttonSave = MenuWidgetFactory.addButton(
+        String.format(LABEL_SAVE_BUTTON, viewModel.pointNumber),
+        true,
+        context,
+        this
+    )
+
+    private val saveButtonText: String
+        get() = String.format(LABEL_SAVE_BUTTON, viewModel.pointNumber)
 
     companion object {
         private const val LABEL_SAVE_BUTTON = "Save %d"
@@ -54,142 +71,51 @@ class TablePositionView(context: Context, private val viewModel: TablePositionVi
         buttonSave.id = View.generateViewId()
         buttonSave.setOnClickListener {
             viewModel.savePosition()
-            buttonSave.text = String.format(LABEL_SAVE_BUTTON, viewModel.getPointNumber())
+            buttonSave.text = saveButtonText
         }
 
         buttonReset.id = View.generateViewId()
         buttonReset.setOnClickListener {
             viewModel.resetPosition()
-            buttonSave.text = String.format(LABEL_SAVE_BUTTON, viewModel.getPointNumber())
+            buttonSave.text = saveButtonText
         }
 
         addView(buttonLeft)
         addView(buttonTop)
         addView(buttonRight)
         addView(buttonBottom)
-
         applyConstraints()
     }
 
     private fun applyConstraints() {
-        val constraintSet = ConstraintSet()
-        constraintSet.clone(this)
-
-        constraintSet.connect(
-            buttonLeft.id,
-            ConstraintSet.START,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.START
-        )
-        constraintSet.connect(buttonLeft.id, ConstraintSet.TOP, buttonTop.id, ConstraintSet.BOTTOM)
-        constraintSet.connect(buttonLeft.id, ConstraintSet.END, buttonRight.id, ConstraintSet.START)
-        constraintSet.setMargin(
-            buttonLeft.id,
-            ConstraintSet.END,
-            MenuDesign.Measurements.BUTTON_MARGIN
-        )
-
-        constraintSet.connect(
-            buttonTop.id,
-            ConstraintSet.START,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.START
-        )
-        constraintSet.connect(
-            buttonTop.id,
-            ConstraintSet.TOP,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.TOP
-        )
-        constraintSet.connect(
-            buttonTop.id,
-            ConstraintSet.END,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.END
-        )
-
-        constraintSet.connect(buttonRight.id, ConstraintSet.START, buttonLeft.id, ConstraintSet.END)
-        constraintSet.connect(buttonRight.id, ConstraintSet.TOP, buttonTop.id, ConstraintSet.BOTTOM)
-        constraintSet.connect(
-            buttonRight.id,
-            ConstraintSet.END,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.END
-        )
-        constraintSet.setMargin(
-            buttonRight.id,
-            ConstraintSet.START,
-            MenuDesign.Measurements.BUTTON_MARGIN
-        )
-
-        constraintSet.connect(
-            buttonBottom.id,
-            ConstraintSet.START,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.START
-        )
-        constraintSet.connect(
-            buttonBottom.id,
-            ConstraintSet.TOP,
-            buttonLeft.id,
-            ConstraintSet.BOTTOM
-        )
-        constraintSet.connect(
-            buttonBottom.id,
-            ConstraintSet.END,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.END
-        )
-
-        constraintSet.connect(buttonSave.id, ConstraintSet.START, buttonReset.id, ConstraintSet.END)
-        constraintSet.connect(
-            buttonSave.id,
-            ConstraintSet.TOP,
-            buttonBottom.id,
-            ConstraintSet.BOTTOM
-        )
-        constraintSet.connect(
-            buttonSave.id,
-            ConstraintSet.END,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.END
-        )
-        constraintSet.setMargin(
-            buttonSave.id,
-            ConstraintSet.START,
-            MenuDesign.Measurements.BUTTON_MARGIN
-        )
-        constraintSet.setMargin(
-            buttonSave.id,
-            ConstraintSet.TOP,
-            MenuDesign.Measurements.BUTTON_MARGIN
-        )
-
-        constraintSet.connect(
-            buttonReset.id,
-            ConstraintSet.START,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.START
-        )
-        constraintSet.connect(
-            buttonReset.id,
-            ConstraintSet.TOP,
-            buttonBottom.id,
-            ConstraintSet.BOTTOM
-        )
-        constraintSet.connect(buttonReset.id, ConstraintSet.END, buttonSave.id, ConstraintSet.START)
-        constraintSet.setMargin(
-            buttonReset.id,
-            ConstraintSet.TOP,
-            MenuDesign.Measurements.BUTTON_MARGIN
-        )
-        constraintSet.setMargin(
-            buttonReset.id,
-            ConstraintSet.END,
-            MenuDesign.Measurements.BUTTON_MARGIN
-        )
-
-        constraintSet.applyTo(this)
+        with(ConstraintSet()) {
+            clone(this@TablePositionView)
+            connect(buttonLeft.id, START, PARENT_ID, START)
+            connect(buttonLeft.id, TOP, buttonTop.id, BOTTOM)
+            connect(buttonLeft.id, END, buttonRight.id, START)
+            setMargin(buttonLeft.id, END, MenuDesign.Measurements.BUTTON_MARGIN)
+            connect(buttonTop.id, START, PARENT_ID, START)
+            connect(buttonTop.id, TOP, PARENT_ID, TOP)
+            connect(buttonTop.id, END, PARENT_ID, END)
+            connect(buttonRight.id, START, buttonLeft.id, END)
+            connect(buttonRight.id, TOP, buttonTop.id, BOTTOM)
+            connect(buttonRight.id, END, PARENT_ID, END)
+            setMargin(buttonRight.id, START, MenuDesign.Measurements.BUTTON_MARGIN)
+            connect(buttonBottom.id, START, PARENT_ID, START)
+            connect(buttonBottom.id, TOP, buttonLeft.id, BOTTOM)
+            connect(buttonBottom.id, END, PARENT_ID, END)
+            connect(buttonSave.id, START, buttonReset.id, END)
+            connect(buttonSave.id, TOP, buttonBottom.id, BOTTOM)
+            connect(buttonSave.id, END, PARENT_ID, END)
+            setMargin(buttonSave.id, START, MenuDesign.Measurements.BUTTON_MARGIN)
+            setMargin(buttonSave.id, TOP, MenuDesign.Measurements.BUTTON_MARGIN)
+            connect(buttonReset.id, START, PARENT_ID, START)
+            connect(buttonReset.id, TOP, buttonBottom.id, BOTTOM)
+            connect(buttonReset.id, END, buttonSave.id, START)
+            setMargin(buttonReset.id, TOP, MenuDesign.Measurements.BUTTON_MARGIN)
+            setMargin(buttonReset.id, END, MenuDesign.Measurements.BUTTON_MARGIN)
+            applyTo(this@TablePositionView)
+        }
     }
 
 }

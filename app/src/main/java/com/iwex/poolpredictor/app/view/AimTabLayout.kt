@@ -10,7 +10,7 @@ import com.iwex.poolpredictor.app.util.MenuDesign
 import com.iwex.poolpredictor.app.util.MenuWidgetFactory
 import com.iwex.poolpredictor.app.viewmodel.AimTabViewModel
 
-@SuppressLint("UseSwitchCompatOrMaterialCode")
+@SuppressLint("UseSwitchCompatOrMaterialCode", "ViewConstructor")
 class AimTabLayout(
     context: Context, private val viewModel: AimTabViewModel
 ) : LinearLayout(context) {
@@ -39,63 +39,63 @@ class AimTabLayout(
         orientation = VERTICAL
         setBackgroundColor(MenuDesign.Colors.TAB_BACKGROUND)
         setPadding(MenuDesign.Measurements.TAB_PADDING)
+        val state = viewModel.getAimTabState()
 
         drawLinesSwitch = MenuWidgetFactory.addSwitch(
-            viewModel.getDrawLinesEnabled(),
+            state.drawLinesEnabled,
             viewModel::onDrawLinesChange,
             LABEL_DRAW_LINES_SWITCH,
             context,
             this
         )
-        viewModel.onDrawLinesChange(viewModel.getDrawLinesEnabled())
 
         drawShotStateSwitch = MenuWidgetFactory.addSwitch(
-            viewModel.getDrawShotStateEnabled(),
+            state.drawShotStateEnabled,
             viewModel::onDrawShotStateChange,
             LABEL_DRAW_SHOT_STATE_SWITCH,
             context,
             this
         )
-        viewModel.onDrawShotStateChange(viewModel.getDrawShotStateEnabled())
 
         drawOpponentsLinesSwitch = MenuWidgetFactory.addSwitch(
-            viewModel.getDrawOpponentsLinesEnabled(),
+            state.drawOpponentsLinesEnabled,
             viewModel::onDrawOpponentsLinesChange,
             LABEL_DRAW_OPPONENTS_LINES_SWITCH,
             context,
             this
         )
-        viewModel.onDrawOpponentsLinesChange(viewModel.getDrawOpponentsLinesEnabled())
 
         powerControlSwitch = MenuWidgetFactory.addSwitch(
-            viewModel.getPowerControlModeEnabled(),
+            state.powerControlModeEnabled,
             viewModel::onPowerControlModeEnabledChange,
             LABEL_POWER_CONTROL_MODE_SWITCH,
             context,
             this
         )
-        viewModel.onPowerControlModeEnabledChange(viewModel.getPowerControlModeEnabled())
 
         cuePowerSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_CUE_POWER_SEEKBAR,
             MAX_CUE_POWER,
-            viewModel.getCuePower(),
+            state.cuePower,
             viewModel::onCuePowerChange,
             context,
             this
         )
-        viewModel.onCuePowerChange(viewModel.getCuePower())
 
         cueSpinSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_CUE_SPIN_SEEKBAR,
             MAX_CUE_SPIN,
-            viewModel.getCueSpin(),
+            state.cueSpin,
             viewModel::onCueSpinChange,
             context,
             this
         )
-        viewModel.onCueSpinChange(viewModel.getCueSpin())
 
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        viewModel.saveState()
     }
 
 }

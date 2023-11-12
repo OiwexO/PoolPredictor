@@ -1,112 +1,63 @@
 package com.iwex.poolpredictor.app.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iwex.poolpredictor.app.model.EspParameters
-
+import com.iwex.poolpredictor.app.model.EspTabState
 import com.iwex.poolpredictor.app.repository.EspTabRepository
 import com.iwex.poolpredictor.app.repository.TablePositionRepository
-import com.iwex.poolpredictor.app.util.DefaultEspParameters
-import kotlin.math.roundToInt
 
 class EspTabViewModel(
     private val repository: EspTabRepository,
-    private val tablePositionRepository: TablePositionRepository,
-    private val espViewModel: EspViewModel
+    private val tablePositionRepository: TablePositionRepository
 ) : ViewModel() {
 
-    private var lineWidth: Int = repository.getLineWidth()
-    private var ballRadius: Int = repository.getBallRadius()
-    private var trajectoryOpacity: Int = repository.getTrajectoryOpacity()
-    private var shotStateCircleWidth: Int = repository.getShotStateCircleWidth()
-    private var shotStateCircleRadius: Int = repository.getShotStateCircleRadius()
-    private var shotStateCircleOpacity: Int = repository.getShotStateCircleOpacity()
+    private var espTabState = repository.getEspTabState()
+        set(value) {
+            field = value
+            _espParameters.value = value.toEspParameters()
+        }
 
-    init {
-        updateEspParameters()
-    }
+    private val _espParameters = MutableLiveData(espTabState.toEspParameters())
 
-    private fun mapOpacity(opacity: Int): Int {
-        return (opacity * 2.55f).roundToInt()
-    }
+    val espParameters: LiveData<EspParameters>
+        get() = _espParameters
 
-    private fun mapEspParameters(): EspParameters {
-        return EspParameters(
-            lineWidth.toFloat(),
-            lineWidth * DefaultEspParameters.STRIPE_LINE_WIDTH_SCALE,
-            ballRadius.toFloat(),
-            ballRadius * DefaultEspParameters.STRIPE_BALL_RADIUS_SCALE,
-            mapOpacity(trajectoryOpacity),
-            shotStateCircleWidth.toFloat(),
-            shotStateCircleRadius.toFloat(),
-            mapOpacity(shotStateCircleOpacity))
-    }
-
-    private fun updateEspParameters() {
-        espViewModel.setEspParameters(mapEspParameters())
-    }
-
-    fun getLineWidth(): Int {
-        return lineWidth
-    }
-
-    fun getBallRadius(): Int {
-        return ballRadius
-    }
-
-    fun getTrajectoryOpacity(): Int {
-        return trajectoryOpacity
-    }
-
-    fun getShotStateCircleWidth(): Int {
-        return shotStateCircleWidth
-    }
-
-    fun getShotStateCircleRadius(): Int {
-        return shotStateCircleRadius
-    }
-
-    fun getShotStateCircleOpacity(): Int {
-        return shotStateCircleOpacity
+    fun getEspTabState(): EspTabState {
+        return espTabState
     }
 
     fun onLineWidthChange(width: Int) {
-        lineWidth = width
-        repository.putLineWidth(width)
-        updateEspParameters()
+        espTabState = espTabState.copy(lineWidth = width)
     }
 
     fun onBallRadiusChange(radius: Int) {
-        ballRadius = radius
-        repository.putBallRadius(radius)
-        updateEspParameters()
+        espTabState = espTabState.copy(ballRadius = radius)
     }
 
     fun onTrajectoryOpacityChange(opacity: Int) {
-        trajectoryOpacity = opacity
-        repository.putTrajectoryOpacity(opacity)
-        updateEspParameters()
+        espTabState = espTabState.copy(trajectoryOpacity = opacity)
     }
 
     fun onShotStateCircleWidthChange(width: Int) {
-        shotStateCircleWidth = width
-        repository.putShotStateCircleWidth(width)
-        updateEspParameters()
+        espTabState = espTabState.copy(shotStateCircleWidth = width)
     }
 
     fun onShotStateCircleRadiusChange(radius: Int) {
-        shotStateCircleRadius = radius
-        repository.putShotStateCircleRadius(radius)
-        updateEspParameters()
+        espTabState = espTabState.copy(shotStateCircleRadius = radius)
     }
 
     fun onShotStateCircleOpacityChange(opacity: Int) {
-        shotStateCircleOpacity = opacity
-        repository.putShotStateCircleOpacity(opacity)
-        updateEspParameters()
+        espTabState = espTabState.copy(shotStateCircleOpacity = opacity)
     }
 
     fun onResetTableListener() {
         tablePositionRepository.putIsTableSet(false)
+    }
+
+    fun saveState() {
+        repository.putEspTabState(espTabState)
     }
 
 }

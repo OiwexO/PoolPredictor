@@ -50,7 +50,7 @@ class FloatingMenuService : Service(), OnButtonClickListener {
         val viewModelFactory = ViewModelFactory.getInstance(this)
         tablePositionViewModel = viewModelFactory.tablePositionViewModel
 
-        if (tablePositionViewModel.getIsTableSet()) {
+        if (tablePositionViewModel.isTableSet) {
             startFloatingMenu(this)
         } else {
             startTablePositionSetupMenu(this)
@@ -65,7 +65,7 @@ class FloatingMenuService : Service(), OnButtonClickListener {
     }
 
     private fun setupNativeBridge() {
-        val tablePosition = tablePositionViewModel.getTablePosition()
+        val tablePosition = tablePositionViewModel.tablePosition
         // getPocketPositionsInScreen() should be called before
         // setEspView() to avoid wrong results in EspView.onDraw()
         espView.getPocketPositionsInScreen(tablePosition)
@@ -79,7 +79,7 @@ class FloatingMenuService : Service(), OnButtonClickListener {
 
     private fun setupEspView(context: Context) {
         val viewModelFactory = ViewModelFactory.getInstance(context)
-        val espViewModel = viewModelFactory.espViewModel
+        val espViewModel = viewModelFactory.espTabViewModel
         espView = EspView(context, espViewModel)
         windowManager.addView(espView, getEspLayoutParams())
     }

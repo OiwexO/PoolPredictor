@@ -27,16 +27,14 @@ class TablePositionEspView(context: Context, private val viewModel: TablePositio
 
     private fun observeViewModel() {
         viewModel.position.observeForever { position ->
-            position?.let { tablePosition ->
-                tableShapePath = viewModel.getTableShapePath()
-                tableRect = RectF(
-                    tablePosition.left.toFloat(),
-                    tablePosition.top.toFloat(),
-                    tablePosition.right.toFloat(),
-                    tablePosition.bottom.toFloat()
-                )
-                invalidate()
-            }
+            tableShapePath = viewModel.tableShapePath
+            tableRect = RectF(
+                position.left.toFloat(),
+                position.top.toFloat(),
+                position.right.toFloat(),
+                position.bottom.toFloat()
+            )
+            invalidate()
         }
     }
 

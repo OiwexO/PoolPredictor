@@ -22,11 +22,7 @@ class ViewModelFactory private constructor(context: Context) {
     }
 
     val espTabViewModel: EspTabViewModel by lazy {
-        EspTabViewModel(repositoryFactory.espTabRepository, repositoryFactory.tablePositionRepository, espViewModel)
-    }
-
-    val espViewModel: EspViewModel by lazy {
-        EspViewModel()
+        EspTabViewModel(repositoryFactory.espTabRepository, repositoryFactory.tablePositionRepository/*, espViewModel*/)
     }
 
     val tablePositionViewModel: TablePositionViewModel by lazy {

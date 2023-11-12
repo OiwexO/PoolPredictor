@@ -13,8 +13,8 @@ bool GlobalSettings::IS_DEBUG = true;
 bool GlobalSettings::IS_DEBUG = false;
 #endif
 
-bool GlobalSettings::isDrawLinesEnabled = true;
-bool GlobalSettings::isDrawShotStateEnabled = true;
+bool GlobalSettings::isDrawLinesEnabled = false;
+bool GlobalSettings::isDrawShotStateEnabled = false;
 bool GlobalSettings::isDrawOpponentsLinesEnabled = false;
 bool GlobalSettings::isPowerControlModeEnabled = false;
 bool GlobalSettings::isCueStatsInitialized = false;

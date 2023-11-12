@@ -19,19 +19,23 @@ class TablePositionRepository(private val repository: ConfigRepository) {
         repository.putBoolean(KEY_IS_TABLE_SET, isSet)
     }
 
-    fun getTablePosition(): TablePosition {
-        val left = repository.getInt(KEY_TABLE_LEFT, 0)
-        val top = repository.getInt(KEY_TABLE_TOP, 0)
-        val right = repository.getInt(KEY_TABLE_RIGHT, 0)
-        val bottom = repository.getInt(KEY_TABLE_BOTTOM, 0)
-        return TablePosition(left, top, right, bottom)
+    fun getTablePosition(): TablePosition = with(repository) {
+        return TablePosition(
+            getInt(KEY_TABLE_LEFT, 0),
+            getInt(KEY_TABLE_TOP, 0),
+            getInt(KEY_TABLE_RIGHT, 0),
+            getInt(KEY_TABLE_BOTTOM, 0)
+        )
     }
 
     fun putTablePosition(tablePosition: TablePosition) {
-        val (left, top, right, bottom) = tablePosition
-        repository.putInt(KEY_TABLE_LEFT, left)
-        repository.putInt(KEY_TABLE_TOP, top)
-        repository.putInt(KEY_TABLE_RIGHT, right)
-        repository.putInt(KEY_TABLE_BOTTOM, bottom)
+        with(repository) {
+            tablePosition.apply {
+                putInt(KEY_TABLE_LEFT, left)
+                putInt(KEY_TABLE_TOP, top)
+                putInt(KEY_TABLE_RIGHT, right)
+                putInt(KEY_TABLE_BOTTOM, bottom)
+            }
+        }
     }
 }

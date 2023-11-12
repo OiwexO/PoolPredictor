@@ -48,11 +48,12 @@ class EspTabLayout(
         orientation = VERTICAL
         setBackgroundColor(MenuDesign.Colors.TAB_BACKGROUND)
         setPadding(MenuDesign.Measurements.TAB_PADDING)
+        val state = viewModel.getEspTabState()
 
         lineWidthSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_LINE_WIDTH_SEEKBAR,
             MAX_LINE_WIDTH,
-            viewModel.getLineWidth(),
+            state.lineWidth,
             viewModel::onLineWidthChange,
             context,
             this
@@ -61,7 +62,7 @@ class EspTabLayout(
         ballRadiusSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_BALL_RADIUS_SEEKBAR,
             MAX_BALL_RADIUS,
-            viewModel.getBallRadius(),
+            state.ballRadius,
             viewModel::onBallRadiusChange,
             context,
             this
@@ -70,7 +71,7 @@ class EspTabLayout(
         trajectoryOpacitySeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_TRAJECTORY_OPACITY_SEEKBAR,
             MAX_TRAJECTORY_OPACITY,
-            viewModel.getTrajectoryOpacity(),
+            state.trajectoryOpacity,
             viewModel::onTrajectoryOpacityChange,
             context,
             this
@@ -79,7 +80,7 @@ class EspTabLayout(
         shotStateCircleWidthSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_SHOT_STATE_CIRCLE_WIDTH_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_WIDTH,
-            viewModel.getShotStateCircleWidth(),
+            state.shotStateCircleWidth,
             viewModel::onShotStateCircleWidthChange,
             context,
             this
@@ -88,7 +89,7 @@ class EspTabLayout(
         shotStateCircleRadiusSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_SHOT_STATE_CIRCLE_RADIUS_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_RADIUS,
-            viewModel.getShotStateCircleRadius(),
+            state.shotStateCircleRadius,
             viewModel::onShotStateCircleRadiusChange,
             context,
             this
@@ -97,7 +98,7 @@ class EspTabLayout(
         shotStateCircleOpacitySeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_SHOT_STATE_CIRCLE_OPACITY_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_OPACITY,
-            viewModel.getShotStateCircleOpacity(),
+            state.shotStateCircleOpacity,
             viewModel::onShotStateCircleOpacityChange,
             context,
             this
@@ -118,6 +119,11 @@ class EspTabLayout(
             true
         }
 
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        viewModel.saveState()
     }
 
 }

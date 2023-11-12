@@ -6,32 +6,35 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.view.View
 import com.iwex.poolpredictor.app.NativeBridge
+import com.iwex.poolpredictor.app.model.EspParameters
 import com.iwex.poolpredictor.app.model.TablePosition
 import com.iwex.poolpredictor.app.util.EspColors
-import com.iwex.poolpredictor.app.viewmodel.EspViewModel
+import com.iwex.poolpredictor.app.viewmodel.EspTabViewModel
 
 @SuppressLint("ViewConstructor")
-class EspView(context: Context, private val viewModel: EspViewModel) : View(context) {
+class EspView(context: Context, private val viewModel: EspTabViewModel) : View(context) {
 
     private val ballsPaints = Array(16) { Paint() }
     private val shotStatePaints = Array(2) { Paint() }
+    private var espParameters = EspParameters()
     private var espData = floatArrayOf(0.0f, 0.0f)
     private var pocketPositions = FloatArray(12)
     private var isCanUpdateEspData = false
 
     companion object {
         @Suppress("unused")
-        const val TAG = "EspView.kt"
+        private const val TAG = "EspView.kt"
+        private const val NUMBER_OF_POCKETS = 6
     }
 
     init {
-        viewModel.getEspParameters().observeForever {
+        viewModel.espParameters.observeForever {
+            espParameters = it
             updateEspParameters()
             postInvalidate()
         }
 
         initPaints()
-        updateEspParameters()
     }
 
     private fun initPaints() {
@@ -62,11 +65,11 @@ class EspView(context: Context, private val viewModel: EspViewModel) : View(cont
     private fun updateEspParameters() {
         for (i in ballsPaints.indices) {
             ballsPaints[i].apply {
-                alpha = viewModel.getTrajectoryOpacity()
+                alpha = espParameters.trajectoryOpacity
                 strokeWidth = if (i < 9) {
-                    viewModel.getSolidLineWidth()
+                    espParameters.solidLineWidth
                 } else {
-                    viewModel.getStripeLineWidth()
+                    espParameters.stripeLineWidth
                 }
 
             }
@@ -74,8 +77,8 @@ class EspView(context: Context, private val viewModel: EspViewModel) : View(cont
 
         for (i in shotStatePaints.indices) {
             shotStatePaints[i].apply {
-                alpha = viewModel.getShotStateCircleOpacity()
-                strokeWidth = viewModel.getShotStateCircleWidth()
+                alpha = espParameters.shotStateCircleOpacity
+                strokeWidth = espParameters.shotStateCircleWidth
             }
         }
 
@@ -147,7 +150,7 @@ class EspView(context: Context, private val viewModel: EspViewModel) : View(cont
                     startY = endY
                 }
 
-                canvas.drawCircle(startX, startY, if (ballIndex < 9) viewModel.getSolidBallRadius() else viewModel.getStripeBallRadius(), ballsPaints[ballIndex])
+                canvas.drawCircle(startX, startY, if (ballIndex < 9) espParameters.solidBallRadius else espParameters.stripeBallRadius, ballsPaints[ballIndex])
             }
         }
 
@@ -155,12 +158,12 @@ class EspView(context: Context, private val viewModel: EspViewModel) : View(cont
         val isShotStateEnabled = (espData[index++] == 1.0f)
         if (isShotStateEnabled) {
             var pocketState: Int
-            for (i in 0 until EspViewModel.NUMBER_OF_POCKETS) {
+            for (i in 0 until NUMBER_OF_POCKETS) {
                 pocketState = espData[index++].toInt()
                 canvas.drawCircle(
                     pocketPositions[i],
-                    pocketPositions[i + EspViewModel.NUMBER_OF_POCKETS],
-                    viewModel.getShotStateCircleRadius(),
+                    pocketPositions[i + NUMBER_OF_POCKETS],
+                    espParameters.shotStateCircleRadius,
                     shotStatePaints[pocketState]
                 )
             }

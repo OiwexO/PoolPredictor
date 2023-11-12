@@ -1,5 +1,7 @@
 package com.iwex.poolpredictor.app.repository
 
+import com.iwex.poolpredictor.app.model.AimTabState
+
 class AimTabRepository(private val repository: ConfigRepository) {
 
     companion object {
@@ -11,52 +13,28 @@ class AimTabRepository(private val repository: ConfigRepository) {
         private const val KEY_CUE_SPIN = "cue_spin"
     }
 
-    fun getDrawLinesEnabled(): Boolean {
-        return repository.getBoolean(KEY_DRAW_LINES_ENABLED, true)
+    fun getAimTabState(): AimTabState = with(repository) {
+        return AimTabState(
+            getBoolean(KEY_DRAW_LINES_ENABLED, false),
+            getBoolean(KEY_DRAW_SHOT_STATE_ENABLED, false),
+            getBoolean(KEY_DRAW_OPPONENTS_LINES_ENABLED, false),
+            getBoolean(KEY_POWER_CONTROL_MODE_ENABLED, false),
+            getInt(KEY_CUE_POWER, 0),
+            getInt(KEY_CUE_SPIN, 0)
+        )
     }
 
-    fun putDrawLinesEnabled(enabled: Boolean) {
-        repository.putBoolean(KEY_DRAW_LINES_ENABLED, enabled)
-    }
-
-    fun getDrawShotStateEnabled(): Boolean {
-        return repository.getBoolean(KEY_DRAW_SHOT_STATE_ENABLED, true)
-    }
-
-    fun putDrawShotStateEnabled(enabled: Boolean) {
-        repository.putBoolean(KEY_DRAW_SHOT_STATE_ENABLED, enabled)
-    }
-
-    fun getDrawOpponentsLinesEnabled(): Boolean {
-        return repository.getBoolean(KEY_DRAW_OPPONENTS_LINES_ENABLED, true)
-    }
-
-    fun putDrawOpponentsLinesEnabled(enabled: Boolean) {
-        repository.putBoolean(KEY_DRAW_OPPONENTS_LINES_ENABLED, enabled)
-    }
-
-    fun getPowerControlModeEnabled(): Boolean {
-        return repository.getBoolean(KEY_POWER_CONTROL_MODE_ENABLED, false)
-    }
-
-    fun putPowerControlModeEnabled(enabled: Boolean) {
-        repository.putBoolean(KEY_POWER_CONTROL_MODE_ENABLED, enabled)
-    }
-
-    fun getCuePower(): Int {
-        return repository.getInt(KEY_CUE_POWER, 0)
-    }
-
-    fun putCuePower(power: Int) {
-        repository.putInt(KEY_CUE_POWER, power)
-    }
-
-    fun getCueSpin(): Int {
-        return repository.getInt(KEY_CUE_SPIN, 0)
-    }
-
-    fun putCueSpin(spin: Int) {
-        repository.putInt(KEY_CUE_SPIN, spin)
+    fun putAimTabState(state: AimTabState) {
+        with(repository) {
+            state.apply {
+                putBoolean(KEY_DRAW_LINES_ENABLED, drawLinesEnabled)
+                putBoolean(KEY_DRAW_SHOT_STATE_ENABLED, drawShotStateEnabled)
+                putBoolean(KEY_DRAW_OPPONENTS_LINES_ENABLED, drawOpponentsLinesEnabled)
+                putBoolean(KEY_POWER_CONTROL_MODE_ENABLED, powerControlModeEnabled)
+                putInt(KEY_CUE_POWER, cuePower)
+                putInt(KEY_CUE_SPIN, cueSpin)
+            }
+        }
     }
 
 }

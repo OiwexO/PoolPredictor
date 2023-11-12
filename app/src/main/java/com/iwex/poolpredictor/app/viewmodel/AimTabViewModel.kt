@@ -2,76 +2,62 @@ package com.iwex.poolpredictor.app.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.iwex.poolpredictor.app.NativeBridge
+import com.iwex.poolpredictor.app.model.AimTabState
 import com.iwex.poolpredictor.app.repository.AimTabRepository
 
 class AimTabViewModel(
-    private val aimTabRepository: AimTabRepository
+    private val repository: AimTabRepository
 ) : ViewModel() {
-    private var drawLinesEnabled = aimTabRepository.getDrawLinesEnabled()
-    private var drawShotStateEnabled = aimTabRepository.getDrawShotStateEnabled()
-    private var drawOpponentsLinesEnabled = aimTabRepository.getDrawOpponentsLinesEnabled()
-    private var powerControlModeEnabled = aimTabRepository.getPowerControlModeEnabled()
-    private var cuePower = aimTabRepository.getCuePower()
-    private var cueSpin = aimTabRepository.getCueSpin()
 
-    fun getDrawLinesEnabled(): Boolean {
-        return drawLinesEnabled
+    private var aimTabState = repository.getAimTabState()
+
+    init {
+        with(aimTabState) {
+            NativeBridge.setDrawLines(drawLinesEnabled)
+            NativeBridge.setDrawShotState(drawShotStateEnabled)
+            NativeBridge.setDrawOpponentsLines(drawOpponentsLinesEnabled)
+            NativeBridge.setPowerControlModeEnabled(powerControlModeEnabled)
+            NativeBridge.setCuePower(cuePower)
+            NativeBridge.setCueSpin(cueSpin)
+        }
     }
 
-    fun getDrawShotStateEnabled(): Boolean {
-        return drawShotStateEnabled
-    }
-
-    fun getDrawOpponentsLinesEnabled(): Boolean {
-        return drawOpponentsLinesEnabled
-    }
-
-    fun getPowerControlModeEnabled(): Boolean {
-        return powerControlModeEnabled
-    }
-
-    fun getCuePower(): Int {
-        return cuePower
-    }
-
-    fun getCueSpin(): Int {
-        return cueSpin
+    fun getAimTabState(): AimTabState {
+        return aimTabState
     }
 
     fun onDrawLinesChange(isChecked: Boolean) {
-        drawLinesEnabled = isChecked
-        aimTabRepository.putDrawLinesEnabled(isChecked)
+        aimTabState = aimTabState.copy(drawLinesEnabled = isChecked)
         NativeBridge.setDrawLines(isChecked)
     }
 
     fun onDrawShotStateChange(isChecked: Boolean) {
-        drawShotStateEnabled = isChecked
-        aimTabRepository.putDrawShotStateEnabled(isChecked)
+        aimTabState = aimTabState.copy(drawShotStateEnabled = isChecked)
         NativeBridge.setDrawShotState(isChecked)
     }
 
     fun onDrawOpponentsLinesChange(isChecked: Boolean) {
-        drawOpponentsLinesEnabled = isChecked
-        aimTabRepository.putDrawOpponentsLinesEnabled(isChecked)
+        aimTabState = aimTabState.copy(drawOpponentsLinesEnabled = isChecked)
         NativeBridge.setDrawOpponentsLines(isChecked)
     }
 
     fun onPowerControlModeEnabledChange(isChecked: Boolean) {
-        powerControlModeEnabled = isChecked
-        aimTabRepository.putPowerControlModeEnabled(isChecked)
+        aimTabState = aimTabState.copy(powerControlModeEnabled = isChecked)
         NativeBridge.setPowerControlModeEnabled(isChecked)
     }
 
     fun onCuePowerChange(power: Int) {
-        cuePower = power
-        aimTabRepository.putCuePower(power)
+        aimTabState = aimTabState.copy(cuePower = power)
         NativeBridge.setCuePower(power)
     }
 
     fun onCueSpinChange(spin: Int) {
-        cueSpin = spin
-        aimTabRepository.putCueSpin(spin)
+        aimTabState = aimTabState.copy(cueSpin = spin)
         NativeBridge.setCueSpin(spin)
+    }
+
+    fun saveState() {
+        repository.putAimTabState(aimTabState)
     }
 
 }

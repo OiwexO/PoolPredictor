@@ -14,6 +14,7 @@ app/api.properties
 captures/
 .externalNativeBuild/
 .cxx/
+app/release/
 *.apk
 output.json
 

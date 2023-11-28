@@ -10,10 +10,9 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.iwex.poolpredictor.app.service.FloatingMenuService
 
-class LauncherActivity : AppCompatActivity() {
+class LauncherActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +48,7 @@ class LauncherActivity : AppCompatActivity() {
     private fun startService() {
         val intent = Intent(this, FloatingMenuService::class.java)
         startService(intent)
+        finish()
     }
 
     @Deprecated("Deprecated in Java")

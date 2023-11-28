@@ -32,7 +32,16 @@ This mod only works with 8 Ball Pool version 5.8.0 armeabi-v7a (32-bit). You can
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 ```
-12. Recompile pool apk, install it and enjoy.
+12. Add PoolPredictor's Service and Activity definitions at the end of **application** tag (before the **</application>**) in AndroidManifest.xml:
+```
+        <service
+            android:name="com.iwex.poolpredictor.app.service.FloatingMenuService"
+            android:enabled="true"
+            android:exported="false" />
+        <activity
+            android:name="com.iwex.poolpredictor.app.LauncherActivity" />
+```
+13. Recompile pool apk, install it and enjoy.
 
 # Disclaimer
 This project is intended for educational purposes only. The author is not responsible for any misuse or damage caused by the software. Use it at your own risk.

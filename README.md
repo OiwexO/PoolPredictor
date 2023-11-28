@@ -32,7 +32,7 @@ This mod only works with 8 Ball Pool version 5.8.0 armeabi-v7a (32-bit). You can
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 ```
-12. Add PoolPredictor's Service and Activity definitions at the end of **application** tag (before the ```</application>```) in AndroidManifest.xml:
+12. Add PoolPredictor's Service and Activity definitions at the end of **application** tag (before the **&lt;/application&gt;**) in AndroidManifest.xml:
 ```
         <service
             android:name="com.iwex.poolpredictor.app.service.FloatingMenuService"

@@ -2,11 +2,6 @@
 
 #include "GlobalSettings.h"
 
-#include "../../utils/logger.h"
-#include "../../utils/stringObfuscator.h"
-
-//const char* GlobalSettings::TAG = OBFUSCATE("jni_GlobalSettings");
-
 #ifdef BUILD_TYPE_DEBUG
 bool GlobalSettings::IS_DEBUG = true;
 #else

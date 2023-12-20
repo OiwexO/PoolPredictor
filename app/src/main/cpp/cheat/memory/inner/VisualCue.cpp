@@ -3,7 +3,6 @@
 #include "../MemoryManager.h"
 #include "../Offsets.h"
 #include "../../../utils/NumberUtils.h"
-#include "../../data/GlobalSettings.h"
 
 ADDRESS MemoryManager::VisualCue::visualCue = 0;
 ADDRESS MemoryManager::VisualCue::spinObject = 0;

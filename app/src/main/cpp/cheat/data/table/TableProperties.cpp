@@ -2,7 +2,6 @@
 
 #include <array>
 #include "TableProperties.h"
-#include "../type/ScreenPoint.h"
 
 const std::array<Point2D, TABLE_POCKETS_COUNT>& TableProperties::getPockets() {
     static const std::array<Point2D, TABLE_POCKETS_COUNT> POCKET_POSITIONS = {

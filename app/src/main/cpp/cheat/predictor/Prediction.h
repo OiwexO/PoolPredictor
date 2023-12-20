@@ -107,7 +107,7 @@ public:
     } guiData;
 
 private:
-    int espDataSize = 0;
+    unsigned int espDataSize = 0;
 
     std::vector<float> espData;
 

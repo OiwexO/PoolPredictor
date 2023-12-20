@@ -4,8 +4,6 @@
 #include "../data/GlobalSettings.h"
 #include "../data/table/TableProperties.h"
 #include "../../utils/NumberUtils.h"
-#include "../../utils/logger.h"
-#include "../../utils/stringObfuscator.h"
 
 static Prediction prediction;
 Prediction* gPrediction = &prediction;

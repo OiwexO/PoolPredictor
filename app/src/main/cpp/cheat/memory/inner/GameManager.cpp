@@ -24,27 +24,22 @@ int MemoryManager::GameManager::getGameState() {
 	if (!stateManager) {
 		return 0;
 	}
-
 	ADDRESS buffer = read<ADDRESS>(stateManager + 0x4);
 	if (!buffer) {
 		return 0;
 	}
-
 	ADDRESS objectCount = read<ADDRESS>(buffer + 0x4);
 	if (!objectCount) {
 		return 0;
 	}
-
 	ADDRESS objectEntry = read<ADDRESS>(buffer + 0xC);
 	if (!objectEntry) {
 		return 0;
 	}
-
 	ADDRESS lastObject = read<ADDRESS>(objectEntry + objectCount * 0x4 - 0x4);
 	if (!lastObject) {
 		return 0;
 	}
-
 	int gameState = read<int>(lastObject + 0xC);
 	return gameState;
 }
@@ -81,7 +76,6 @@ BallClassification MemoryManager::GameManager::getPlayerClassification(bool isLo
 	auto playerClassification = read<ADDRESS>(rules + Offsets::GameManager::PlayerClassification);
 	ADDRESS player = (isLocalPlayer) ? 0x0 : 0x4;
 	int classification = read<int>(playerClassification + player);
-
 	switch (classification) {
 	case BallClassification::ANY:
 		return BallClassification::ANY;

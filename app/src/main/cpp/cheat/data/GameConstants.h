@@ -7,7 +7,7 @@
 enum BallState : int {
     DEFAULT = 1,
     IN_POCKET = 2,
-    UNKNOWN = 3, // I'm not sure what state 3 means
+    UNKNOWN = 3, // I'm not sure what shotState 3 means
     POTTED = 4,
     ERR_STATE = -8
 };
@@ -31,7 +31,6 @@ constexpr int MAX_BALLS_COUNT = 16;
 
 constexpr double BALL_RADIUS = 3.800475;
 
-//constexpr double BALL_RADIUS_SQUARE = 14.443610225625001;
 constexpr double BALL_RADIUS_SQUARE = BALL_RADIUS * BALL_RADIUS;
 
 
@@ -44,14 +43,11 @@ constexpr double TABLE_HEIGHT = 127.0;
 constexpr double TABLE_HALF_WIDTH = TABLE_WIDTH / 2.0;
 constexpr double TABLE_HALF_HEIGHT = TABLE_HEIGHT / 2.0;
 
-//constexpr double TABLE_BOUND_LEFT = -123.199525;
-//constexpr double TABLE_BOUND_TOP = -59.699525;
-//constexpr double TABLE_BOUND_RIGHT = 123.199525;
-//constexpr double TABLE_BOUND_BOTTOM = 59.699525;
 constexpr double TABLE_BOUND_LEFT = -TABLE_HALF_WIDTH + BALL_RADIUS;
 constexpr double TABLE_BOUND_TOP = -TABLE_HALF_HEIGHT + BALL_RADIUS;
 constexpr double TABLE_BOUND_RIGHT = TABLE_HALF_WIDTH - BALL_RADIUS;
 constexpr double TABLE_BOUND_BOTTOM = TABLE_HALF_HEIGHT - BALL_RADIUS;
+
 
 
 // OTHER TABLE PROPERTIES
@@ -61,7 +57,6 @@ constexpr int TABLE_SHAPE_SIZE = 46;
 
 constexpr double POCKET_RADIUS = 8.0;
 
-//constexpr double POCKET_RADIUS_SQUARE = 64;
 constexpr double POCKET_RADIUS_SQUARE = POCKET_RADIUS * POCKET_RADIUS;
 
 

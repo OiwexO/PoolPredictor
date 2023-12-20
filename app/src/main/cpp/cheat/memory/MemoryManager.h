@@ -14,7 +14,6 @@ private:
 	static ADDRESS gameModuleBase;
 	static ADDRESS sharedGameManager;
 	static ADDRESS sharedMenuManager;
-	//static ADDRESS sharedUserInfo;
 	static ADDRESS sharedUserSettings;
 
 	static inline ADDRESS findModuleBase(const char* moduleName);
@@ -30,7 +29,7 @@ private:
 	}
 
 public:
-	static bool initialize();
+    static bool initialize();
 	static bool isInitialized() { return isInitialised; };
 	static ADDRESS getGameModuleBase() { return gameModuleBase; }
 	static ADDRESS getSharedGameManager() { return sharedGameManager; }
@@ -46,7 +45,7 @@ public:
 	public:
 		static void initialize(ADDRESS _sharedGameManager);
 		static ADDRESS getGameRules();
-		static int getGameState();
+		static inline int getGameState();
 		static bool isValidGameState(bool isDrawOpponentsLinesEnabled);
 		static int getGameMode();
 		static ADDRESS getTable();
@@ -83,9 +82,6 @@ public:
 		static constexpr double DEFAULT_ANGLE = 0.0;
 		static double DEFAULT_POWER;
 
-//		static float cuePower[14];
-//		static double cueSpin[14];
-
 	public:
 		static void initialize(ADDRESS _gameModuleBase, ADDRESS _sharedGameManager);
 		static double getShotAngle();
@@ -98,9 +94,9 @@ public:
 	class MenuManager {
 	private:
 		static ADDRESS menuStateManager;
-	public:
-		static void initialize(ADDRESS _sharedMenuManager);
-        static int getMenuState();
+        static inline int getMenuState();
+    public:
+        static void initialize(ADDRESS _sharedMenuManager);
 		static bool isInGame();
 		static bool isInMenu();
 	};

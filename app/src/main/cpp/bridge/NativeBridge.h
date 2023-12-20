@@ -8,7 +8,6 @@ class NativeBridge {
 private:
     static const char* TAG;
     static bool isShouldRunThread;
-    static bool isToastShown;
     static JavaVM* mJvm;
     static JNIEnv* mEnv;
     static jobject mEspView;
@@ -29,23 +28,17 @@ private:
 
     static jfloatArray getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint top, jint right, jint bottom);
 
-    // shows toast to user, must be called before predictor_thread
-    static void setServiceContext(JNIEnv* env, jobject, jobject serviceContext);
-
     // creates a GlobalRef for EspView instance, starts predictor_thread()
     static void setEspView(JNIEnv* env, jobject, jobject espView);
 
     // obtains fun updateEspData(data: FloatArray) method ID
-    static int setUpdateEspDataMethodId();
+    static int setUpdateEspDataMethodId(JNIEnv* env);
 
-    // updates EspView state (trajectories and shot state)
+    // updates EspView shotState (trajectories and shot shotState)
     static void updateEspData(const std::vector<float>& espData);
 
     // releases GlobalRef to mEspView
     static void releaseGlobalRefs(JNIEnv* env);
-
-    // FloatingMenuLayout methods
-    static jstring getIcon(JNIEnv *env, jobject);
 
     static void exitThread(JNIEnv*, jobject);
 

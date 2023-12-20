@@ -11,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import com.iwex.poolpredictor.app.NativeBridge
 import com.iwex.poolpredictor.app.util.MenuDesign
 import com.iwex.poolpredictor.app.util.interfaces.OnButtonClickListener
@@ -50,6 +51,7 @@ class FloatingMenuService : Service(), OnButtonClickListener {
         val viewModelFactory = ViewModelFactory.getInstance(this)
         tablePositionViewModel = viewModelFactory.tablePositionViewModel
 
+        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show()
         if (tablePositionViewModel.isTableSet) {
             startFloatingMenu(this)
         } else {
@@ -69,11 +71,6 @@ class FloatingMenuService : Service(), OnButtonClickListener {
         // getPocketPositionsInScreen() should be called before
         // setEspView() to avoid wrong results in EspView.onDraw()
         espView.getPocketPositionsInScreen(tablePosition)
-
-        // setServiceContext() should be called before setEspView(),
-        // otherwise the native predictor_thread will return
-        // Check isToastShown usage in cpp/bridge/NativeBridge.cpp
-        NativeBridge.setServiceContext(this@FloatingMenuService)
         NativeBridge.setEspView(espView)
     }
 
@@ -218,6 +215,10 @@ class FloatingMenuService : Service(), OnButtonClickListener {
             }
             return true
         }
+    }
+
+    companion object {
+        private const val TOAST_TEXT = "YouTube: @iwex\nEnjoy!"
     }
 
 }

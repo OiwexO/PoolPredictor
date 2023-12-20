@@ -12,7 +12,7 @@ object DefaultEspParameters {
     // Trajectory parameters
     const val TRAJECTORY_OPACITY = 100
 
-    // Shot state circle parameters
+    // Shot shotState circle parameters
     const val SHOT_STATE_CIRCLE_WIDTH = 8
     const val SHOT_STATE_CIRCLE_RADIUS = BALL_RADIUS * 2
     const val SHOT_STATE_CIRCLE_OPACITY = 100

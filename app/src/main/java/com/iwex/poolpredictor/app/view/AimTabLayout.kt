@@ -24,7 +24,7 @@ class AimTabLayout(
 
     companion object {
         private const val LABEL_DRAW_LINES_SWITCH = "draw lines"
-        private const val LABEL_DRAW_SHOT_STATE_SWITCH = "draw shot state"
+        private const val LABEL_DRAW_SHOT_STATE_SWITCH = "draw shot shotState"
         private const val LABEL_DRAW_OPPONENTS_LINES_SWITCH = "draw opponent\'s lines"
         private const val LABEL_POWER_CONTROL_MODE_SWITCH = "power control mode"
         private const val LABEL_CUE_POWER_SEEKBAR = "cue power: %d"

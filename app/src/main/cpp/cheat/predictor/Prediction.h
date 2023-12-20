@@ -52,13 +52,13 @@ public:
         bool willCollideWithTable(const double* smallestTime) const;
 
         // sub_1BF9BD8 5.8.0 determines if it's a collision with line or point
-        void determineBallTableCollision(void* pData, double* a4);
+        void determineBallTableCollision(void* pData, double* smallestTime);
 
         // sub_1BC216C 5.8.0
-        bool isBallLineCollision(double* pTime_1, const Point2D& point, const Point2D& nextPoint) const;
+        bool isBallLineCollision(double* pTime_1, const Point2D& tableShapePointA, const Point2D& tableShapePointB) const;
 
         // sub_1C2A594 5.8.0
-        bool isBallPointCollision(double* smallestTime, const Point2D& pointA) const;
+        bool isBallPointCollision(double* smallestTime, const Point2D& tableShapePoint) const;
 
         // unused in 5.8.0 EV
         //bool sub_1C2A2C0(double* smallestTime, const Point2D* pointA, const Point2D* pointB);
@@ -96,12 +96,12 @@ public:
         Ball balls[MAX_BALLS_COUNT];
 
         Collision collision;
-        bool state;
+        bool shotState;
         //bool validCushionShot;
         //bool forceCushionMode;
         //std::array<bool, 6> activeCushions;
 
-        SceneData() : ballsCount(0), balls{}, collision{}, state(false) {}
+        SceneData() : ballsCount(0), balls{}, collision{}, shotState(false) {}
         ~SceneData() {}
 
     } guiData;
@@ -113,7 +113,7 @@ private:
 
     void calculateEspDataSize();
 
-    // initializes balls' position, state, classification etc
+    // initializes balls' position, shotState, classification etc
     void initBalls();
 
     // initializes balls with mock data for debug
@@ -124,9 +124,8 @@ private:
     void handleCollision();
     
     void handleBallBallCollision() const;
-    
-    // determines if shot is valid or not
-    void updateState();
+
+    void determineShotState();
     
 };
 

@@ -15,7 +15,6 @@ bool MemoryManager::isInitialised = false;
 ADDRESS MemoryManager::gameModuleBase = 0;
 ADDRESS MemoryManager::sharedGameManager = 0;
 ADDRESS MemoryManager::sharedMenuManager = 0;
-//ADDRESS MemoryManager::sharedUserInfo = 0;
 ADDRESS MemoryManager::sharedUserSettings = 0;
 
 ADDRESS MemoryManager::findModuleBase(const char *moduleName) {

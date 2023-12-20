@@ -28,9 +28,9 @@ class EspTabLayout(
         private const val LABEL_LINE_WIDTH_SEEKBAR = "line width: %d"
         private const val LABEL_BALL_RADIUS_SEEKBAR = "ball radius: %d"
         private const val LABEL_TRAJECTORY_OPACITY_SEEKBAR = "trajectory opacity: %d"
-        private const val LABEL_SHOT_STATE_CIRCLE_WIDTH_SEEKBAR = "shot state circle width: %d"
-        private const val LABEL_SHOT_STATE_CIRCLE_RADIUS_SEEKBAR = "shot state circle radius: %d"
-        private const val LABEL_SHOT_STATE_CIRCLE_OPACITY_SEEKBAR = "shot state circle opacity: %d"
+        private const val LABEL_SHOT_STATE_CIRCLE_WIDTH_SEEKBAR = "shot shotState circle width: %d"
+        private const val LABEL_SHOT_STATE_CIRCLE_RADIUS_SEEKBAR = "shot shotState circle radius: %d"
+        private const val LABEL_SHOT_STATE_CIRCLE_OPACITY_SEEKBAR = "shot shotState circle opacity: %d"
         private const val LABEL_RESET_TABLE_BUTTON = "reset table position\n(restart is required)"
 
         private const val TOAST_LONG_CLICK_TO_RESET = "hold button to reset table position"

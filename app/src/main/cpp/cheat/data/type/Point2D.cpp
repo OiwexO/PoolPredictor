@@ -2,31 +2,10 @@
 
 #include "Point2D.h"
 #include "../GameConstants.h"
-#include <cmath>
 
 double Point2D::TABLE_LEFT = 0.0;
 double Point2D::TABLE_BOTTOM = 0.0;
 double Point2D::TABLE_SCALE = 1.0;
-
-Point2D::Point2D() : x(0.0f), y(0.0f) {}
-
-Point2D::Point2D(double x, double y) : x(x), y(y) {}
-
-double Point2D::length() const {
-    return std::sqrt(x * x + y * y);
-}
-
-double Point2D::distanceTo(const Point2D& other) const {
-    return (*this - other).length();
-}
-
-void Point2D::nullify() {
-    x = y = 0.0;
-}
-
-bool Point2D::isZero() const {
-    return x == 0.0f && y == 0.0f;
-}
 
 ScreenPoint Point2D::toScreen() const {
     double positionX = this->x + TABLE_HALF_WIDTH;

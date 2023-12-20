@@ -15,6 +15,12 @@ if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
     add_definitions(-DBUILD_TYPE_DEBUG)
 endif()
 
+# Enables/disables logs
+add_definitions(-DENABLE_LOGS)
+
+# Enables/disables strings obfuscation
+add_definitions(-DENABLE_STRING_OBFUSCATION)
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -32,7 +38,6 @@ add_library(
         cheat/data/table/TableProperties.cpp
 
         cheat/data/type/Point2D.cpp
-        cheat/data/type/Vector3D.cpp
 
         cheat/data/GlobalSettings.cpp
 

@@ -5,9 +5,6 @@ namespace NumberUtils {
 
     // sub_1C2B0D8 5.8.0 angle, power, spin, ball positions??? should be truncated 
     inline double truncateTo4Places(double value) {
-//        if (value >= 10000.0 || value <= -10000.0) {
-//            return std::floor(value);
-//        }
         return static_cast<int>(value * 10000.0) / 10000.0;
     }
 

@@ -13,42 +13,6 @@ ADDRESS MemoryManager::VisualCue::cuePropertiesAccuracy = 0;
 
 double MemoryManager::VisualCue::DEFAULT_POWER = 1.0;
 
-/*
-float MemoryManager::VisualCue::cuePower[] = {
-		666.0,
-		682.0,
-		699.0,
-		715.0,
-		731.0,
-		747.0,
-		764.0,
-		780.0,
-		796.0,
-		813.0,
-		828.85,
-		848.85,
-		868.85,
-		888.85
-};
-
-double MemoryManager::VisualCue::cueSpin[] = {
-		0.37931035305,
-		0.48275861247,
-		0.58620691299,
-		0.68965517241,
-		0.71724135300,
-		0.74482761580,
-		0.77241379639,
-		0.79999997698,
-		0.82758623978,
-		0.85517242037,
-		0.88275860096,
-		0.91034478155,
-		0.93793104435,
-		0.96551722494
-};
-*/
-
 void MemoryManager::VisualCue::initialize(ADDRESS _gameModuleBase, ADDRESS _sharedGameManager) {
 	visualCue = _sharedGameManager + Offsets::CueProperties::VisualCue;
 	spinObject = _sharedGameManager + Offsets::CueProperties::SpinObject;
@@ -64,7 +28,6 @@ double MemoryManager::VisualCue::getShotAngle() {
 	if (angle < 0.0 || angle > MAX_ANGLE_RADIANS) {
 		return DEFAULT_ANGLE;
 	}
-
 	return NumberUtils::truncateTo4Places(angle);
 }
 
@@ -77,12 +40,10 @@ double MemoryManager::VisualCue::getShotPower() {
 	else {
 		power = NumberUtils::truncateTo4Places(power);
 	}
-
 	double maxPower = read<double>(cuePropertiesMaxPower);
 	if (maxPower <= 0.0) {
 		return power;
 	}
-
 	return (1.0 - sqrt(1.0 - power)) * maxPower;
 }
 
@@ -97,12 +58,10 @@ Point2D MemoryManager::VisualCue::getShotSpin() {
 	if (spin.isZero()) {
 		return spin;
 	}
-
 	double cueSpinStat = read<double>(cuePropertiesSpin);
 	if (cueSpinStat <= 0.0) {
 		return spin;
 	}
-
 	return {
 		NumberUtils::truncateTo4Places(spin.x) * cueSpinStat,
 		NumberUtils::truncateTo4Places(spin.y) * cueSpinStat

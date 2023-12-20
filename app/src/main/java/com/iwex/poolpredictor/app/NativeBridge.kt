@@ -1,6 +1,5 @@
 package com.iwex.poolpredictor.app
 
-import android.content.Context
 import com.iwex.poolpredictor.app.view.EspView
 
 @Suppress("KotlinJniMissingFunction")
@@ -23,11 +22,7 @@ class NativeBridge {
         // OtherTabViewModel native methods
         external fun exitThread()
 
-        // FloatingMenuLayout native methods
-        external fun getIcon(): String
-
         // FloatingMenuService native methods
-        external fun setServiceContext(context: Context)
         external fun setEspView(espView: EspView)
         external fun getPocketPositionsInScreen(left: Int, top: Int, right: Int, bottom: Int): FloatArray
     }

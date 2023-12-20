@@ -13,18 +13,26 @@ public:
     double x;
     double y;
 
-    Point2D();
-    Point2D(double x, double y);
+    Point2D() : x(0.0f), y(0.0f) {}
+
+    Point2D(double x, double y) : x(x), y(y) {}
 
     inline double square() const {
         return (x * x + y * y);
     }
 
-    double length() const;
-    double distanceTo(const Point2D& destination) const;
+    inline void nullify() {
+        x = y = 0.0;
+    }
 
-    void nullify();
-    bool isZero() const;
+    inline bool isZero() const {
+        return x == 0.0f && y == 0.0f;
+    }
+
+    inline bool isNotZero() const {
+        return x != 0.0f || y != 0.0f;
+    };
+
     ScreenPoint toScreen() const;
 
     Point2D operator-(const Point2D& other) const;

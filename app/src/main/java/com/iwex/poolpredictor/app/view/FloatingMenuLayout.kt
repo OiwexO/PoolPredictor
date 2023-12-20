@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.ScrollView
 import androidx.core.view.setMargins
-import com.iwex.poolpredictor.app.NativeBridge
 import com.iwex.poolpredictor.app.util.MenuDesign
 import com.iwex.poolpredictor.app.util.MenuWidgetFactory
 
@@ -78,7 +77,7 @@ class FloatingMenuLayout(
     @SuppressLint("ClickableViewAccessibility")
     private fun initFloatingIconView(context: Context): ImageView {
         val iconSize = MenuDesign.Measurements.ICON_SIZE
-        val decoded: ByteArray = Base64.decode(NativeBridge.getIcon(), 0)
+        val decoded: ByteArray = Base64.decode(MenuDesign.FLOATING_ICON_BASE64, 0)
 
         return ImageView(context).apply {
             layoutParams = LayoutParams(

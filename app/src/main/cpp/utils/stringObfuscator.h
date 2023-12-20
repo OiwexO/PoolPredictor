@@ -174,7 +174,11 @@ namespace ay {
 // Obfuscates the string 'string' at compile-time and returns a reference to a
 // ay::obfuscated_string object with global lifetime that has functions for
 // decrypting the string and is also implicitly convertible to a char*
+#ifdef ENABLE_STRING_OBFUSCATION
 #define OBFUSCATE(string) AY_OBFUSCATE_KEY(string, AY_OBFUSCATE_DEFAULT_KEY)
+#else
+#define OBFUSCATE(string) string
+#endif
 
 // Obfuscates the string 'string' with 'key' at compile-time and returns a
 // reference to a ay::obfuscated_string object with global lifetime that has

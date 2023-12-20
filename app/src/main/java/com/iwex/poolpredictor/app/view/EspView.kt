@@ -154,7 +154,7 @@ class EspView(context: Context, private val viewModel: EspTabViewModel) : View(c
             }
         }
 
-        // draw shot state
+        // draw shot shotState
         val isShotStateEnabled = (espData[index++] == 1.0f)
         if (isShotStateEnabled) {
             var pocketState: Int

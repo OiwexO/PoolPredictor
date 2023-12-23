@@ -16,6 +16,8 @@ object EspColors {
     private val MAROON = Color.rgb(100, 18, 0)   // ball 07
     private val BLACK = Color.rgb(0, 0, 0)       // ball 08
 
+    val TABLE_RECT_COLOR = WHITE
+
     val BALLS_COLORS = intArrayOf(
         WHITE,
         YELLOW,

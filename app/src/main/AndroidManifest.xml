@@ -16,10 +16,9 @@
         android:theme="@style/Theme.PoolPredictor"
         tools:targetApi="31">
         <service
-            android:name=".app.service.FloatingMenuService"
+            android:name=".app.service.PredictorService"
             android:enabled="true"
             android:exported="false">
-
         </service>
 
         <activity

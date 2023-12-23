@@ -12,11 +12,12 @@ data class EspTabState(
     val shotStateCircleOpacity: Int = DefaultEspParameters.SHOT_STATE_CIRCLE_OPACITY
 ) {
     fun toEspParameters(): EspParameters {
+        val stripeLineWidth = lineWidth * DefaultEspParameters.STRIPE_LINE_WIDTH_SCALE
         return EspParameters(
             lineWidth.toFloat(),
-            lineWidth * DefaultEspParameters.STRIPE_LINE_WIDTH_SCALE,
+            stripeLineWidth,
             ballRadius.toFloat(),
-            ballRadius * DefaultEspParameters.STRIPE_BALL_RADIUS_SCALE,
+            ballRadius - stripeLineWidth / 2f,
             (trajectoryOpacity * 2.55f).roundToInt(),
             shotStateCircleWidth.toFloat(),
             shotStateCircleRadius.toFloat(),

@@ -10,7 +10,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
-import com.iwex.poolpredictor.app.service.FloatingMenuService
+import com.iwex.poolpredictor.app.service.PredictorService
+import com.iwex.poolpredictor.app.util.MenuDesign
 
 class LauncherActivity : Activity() {
 
@@ -46,7 +47,7 @@ class LauncherActivity : Activity() {
     }
 
     private fun startService() {
-        val intent = Intent(this, FloatingMenuService::class.java)
+        val intent = Intent(this, PredictorService::class.java)
         startService(intent)
         finish()
     }
@@ -74,6 +75,7 @@ class LauncherActivity : Activity() {
                 Log.e(TAG, LOG_WRONG_CONTEXT)
                 return
             }
+            MenuDesign.initDisplayMetrics(context)
             val intent = Intent(context, LauncherActivity::class.java)
             context.startActivity(intent)
         }

@@ -2,11 +2,11 @@ package com.iwex.poolpredictor.app.util
 
 object DefaultEspParameters {
     // LINE parameters
-    const val LINE_WIDTH = 4
+    const val LINE_WIDTH = 5
     const val STRIPE_LINE_WIDTH_SCALE = 0.5f
 
     // BALL parameters
-    const val BALL_RADIUS = 20
+    const val BALL_RADIUS = 21
     const val STRIPE_BALL_RADIUS_SCALE = 0.85f
 
     // Trajectory parameters

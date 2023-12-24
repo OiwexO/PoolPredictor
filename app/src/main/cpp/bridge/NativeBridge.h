@@ -17,14 +17,14 @@ private:
     static void* predictor_thread(void*);
 
     // AimTabViewModel methods
-    static void setDrawLines(JNIEnv*, jobject, bool value);
-    static void setDrawShotState(JNIEnv*, jobject, bool value);
-    static void setDrawOpponentsLines(JNIEnv*, jobject, bool value);
-    static void setPowerControlModeEnabled(JNIEnv*, jobject, bool value);
-    static void setCuePower(JNIEnv*, jobject, int power);
-    static void setCueSpin(JNIEnv*, jobject, int spin);
+    static void setDrawLines(JNIEnv*, jobject, jboolean value);
+    static void setDrawShotState(JNIEnv*, jobject, jboolean value);
+    static void setDrawOpponentsLines(JNIEnv*, jobject, jboolean value);
+    static void setPowerControlModeEnabled(JNIEnv*, jobject, jboolean value);
+    static void setCuePower(JNIEnv*, jobject, jint power);
+    static void setCueSpin(JNIEnv*, jobject, jint spin);
 
-    // FloatingMenuService methods
+    // PredictorService methods
 
     static jfloatArray getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint top, jint right, jint bottom);
 

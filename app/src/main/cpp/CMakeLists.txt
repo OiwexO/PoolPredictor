@@ -18,9 +18,6 @@ endif()
 # Enables/disables logs
 add_definitions(-DENABLE_LOGS)
 
-# Enables/disables strings obfuscation
-add_definitions(-DENABLE_STRING_OBFUSCATION)
-
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.

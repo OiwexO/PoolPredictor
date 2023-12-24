@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include "../../utils/stringObfuscator.h"
-
 namespace Offsets {
 
 using OFFSET = unsigned int;

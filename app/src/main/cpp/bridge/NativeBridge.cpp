@@ -6,15 +6,11 @@
 #include "NativeBridgeConstants.h"
 #include "../cheat/data/GlobalSettings.h"
 #include "../cheat/data/table/TableProperties.h"
-#include "../cheat/data/type/Point2D.h"
-
 #include "../cheat/predictor/Prediction.h"
-
 #include "../utils/logger.h"
-#include "../utils/stringObfuscator.h"
 #include "../cheat/memory/MemoryManager.h"
 
-const char* NativeBridge::TAG = OBFUSCATE("jni_NativeBridge");
+const char* NativeBridge::TAG = "jni_NativeBridge";
 bool NativeBridge::isShouldRunThread = true;
 JavaVM* NativeBridge::mJvm = nullptr;
 JNIEnv* NativeBridge::mEnv = nullptr;
@@ -24,16 +20,16 @@ jmethodID NativeBridge::mUpdateEspData = nullptr;
 void* NativeBridge::predictor_thread(void*) {
     JavaVMAttachArgs args;
     args.version = JNI_VERSION_1_6;
-    args.name = OBFUSCATE("predictor_thread");
+    args.name = "predictor_thread";
     args.group = nullptr;
     int attachResult = mJvm->AttachCurrentThread(&mEnv, &args);
     if(attachResult != JNI_OK) {
-        LOGE(TAG, OBFUSCATE("Could not attach predictor_thread"));
+        LOGE(TAG, "Could not attach predictor_thread");
         return nullptr;
     }
     bool isShouldRedraw;
     if (GlobalSettings::IS_DEBUG) {
-        LOGD(TAG, OBFUSCATE("DEBUG build"));
+        LOGD(TAG, "DEBUG build");
         while (NativeBridge::isShouldRunThread) {
             isShouldRedraw = gPrediction->mockPredictShotResult();
             if (isShouldRedraw) {
@@ -41,9 +37,9 @@ void* NativeBridge::predictor_thread(void*) {
             }
         }
     } else {
-        LOGD(TAG, OBFUSCATE("RELEASE build"));
+        LOGD(TAG, "RELEASE build");
         if (!MemoryManager::initialize()) {
-            LOGD(TAG, OBFUSCATE("Could not initialize MemoryManager"));
+            LOGD(TAG, "Could not initialize MemoryManager");
             return nullptr;
         }
         while (NativeBridge::isShouldRunThread) {
@@ -62,38 +58,38 @@ void* NativeBridge::predictor_thread(void*) {
     }
     releaseGlobalRefs(mEnv);
     mJvm->DetachCurrentThread();
-    LOGD(TAG, OBFUSCATE("Exiting predictor_thread()"));
+    LOGD(TAG, "Exiting predictor_thread()");
     return nullptr;
 }
 
 // AimTabViewModel methods
-void NativeBridge::setDrawLines(JNIEnv*, jobject, bool value) {
+void NativeBridge::setDrawLines(JNIEnv*, jobject, jboolean value) {
     GlobalSettings::isDrawLinesEnabled = value;
 }
 
-void NativeBridge::setDrawShotState(JNIEnv*, jobject, bool value) {
+void NativeBridge::setDrawShotState(JNIEnv*, jobject, jboolean value) {
     GlobalSettings::isDrawShotStateEnabled = value;
 }
 
-void NativeBridge::setDrawOpponentsLines(JNIEnv*, jobject, bool value) {
+void NativeBridge::setDrawOpponentsLines(JNIEnv*, jobject, jboolean value) {
     GlobalSettings::isDrawOpponentsLinesEnabled = value;
 }
 
-void NativeBridge::setPowerControlModeEnabled(JNIEnv*, jobject, bool value) {
+void NativeBridge::setPowerControlModeEnabled(JNIEnv*, jobject, jboolean value) {
     GlobalSettings::isPowerControlModeEnabled = value;
 }
 
-void NativeBridge::setCuePower(JNIEnv*, jobject, int power) {
+void NativeBridge::setCuePower(JNIEnv*, jobject, jint power) {
     GlobalSettings::cuePower = power;
 }
 
-void NativeBridge::setCueSpin(JNIEnv*, jobject, int spin) {
+void NativeBridge::setCueSpin(JNIEnv*, jobject, jint spin) {
     GlobalSettings::cueSpin = spin;
 }
 
-// FloatingMenuService methods
-jfloatArray NativeBridge::getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint top, jint right, jint bottom) {
-//    LOGD(TAG, OBFUSCATE("left: %d top: %d right: %d bottom: %d"), left, top, right, bottom);
+// PredictorService methods
+jfloatArray NativeBridge::getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint, jint right, jint bottom) {
+//    LOGD(TAG, "left: %d top: %d right: %d bottom: %d", left, top, right, bottom);
     Point2D::setTableData(left, bottom, right);
     float* pocketPositions = TableProperties::getPocketPositionsToScreen();
     jfloatArray jPocketPositions = env->NewFloatArray(12);
@@ -105,7 +101,7 @@ void NativeBridge::setEspView(JNIEnv* env, jobject, jobject espView) {
     env->GetJavaVM(&mJvm);
     mEspView = env->NewGlobalRef(espView);
     if (setUpdateEspDataMethodId(env) != JNI_OK) {
-        LOGE(TAG, OBFUSCATE("Could not get methodID"));
+        LOGE(TAG, "Could not get methodID");
         releaseGlobalRefs(env);
         return;
     }
@@ -116,12 +112,12 @@ void NativeBridge::setEspView(JNIEnv* env, jobject, jobject espView) {
 int NativeBridge::setUpdateEspDataMethodId(JNIEnv* env) {
     jclass espViewClass = env->GetObjectClass(mEspView);
     if (!espViewClass) {
-        LOGE(TAG, OBFUSCATE("Could not find desired View class"));
+        LOGE(TAG, "Could not find desired View class");
         return JNI_ERR;
     }
     mUpdateEspData = env->GetMethodID(espViewClass, METHOD_UPDATE_ESP_DATA,SIG_UPDATE_ESP_DATA);
     if (!mUpdateEspData) {
-        LOGE(TAG, OBFUSCATE("Could not find desired method in View class"));
+        LOGE(TAG, "Could not find desired method in View class");
         return JNI_ERR;
     }
     return JNI_OK;
@@ -147,7 +143,7 @@ void NativeBridge::exitThread(JNIEnv*, jobject) {
 
 int NativeBridge::registerNativeMethods(JNIEnv* env) {
     if (env == nullptr) {
-        LOGE(TAG, OBFUSCATE("JNIEnv pointer is nullptr"));
+        LOGE(TAG, "JNIEnv pointer is nullptr");
         return JNI_ERR;
     }
     jclass kotlinNativeBridgeClass = env->FindClass(CLASS_NATIVE_BRIDGE_KOTLIN);
@@ -167,7 +163,7 @@ int NativeBridge::registerNativeMethods(JNIEnv* env) {
             // OtherTabViewModel native methods
             {METHOD_EXIT_THREAD,SIG_EXIT_THREAD,reinterpret_cast<void*>(NativeBridge::exitThread)},
 
-            // FloatingMenuService native methods
+            // PredictorService native methods
             {METHOD_SET_ESP_VIEW,SIG_SET_ESP_VIEW,reinterpret_cast<void*>(NativeBridge::setEspView)},
             {METHOD_GET_POCKET_POSITIONS_IN_SCREEN,SIG_GET_POCKET_POSITIONS_IN_SCREEN, reinterpret_cast<void*>(NativeBridge::getPocketPositionsInScreen)},
 

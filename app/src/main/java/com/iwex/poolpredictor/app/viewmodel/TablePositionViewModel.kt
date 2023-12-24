@@ -11,13 +11,13 @@ import com.iwex.poolpredictor.app.util.interfaces.OnButtonClickListener
 import kotlin.math.roundToInt
 
 class TablePositionViewModel(private val repository: TablePositionRepository): ViewModel() {
-    val tableRect: LiveData<RectF> get() = _position
+    val tableRect: LiveData<RectF> get() = _tableRect
     val isTableSet: Boolean get() = repository.getIsTableSet()
     val tablePosition: TablePosition get() = repository.getTablePosition()
     val pointNumber: Int get() = if (isTopLeftPointSet) 2 else 1
     private var onButtonClickListener: OnButtonClickListener? = null
-    private val defaultPosition: TablePosition
-    private val _position = MutableLiveData<RectF>()
+    private val defaultTableRect: TablePosition
+    private val _tableRect = MutableLiveData<RectF>()
     private var isTopLeftPointSet = false
     private var left: Int
     private var top: Int
@@ -31,41 +31,41 @@ class TablePositionViewModel(private val repository: TablePositionRepository): V
         val defaultTop = (displayHeight * 0.2370370370370370).roundToInt()    // height * myTableTop / myScreenHeight
         val defaultRight = (displayWidth * 0.8427121771217713).roundToInt()   // width * myTableRight / myScreenWidth
         val defaultBottom = (displayHeight * 0.9120370370370371).roundToInt() // height * myTableBottom / myScreenHeight
-        defaultPosition = TablePosition(defaultLeft, defaultTop, defaultRight, defaultBottom)
+        defaultTableRect = TablePosition(defaultLeft, defaultTop, defaultRight, defaultBottom)
         left = defaultLeft
         top = defaultTop
         right = defaultRight
         bottom = defaultBottom
-        updatePosition()
+        updateTableRect()
     }
 
     fun decreaseX() {
         if (isTopLeftPointSet) right-- else left--
-        updatePosition()
+        updateTableRect()
     }
 
     fun increaseX() {
         if (isTopLeftPointSet) right++ else left++
-        updatePosition()
+        updateTableRect()
     }
 
     fun decreaseY() {
         if (isTopLeftPointSet) bottom-- else top--
-        updatePosition()
+        updateTableRect()
     }
 
     fun increaseY() {
         if (isTopLeftPointSet) bottom++ else top++
-        updatePosition()
+        updateTableRect()
     }
 
     fun resetPosition() {
         isTopLeftPointSet = false
-        left = defaultPosition.left
-        top = defaultPosition.top
-        right = defaultPosition.right
-        bottom = defaultPosition.bottom
-        updatePosition()
+        left = defaultTableRect.left
+        top = defaultTableRect.top
+        right = defaultTableRect.right
+        bottom = defaultTableRect.bottom
+        updateTableRect()
     }
 
     fun savePosition() {
@@ -78,11 +78,10 @@ class TablePositionViewModel(private val repository: TablePositionRepository): V
                 isTopLeftPointSet = true
             }
         }
-
     }
 
-    private fun updatePosition() {
-        _position.value = RectF(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat())
+    private fun updateTableRect() {
+        _tableRect.value = RectF(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat())
     }
 
     fun setOnButtonClickListener(listener: OnButtonClickListener) {

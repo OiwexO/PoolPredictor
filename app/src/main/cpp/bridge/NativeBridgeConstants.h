@@ -1,12 +1,11 @@
 // Created by Denys on 05.07.2023.
 
 #pragma once
-#include "../utils/stringObfuscator.h"
 
 /* CLASS NAMES ===================================================================================*/
 
-#define CLASS_NATIVE_BRIDGE_KOTLIN OBFUSCATE("com/iwex/poolpredictor/app/NativeBridge$Companion")
-//#define CLASS_ESP_VIEW_KOTLIN OBFUSCATE("com/iwex/poolpredictor/app/view/EspView")
+#define CLASS_NATIVE_BRIDGE_KOTLIN "com/iwex/poolpredictor/app/NativeBridge$Companion"
+//#define CLASS_ESP_VIEW_KOTLIN "com/iwex/poolpredictor/app/view/EspView"
 
 /*================================================================================================*/
 
@@ -15,22 +14,22 @@
 /* METHOD NAMES ==================================================================================*/
 
 // AimTabViewModel kotlin methods
-#define METHOD_SET_DRAW_LINES OBFUSCATE("setDrawLines")
-#define METHOD_SET_DRAW_SHOT_STATE OBFUSCATE("setDrawShotState")
-#define METHOD_SET_DRAW_OPPONENTS_LINES OBFUSCATE("setDrawOpponentsLines")
-#define METHOD_SET_POWER_CONTROL_MODE_ENABLED OBFUSCATE("setPowerControlModeEnabled")
-#define METHOD_SET_CUE_POWER OBFUSCATE("setCuePower")
-#define METHOD_SET_CUE_SPIN OBFUSCATE("setCueSpin")
+#define METHOD_SET_DRAW_LINES "setDrawLines"
+#define METHOD_SET_DRAW_SHOT_STATE "setDrawShotState"
+#define METHOD_SET_DRAW_OPPONENTS_LINES "setDrawOpponentsLines"
+#define METHOD_SET_POWER_CONTROL_MODE_ENABLED "setPowerControlModeEnabled"
+#define METHOD_SET_CUE_POWER "setCuePower"
+#define METHOD_SET_CUE_SPIN "setCueSpin"
 
 // OtherTabViewModel kotlin methods
-#define METHOD_EXIT_THREAD OBFUSCATE("exitThread")
+#define METHOD_EXIT_THREAD "exitThread"
 
-// FloatingMenuService kotlin methods
-#define METHOD_SET_ESP_VIEW OBFUSCATE("setEspView")
-#define METHOD_GET_POCKET_POSITIONS_IN_SCREEN OBFUSCATE("getPocketPositionsInScreen")
+// PredictorService kotlin methods
+#define METHOD_SET_ESP_VIEW "setEspView"
+#define METHOD_GET_POCKET_POSITIONS_IN_SCREEN "getPocketPositionsInScreen"
 
 // EspView kotlin methods
-#define METHOD_UPDATE_ESP_DATA OBFUSCATE("updateEspData")
+#define METHOD_UPDATE_ESP_DATA "updateEspData"
 
 /*================================================================================================*/
 
@@ -39,21 +38,21 @@
 /* METHOD SIGNATURES =============================================================================*/
 
 // AimTabViewModel kotlin signatures
-#define SIG_SET_DRAW_LINES OBFUSCATE("(Z)V")
-#define SIG_SET_DRAW_SHOT_STATE OBFUSCATE("(Z)V")
-#define SIG_SET_DRAW_OPPONENTS_LINES OBFUSCATE("(Z)V")
-#define SIG_SET_POWER_CONTROL_MODE_ENABLED OBFUSCATE("(Z)V")
-#define SIG_SET_CUE_POWER OBFUSCATE("(I)V")
-#define SIG_SET_CUE_SPIN OBFUSCATE("(I)V")
+#define SIG_SET_DRAW_LINES "(Z)V"
+#define SIG_SET_DRAW_SHOT_STATE "(Z)V"
+#define SIG_SET_DRAW_OPPONENTS_LINES "(Z)V"
+#define SIG_SET_POWER_CONTROL_MODE_ENABLED "(Z)V"
+#define SIG_SET_CUE_POWER "(I)V"
+#define SIG_SET_CUE_SPIN "(I)V"
 
 // OtherTabViewModel kotlin methods
-#define SIG_EXIT_THREAD OBFUSCATE("()V")
+#define SIG_EXIT_THREAD "()V"
 
-// FloatingMenuService kotlin signatures
-#define SIG_SET_ESP_VIEW OBFUSCATE("(Lcom/iwex/poolpredictor/app/view/EspView;)V")
-#define SIG_GET_POCKET_POSITIONS_IN_SCREEN OBFUSCATE("(IIII)[F")
+// PredictorService kotlin signatures
+#define SIG_SET_ESP_VIEW "(Lcom/iwex/poolpredictor/app/view/EspView;)V"
+#define SIG_GET_POCKET_POSITIONS_IN_SCREEN "(IIII)[F"
 
 // EspView kotlin methods
-#define SIG_UPDATE_ESP_DATA OBFUSCATE("([F)V")
+#define SIG_UPDATE_ESP_DATA "([F)V"
 
 /*================================================================================================*/

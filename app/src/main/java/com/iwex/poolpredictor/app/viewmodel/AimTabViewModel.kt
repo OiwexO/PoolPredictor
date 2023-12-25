@@ -16,7 +16,7 @@ class AimTabViewModel(
             NativeBridge.setDrawLines(drawLinesEnabled)
             NativeBridge.setDrawShotState(drawShotStateEnabled)
             NativeBridge.setDrawOpponentsLines(drawOpponentsLinesEnabled)
-            NativeBridge.setPowerControlModeEnabled(powerControlModeEnabled)
+            NativeBridge.setPreciseTrajectoriesEnabled(preciseTrajectoriesEnabled)
             NativeBridge.setCuePower(cuePower)
             NativeBridge.setCueSpin(cueSpin)
         }
@@ -41,9 +41,9 @@ class AimTabViewModel(
         NativeBridge.setDrawOpponentsLines(isChecked)
     }
 
-    fun onPowerControlModeEnabledChange(isChecked: Boolean) {
-        aimTabState = aimTabState.copy(powerControlModeEnabled = isChecked)
-        NativeBridge.setPowerControlModeEnabled(isChecked)
+    fun onPreciseTrajectoriesEnabledChange(isChecked: Boolean) {
+        aimTabState = aimTabState.copy(preciseTrajectoriesEnabled = isChecked)
+        NativeBridge.setPreciseTrajectoriesEnabled(isChecked)
     }
 
     fun onCuePowerChange(power: Int) {

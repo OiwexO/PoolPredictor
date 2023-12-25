@@ -9,7 +9,6 @@ using ADDRESS = unsigned int;
 class MemoryManager {
 private:
 	static bool isInitialised;
-
 	// address of the libgame-BPM-GooglePlay-Gold-Release-Module-xxxx.so library in game's memory
 	static ADDRESS gameModuleBase;
 	static ADDRESS sharedGameManager;
@@ -42,10 +41,11 @@ public:
 		static ADDRESS gameRules;
 		static ADDRESS gameMode;
 		static ADDRESS table;
-	public:
-		static void initialize(ADDRESS _sharedGameManager);
-		static ADDRESS getGameRules();
-		static inline int getGameState();
+
+        static inline int getGameState();
+    public:
+        static void initialize(ADDRESS _sharedGameManager);
+        static ADDRESS getGameRules();
 		static bool isValidGameState(bool isDrawOpponentsLinesEnabled);
 		static int getGameMode();
 		static ADDRESS getTable();

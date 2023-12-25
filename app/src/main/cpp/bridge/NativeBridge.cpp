@@ -75,8 +75,8 @@ void NativeBridge::setDrawOpponentsLines(JNIEnv*, jobject, jboolean value) {
     GlobalSettings::isDrawOpponentsLinesEnabled = value;
 }
 
-void NativeBridge::setPowerControlModeEnabled(JNIEnv*, jobject, jboolean value) {
-    GlobalSettings::isPowerControlModeEnabled = value;
+void NativeBridge::setPreciseTrajectoriesEnabled(JNIEnv*, jobject, jboolean value) {
+    GlobalSettings::isPreciseTrajectoriesEnabled = value;
 }
 
 void NativeBridge::setCuePower(JNIEnv*, jobject, jint power) {
@@ -90,10 +90,11 @@ void NativeBridge::setCueSpin(JNIEnv*, jobject, jint spin) {
 // PredictorService methods
 jfloatArray NativeBridge::getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint, jint right, jint bottom) {
 //    LOGD(TAG, "left: %d top: %d right: %d bottom: %d", left, top, right, bottom);
-    Point2D::setTableData(left, bottom, right);
-    float* pocketPositions = TableProperties::getPocketPositionsToScreen();
-    jfloatArray jPocketPositions = env->NewFloatArray(12);
-    env->SetFloatArrayRegion(jPocketPositions, 0, 12, pocketPositions);
+    Point2D::setTableData(left, right, bottom);
+    float* pocketPositions = TableProperties::getPocketPositionsInScreen();
+    jfloatArray jPocketPositions = env->NewFloatArray(TABLE_POCKETS_COUNT * 2);
+    env->SetFloatArrayRegion(jPocketPositions, 0, TABLE_POCKETS_COUNT * 2, pocketPositions);
+    delete[] pocketPositions;
     return jPocketPositions;
 }
 
@@ -153,19 +154,19 @@ int NativeBridge::registerNativeMethods(JNIEnv* env) {
     }
     JNINativeMethod methods[] = {
             // AimTabViewModel native methods
-            {METHOD_SET_DRAW_LINES,SIG_SET_DRAW_LINES,reinterpret_cast<void*>(NativeBridge::setDrawLines)},
-            {METHOD_SET_DRAW_SHOT_STATE,SIG_SET_DRAW_SHOT_STATE,reinterpret_cast<void*>(NativeBridge::setDrawShotState)},
-            {METHOD_SET_DRAW_OPPONENTS_LINES,SIG_SET_DRAW_OPPONENTS_LINES,reinterpret_cast<void*>(NativeBridge::setDrawOpponentsLines)},
-            {METHOD_SET_POWER_CONTROL_MODE_ENABLED,SIG_SET_POWER_CONTROL_MODE_ENABLED,reinterpret_cast<void*>(NativeBridge::setPowerControlModeEnabled)},
-            {METHOD_SET_CUE_POWER,SIG_SET_CUE_POWER,reinterpret_cast<void*>(NativeBridge::setCuePower)},
-            {METHOD_SET_CUE_SPIN,SIG_SET_CUE_SPIN,reinterpret_cast<void*>(NativeBridge::setCueSpin)},
+            {METHOD_SET_DRAW_LINES,                   SIG_SET_DRAW_LINES,                   reinterpret_cast<void*>(NativeBridge::setDrawLines)},
+            {METHOD_SET_DRAW_SHOT_STATE,              SIG_SET_DRAW_SHOT_STATE,              reinterpret_cast<void*>(NativeBridge::setDrawShotState)},
+            {METHOD_SET_DRAW_OPPONENTS_LINES,         SIG_SET_DRAW_OPPONENTS_LINES,         reinterpret_cast<void*>(NativeBridge::setDrawOpponentsLines)},
+            {METHOD_SET_PRECISE_TRAJECTORIES_ENABLED, SIG_SET_PRECISE_TRAJECTORIES_ENABLED, reinterpret_cast<void *>(NativeBridge::setPreciseTrajectoriesEnabled)},
+            {METHOD_SET_CUE_POWER,                    SIG_SET_CUE_POWER,                    reinterpret_cast<void*>(NativeBridge::setCuePower)},
+            {METHOD_SET_CUE_SPIN,                     SIG_SET_CUE_SPIN,                     reinterpret_cast<void*>(NativeBridge::setCueSpin)},
 
             // OtherTabViewModel native methods
-            {METHOD_EXIT_THREAD,SIG_EXIT_THREAD,reinterpret_cast<void*>(NativeBridge::exitThread)},
+            {METHOD_EXIT_THREAD,                      SIG_EXIT_THREAD,                      reinterpret_cast<void*>(NativeBridge::exitThread)},
 
             // PredictorService native methods
-            {METHOD_SET_ESP_VIEW,SIG_SET_ESP_VIEW,reinterpret_cast<void*>(NativeBridge::setEspView)},
-            {METHOD_GET_POCKET_POSITIONS_IN_SCREEN,SIG_GET_POCKET_POSITIONS_IN_SCREEN, reinterpret_cast<void*>(NativeBridge::getPocketPositionsInScreen)},
+            {METHOD_SET_ESP_VIEW,                     SIG_SET_ESP_VIEW,                     reinterpret_cast<void*>(NativeBridge::setEspView)},
+            {METHOD_GET_POCKET_POSITIONS_IN_SCREEN,   SIG_GET_POCKET_POSITIONS_IN_SCREEN,   reinterpret_cast<void*>(NativeBridge::getPocketPositionsInScreen)},
 
             //
 

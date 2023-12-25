@@ -10,7 +10,6 @@ namespace NumberUtils {
 
     inline double calcAngle(const Point2D& delta) {
         double angle;
-
         if (delta.x == 0.0) {
             angle = PI_1_5;
             if (delta.y >= 0.0)
@@ -21,7 +20,6 @@ namespace NumberUtils {
             if (delta.x < 0.0)
                 angle += PI;
         }
-
         return angle;
     }
 

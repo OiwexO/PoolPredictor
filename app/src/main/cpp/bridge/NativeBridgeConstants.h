@@ -17,7 +17,7 @@
 #define METHOD_SET_DRAW_LINES "setDrawLines"
 #define METHOD_SET_DRAW_SHOT_STATE "setDrawShotState"
 #define METHOD_SET_DRAW_OPPONENTS_LINES "setDrawOpponentsLines"
-#define METHOD_SET_POWER_CONTROL_MODE_ENABLED "setPowerControlModeEnabled"
+#define METHOD_SET_PRECISE_TRAJECTORIES_ENABLED "setPreciseTrajectoriesEnabled"
 #define METHOD_SET_CUE_POWER "setCuePower"
 #define METHOD_SET_CUE_SPIN "setCueSpin"
 
@@ -41,7 +41,7 @@
 #define SIG_SET_DRAW_LINES "(Z)V"
 #define SIG_SET_DRAW_SHOT_STATE "(Z)V"
 #define SIG_SET_DRAW_OPPONENTS_LINES "(Z)V"
-#define SIG_SET_POWER_CONTROL_MODE_ENABLED "(Z)V"
+#define SIG_SET_PRECISE_TRAJECTORIES_ENABLED "(Z)V"
 #define SIG_SET_CUE_POWER "(I)V"
 #define SIG_SET_CUE_SPIN "(I)V"
 

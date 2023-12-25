@@ -8,7 +8,7 @@ public:
     double y;
     double z;
 
-    Vector3D() : x(0.0f), y(0.0f), z(0.0f) {}
+    Vector3D() : x(0.0), y(0.0), z(0.0) {}
 
     Vector3D(double x, double y, double z) : x(x), y(y), z(z) {}
 
@@ -17,7 +17,7 @@ public:
     }
 
     inline bool isNotZero() const {
-        return x != 0.0f || y != 0.0f || z != 0.0f;
+        return x != 0.0 || y != 0.0 || z != 0.0;
     };
 
 };

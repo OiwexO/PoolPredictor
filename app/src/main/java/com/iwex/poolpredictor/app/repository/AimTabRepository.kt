@@ -8,7 +8,7 @@ class AimTabRepository(private val repository: ConfigRepository) {
         private const val KEY_DRAW_LINES_ENABLED = "draw_lines_enabled"
         private const val KEY_DRAW_SHOT_STATE_ENABLED = "draw_shot_state_enabled"
         private const val KEY_DRAW_OPPONENTS_LINES_ENABLED = "draw_opponents_lines_enabled"
-        private const val KEY_POWER_CONTROL_MODE_ENABLED = "power_control_mode_enabled"
+        private const val KEY_PRECISE_TRAJECTORIES_ENABLED = "precise_trajectories_enabled"
         private const val KEY_CUE_POWER = "cue_power"
         private const val KEY_CUE_SPIN = "cue_spin"
     }
@@ -18,7 +18,7 @@ class AimTabRepository(private val repository: ConfigRepository) {
             getBoolean(KEY_DRAW_LINES_ENABLED, false),
             getBoolean(KEY_DRAW_SHOT_STATE_ENABLED, false),
             getBoolean(KEY_DRAW_OPPONENTS_LINES_ENABLED, false),
-            getBoolean(KEY_POWER_CONTROL_MODE_ENABLED, false),
+            getBoolean(KEY_PRECISE_TRAJECTORIES_ENABLED, false),
             getInt(KEY_CUE_POWER, 0),
             getInt(KEY_CUE_SPIN, 0)
         )
@@ -30,7 +30,7 @@ class AimTabRepository(private val repository: ConfigRepository) {
                 putBoolean(KEY_DRAW_LINES_ENABLED, drawLinesEnabled)
                 putBoolean(KEY_DRAW_SHOT_STATE_ENABLED, drawShotStateEnabled)
                 putBoolean(KEY_DRAW_OPPONENTS_LINES_ENABLED, drawOpponentsLinesEnabled)
-                putBoolean(KEY_POWER_CONTROL_MODE_ENABLED, powerControlModeEnabled)
+                putBoolean(KEY_PRECISE_TRAJECTORIES_ENABLED, preciseTrajectoriesEnabled)
                 putInt(KEY_CUE_POWER, cuePower)
                 putInt(KEY_CUE_SPIN, cueSpin)
             }

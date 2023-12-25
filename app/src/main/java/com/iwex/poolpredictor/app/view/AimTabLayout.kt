@@ -26,7 +26,7 @@ class AimTabLayout(
         private const val LABEL_DRAW_LINES_SWITCH = "draw lines"
         private const val LABEL_DRAW_SHOT_STATE_SWITCH = "draw shot shotState"
         private const val LABEL_DRAW_OPPONENTS_LINES_SWITCH = "draw opponent\'s lines"
-        private const val LABEL_POWER_CONTROL_MODE_SWITCH = "power control mode"
+        private const val LABEL_POWER_CONTROL_MODE_SWITCH = "precise trajectories"
         private const val LABEL_CUE_POWER_SEEKBAR = "cue power: %d"
         private const val LABEL_CUE_SPIN_SEEKBAR = "cue spin: %d"
 
@@ -66,8 +66,8 @@ class AimTabLayout(
         )
 
         powerControlSwitch = MenuWidgetFactory.addSwitch(
-            state.powerControlModeEnabled,
-            viewModel::onPowerControlModeEnabledChange,
+            state.preciseTrajectoriesEnabled,
+            viewModel::onPreciseTrajectoriesEnabledChange,
             LABEL_POWER_CONTROL_MODE_SWITCH,
             context,
             this

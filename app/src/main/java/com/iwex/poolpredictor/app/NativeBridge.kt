@@ -15,7 +15,7 @@ class NativeBridge {
         external fun setDrawLines(value: Boolean)
         external fun setDrawShotState(value: Boolean)
         external fun setDrawOpponentsLines(value: Boolean)
-        external fun setPowerControlModeEnabled(value: Boolean)
+        external fun setPreciseTrajectoriesEnabled(value: Boolean)
         external fun setCuePower(power: Int)
         external fun setCueSpin(spin: Int)
 

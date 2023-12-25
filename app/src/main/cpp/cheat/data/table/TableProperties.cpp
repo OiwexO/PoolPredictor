@@ -12,7 +12,6 @@ const std::array<Point2D, TABLE_POCKETS_COUNT>& TableProperties::getPockets() {
             Point2D(0, 72),
             Point2D(-130.8, 67.3)
     };
-
     return POCKET_POSITIONS;
 }
 
@@ -65,19 +64,17 @@ const std::array<Point2D, TABLE_SHAPE_SIZE>& TableProperties::getTableShape() {
             Point2D(-136.9, -64.1),
             Point2D(-127, -53.5)
     };
-
     return TABLE_SHAPE;
 }
 
-float* TableProperties::getPocketPositionsToScreen() {
-    static float pocketPositions[TABLE_POCKETS_COUNT * 2];
+float* TableProperties::getPocketPositionsInScreen() {
+    float* pocketPositions = new float[TABLE_POCKETS_COUNT * 2];
     auto pockets = getPockets();
     for (int pocketIndex = 0; pocketIndex < TABLE_POCKETS_COUNT; ++pocketIndex) {
         ScreenPoint screenPosition = pockets[pocketIndex].toScreen();
         pocketPositions[pocketIndex] = screenPosition.x;
         pocketPositions[pocketIndex + TABLE_POCKETS_COUNT] = screenPosition.y;
     }
-
     return pocketPositions;
 }
 

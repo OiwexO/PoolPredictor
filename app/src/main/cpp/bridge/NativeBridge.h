@@ -20,7 +20,7 @@ private:
     static void setDrawLines(JNIEnv*, jobject, jboolean value);
     static void setDrawShotState(JNIEnv*, jobject, jboolean value);
     static void setDrawOpponentsLines(JNIEnv*, jobject, jboolean value);
-    static void setPowerControlModeEnabled(JNIEnv*, jobject, jboolean value);
+    static void setPreciseTrajectoriesEnabled(JNIEnv*, jobject, jboolean value);
     static void setCuePower(JNIEnv*, jobject, jint power);
     static void setCueSpin(JNIEnv*, jobject, jint spin);
 

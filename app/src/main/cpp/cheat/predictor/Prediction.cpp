@@ -188,11 +188,15 @@ void Prediction::predictFinalPositions() {
 void Prediction::handleCollision() {
     Ball& ballA = *(this->guiData.collision.ballA);
     Ball& ballB = *(this->guiData.collision.ballB);
-    ballA.positions.push_back(ballA.predictedPosition);
+    if (!GlobalSettings::isPreciseTrajectoriesEnabled) {
+        ballA.positions.push_back(ballA.predictedPosition);
+    }
     switch (this->guiData.collision.type) {
     case Collision::Type::BALL:
         this->handleBallBallCollision();
-        ballB.positions.push_back(ballB.predictedPosition);
+        if (!GlobalSettings::isPreciseTrajectoriesEnabled) {
+            ballB.positions.push_back(ballB.predictedPosition);
+        }
         if (this->guiData.collision.firstHitBall == nullptr)
             this->guiData.collision.firstHitBall = &ballB;
         break;
@@ -504,6 +508,18 @@ void Prediction::Ball::move(const double& time) {
     if (!this->velocity.isZero()) {
         this->predictedPosition.x += this->velocity.x * time;
         this->predictedPosition.y += this->velocity.y * time;
+        if (GlobalSettings::isPreciseTrajectoriesEnabled) {
+            int lastIndex = this->positions.size() - 1;
+            if (lastIndex > 1) {
+                Point2D &a = this->positions[lastIndex - 1];
+                Point2D &b = this->positions[lastIndex];
+                Point2D &c = this->predictedPosition;
+                if (((b.y - a.y) * (c.x - b.x)) == ((c.y - b.y) * (b.x - a.x))) {
+                    return;
+                }
+            }
+            this->positions.push_back(this->predictedPosition);
+        }
     }
 }
 

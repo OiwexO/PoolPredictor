@@ -13,7 +13,7 @@ public:
     double x;
     double y;
 
-    Point2D() : x(0.0f), y(0.0f) {}
+    Point2D() : x(0.0), y(0.0) {}
 
     Point2D(double x, double y) : x(x), y(y) {}
 
@@ -26,11 +26,11 @@ public:
     }
 
     inline bool isZero() const {
-        return x == 0.0f && y == 0.0f;
+        return x == 0.0 && y == 0.0;
     }
 
     inline bool isNotZero() const {
-        return x != 0.0f || y != 0.0f;
+        return x != 0.0 || y != 0.0;
     };
 
     ScreenPoint toScreen() const;
@@ -41,5 +41,5 @@ public:
     bool operator!=(const Point2D& other) const;
     Point2D& operator=(const Point2D& other);
 
-    static void setTableData(int tableLeft, int tableBottom, int tableRight);
+    static void setTableData(int tableLeft, int tableRight, int tableBottom);
 };

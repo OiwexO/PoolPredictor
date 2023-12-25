@@ -18,7 +18,8 @@ import com.iwex.poolpredictor.app.util.MenuWidgetFactory
 class FloatingMenuLayout(
     context: Context,
     private val aimTabLayout: AimTabLayout,
-    private val espTabLayout: EspTabLayout
+    private val espTabLayout: EspTabLayout,
+    private val otherTabLayout: OtherTabLayout
 ) : RelativeLayout(context) {
 
     private val floatingIconView: ImageView
@@ -126,7 +127,7 @@ class FloatingMenuLayout(
         when (tab) {
             TabTypes.AIM -> tabHolderScrollView.addView(aimTabLayout)
             TabTypes.ESP -> tabHolderScrollView.addView(espTabLayout)
-            TabTypes.OTHER -> {}
+            TabTypes.OTHER -> tabHolderScrollView.addView(otherTabLayout)
         }
 
     }

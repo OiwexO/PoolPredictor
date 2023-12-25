@@ -15,6 +15,7 @@ import com.iwex.poolpredictor.app.view.AimTabLayout
 import com.iwex.poolpredictor.app.view.EspTabLayout
 import com.iwex.poolpredictor.app.view.EspView
 import com.iwex.poolpredictor.app.view.FloatingMenuLayout
+import com.iwex.poolpredictor.app.view.OtherTabLayout
 import com.iwex.poolpredictor.app.view.TablePositionEspView
 import com.iwex.poolpredictor.app.view.TablePositionView
 import com.iwex.poolpredictor.app.viewmodel.AimTabViewModel
@@ -69,7 +70,8 @@ class PredictorService : Service(), OnButtonClickListener {
     private fun setupFloatingMenu(aimTabViewModel: AimTabViewModel, espTabViewModel: EspTabViewModel) {
         val aimTabLayout = AimTabLayout(this, aimTabViewModel)
         val espTabLayout = EspTabLayout(this, espTabViewModel)
-        floatingMenu = FloatingMenuLayout(this, aimTabLayout, espTabLayout)
+        val otherTabLayout = OtherTabLayout(this)
+        floatingMenu = FloatingMenuLayout(this, aimTabLayout, espTabLayout, otherTabLayout)
         val floatingMenuLayoutParams = LayoutParamsProvider.floatingMenuLayoutParams
         floatingMenu.setOnTouchListener(FloatingMenuTouchListener(
             windowManager,

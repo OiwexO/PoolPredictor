@@ -40,7 +40,7 @@ add_library(
 
         cheat/memory/MemoryManager.cpp
         cheat/memory/inner/Balls.cpp
-        cheat/memory/inner/CueStats.cpp
+        cheat/memory/inner/CueProperties.cpp
         cheat/memory/inner/GameManager.cpp
         cheat/memory/inner/MenuManager.cpp
         cheat/memory/inner/UserSettings.cpp

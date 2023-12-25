@@ -17,14 +17,22 @@ JNIEnv* NativeBridge::mEnv = nullptr;
 jobject NativeBridge::mEspView = nullptr;
 jmethodID NativeBridge::mUpdateEspData = nullptr;
 
-void* NativeBridge::predictor_thread(void*) {
+void* NativeBridge::cuePropertiesThread(void*) {
+    while (NativeBridge::isShouldRunThread) {
+        MemoryManager::CueProperties::setCuePower(GlobalSettings::cuePower);
+        MemoryManager::CueProperties::setCueSpin(GlobalSettings::cueSpin);
+    }
+    return nullptr;
+}
+
+void* NativeBridge::predictorThread(void*) {
     JavaVMAttachArgs args;
     args.version = JNI_VERSION_1_6;
-    args.name = "predictor_thread";
+    args.name = "predictorThread";
     args.group = nullptr;
     int attachResult = mJvm->AttachCurrentThread(&mEnv, &args);
     if(attachResult != JNI_OK) {
-        LOGE(TAG, "Could not attach predictor_thread");
+        LOGE(TAG, "Could not attach predictorThread");
         return nullptr;
     }
     bool isShouldRedraw;
@@ -42,6 +50,8 @@ void* NativeBridge::predictor_thread(void*) {
             LOGD(TAG, "Could not initialize MemoryManager");
             return nullptr;
         }
+        pthread_t thread;
+        pthread_create(&thread, nullptr, cuePropertiesThread, nullptr);
         while (NativeBridge::isShouldRunThread) {
             if (MemoryManager::MenuManager::isInGame()) {
                 if (MemoryManager::GameManager::isValidGameState(GlobalSettings::isDrawOpponentsLinesEnabled)) {
@@ -58,7 +68,7 @@ void* NativeBridge::predictor_thread(void*) {
     }
     releaseGlobalRefs(mEnv);
     mJvm->DetachCurrentThread();
-    LOGD(TAG, "Exiting predictor_thread()");
+    LOGD(TAG, "Exiting predictorThread()");
     return nullptr;
 }
 
@@ -107,7 +117,7 @@ void NativeBridge::setEspView(JNIEnv* env, jobject, jobject espView) {
         return;
     }
     pthread_t thread;
-    pthread_create(&thread, nullptr, predictor_thread, nullptr);
+    pthread_create(&thread, nullptr, predictorThread, nullptr);
 }
 
 int NativeBridge::setUpdateEspDataMethodId(JNIEnv* env) {

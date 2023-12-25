@@ -76,7 +76,7 @@ class EspView(context: Context, private val viewModel: EspTabViewModel) : View(c
 
     }
 
-    // called from cpp/bridge/NativeBridge/predictor_thread only
+    // called from cpp/bridge/NativeBridge/predictorThread only
     @Suppress("unused")
     fun updateEspData(data: FloatArray) {
         if (isCanUpdateEspData) {

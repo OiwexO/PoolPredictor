@@ -22,11 +22,7 @@ using OFFSET = unsigned int;
 		constexpr OFFSET Balls = 0x2F0;
 	}
 
-	namespace CueProperties {
-		constexpr OFFSET CuePower    = 0x35685D0; //CUE_PROPERTIES_MAX_POWER
-		constexpr OFFSET CueSpin     = 0x35685D8; //CUE_PROPERTIES_SPIN
-		constexpr OFFSET CueAccuracy = 0x35685E0; //CUE_PROPERTIES_ACCURACY
-
+	namespace VisualCue {
 		constexpr OFFSET VisualCue   = 0x2D8;
 		constexpr OFFSET VisualGuide = 0x27C;
 		constexpr OFFSET AimAngle    = 0x18;
@@ -36,6 +32,12 @@ using OFFSET = unsigned int;
 		constexpr OFFSET Spin        = 0x298;
 
 	}
+
+    namespace CueProperties {
+        constexpr OFFSET CuePower    = 0x35685D0; //CUE_PROPERTIES_MAX_POWER
+        constexpr OFFSET CueSpin     = 0x35685D8; //CUE_PROPERTIES_SPIN
+        constexpr OFFSET CueAccuracy = 0x35685E0; //CUE_PROPERTIES_ACCURACY
+    }
 
 	namespace GameManager {
 		constexpr OFFSET StateManager         = 0x300;
@@ -67,12 +69,6 @@ using OFFSET = unsigned int;
 	namespace UserSettings {
 		constexpr OFFSET WideGuideline = 0xE;
 	}
-
-    namespace CueStats {
-        constexpr OFFSET cuePowerArray = 0x2D08E44;
-        constexpr OFFSET cueSpinConstant = 0x35B9730;
-		constexpr OFFSET setCuePropertiesMethod = 0x1C3D468;
-    }
 
 	/*
 	namespace AdsManager {

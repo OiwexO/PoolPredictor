@@ -13,8 +13,10 @@ private:
     static jobject mEspView;
     static jmethodID mUpdateEspData;
 
+    // changes cue power and spin according to GlobalSettings
+    static void* cuePropertiesThread(void*);
     // runs prediction and updates EspView
-    static void* predictor_thread(void*);
+    static void* predictorThread(void*);
 
     // AimTabViewModel methods
     static void setDrawLines(JNIEnv*, jobject, jboolean value);
@@ -25,10 +27,9 @@ private:
     static void setCueSpin(JNIEnv*, jobject, jint spin);
 
     // PredictorService methods
-
     static jfloatArray getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint top, jint right, jint bottom);
 
-    // creates a GlobalRef for EspView instance, starts predictor_thread()
+    // creates a GlobalRef for EspView instance, starts predictorThread()
     static void setEspView(JNIEnv* env, jobject, jobject espView);
 
     // obtains fun updateEspData(data: FloatArray) method ID

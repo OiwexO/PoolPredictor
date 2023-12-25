@@ -75,15 +75,12 @@ public:
 	private:
 		static ADDRESS visualCue;
 		static ADDRESS spinObject;
-		static ADDRESS cuePropertiesMaxPower;
-		static ADDRESS cuePropertiesSpin;
-		static ADDRESS cuePropertiesAccuracy;
 
 		static constexpr double DEFAULT_ANGLE = 0.0;
 		static double DEFAULT_POWER;
 
 	public:
-		static void initialize(ADDRESS _gameModuleBase, ADDRESS _sharedGameManager);
+		static void initialize(ADDRESS _sharedGameManager);
 		static double getShotAngle();
 		static double getShotPower();
 		static void setShotPower(const double power);
@@ -109,19 +106,19 @@ public:
 		static void switchWideGuideline(bool isEnabled);
 	};
 
-    /*class CueStats {
+    class CueProperties {
     private:
-        static ADDRESS powerLevel0;
-        static ADDRESS spinConstant;
-//        static constexpr double DEFAULT_SPIN_CONSTANT = 0.689655172413793;
-        static constexpr double SPIN_CONSTANT_SCALE = 1.8181817787737917;
-        static float cuePower[14];
-        static double cueSpin[14];
+        static ADDRESS cuePropertiesMaxPower;
+        static ADDRESS cuePropertiesSpin;
+        static const double cuePower[14];
+        static const double cueSpin[14];
 
     public:
         static void initialize(ADDRESS _gameModuleBase);
-        static void setCuePower(int level);
-        static void setCueSpin(int level);
-    };*/
+        static double getCuePower();
+        static void setCuePower(const int level);
+        static double getCueSpin();
+        static void setCueSpin(const int level);
+    };
 
 };

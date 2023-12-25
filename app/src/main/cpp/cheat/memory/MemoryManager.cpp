@@ -46,12 +46,12 @@ bool MemoryManager::initialize() {
         sleep(1);
     }
     GameManager::initialize(sharedGameManager);
-    VisualCue::initialize(gameModuleBase, sharedGameManager);
+    VisualCue::initialize(sharedGameManager);
     MenuManager::initialize(sharedMenuManager);
     UserSettings::initialize(sharedUserSettings);
-//    CueStats::initialize(gameModuleBase);
+    CueProperties::initialize(gameModuleBase);
 //    MSHookFunction(
-//            (void *) (gameModuleBase + Offsets::CueStats::setCuePropertiesMethod),
+//            (void *) (gameModuleBase + Offsets::VisualCue::setCuePropertiesMethod),
 //            (void *) hook_setCueProperties,
 //            (void **) &orig_setCueProperties
 //    );

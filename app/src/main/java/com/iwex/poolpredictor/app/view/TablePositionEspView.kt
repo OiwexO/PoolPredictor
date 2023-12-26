@@ -15,7 +15,8 @@ class TablePositionEspView(context: Context, private val viewModel: TablePositio
     private val tablePaint: Paint = Paint().apply {
         color = EspColors.TABLE_RECT_COLOR
         isAntiAlias = true
-        style = Paint.Style.FILL
+        style = Paint.Style.STROKE
+        strokeWidth = PAINT_STROKE_WIDTH
     }
 
     init {
@@ -24,13 +25,25 @@ class TablePositionEspView(context: Context, private val viewModel: TablePositio
 
     private fun observeViewModel() {
         viewModel.tableRect.observeForever { tableRect ->
-            this.tableRect = tableRect
+            this.tableRect = RectF(
+                tableRect.left + HALF_STROKE_WIDTH,
+                tableRect.top + HALF_STROKE_WIDTH,
+                tableRect.right - HALF_STROKE_WIDTH,
+                tableRect.bottom - HALF_STROKE_WIDTH
+            )
             invalidate()
         }
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.drawRoundRect(tableRect, 20f, 20f, tablePaint)
+        canvas.drawRoundRect(tableRect, CORNER_RADIUS, CORNER_RADIUS, tablePaint)
+    }
+
+    companion object {
+        private const val PAINT_STROKE_WIDTH = 20f
+        private const val HALF_STROKE_WIDTH = PAINT_STROKE_WIDTH / 2
+        private const val CORNER_RADIUS = 20f
+
     }
 }

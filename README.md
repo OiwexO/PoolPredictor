@@ -14,8 +14,8 @@ This mod only works with 8 Ball Pool version 5.8.0 armeabi-v7a (32-bit). You can
 4. Download 8 Ball Pool 5.8.0 armeabi-v7a apk file [here](https://www.apkmirror.com/apk/miniclip-com/8-ball-pool/8-ball-pool-5-8-0-release/8-ball-pool-5-8-0-2-android-apk-download/download).
 5. Decompile 8 Ball Pool apk (hereafter pool).
 6. Copy **LiveData.smali** and **MutableLiveData.smali** files from *predictor\\smali\\androidx\\lifecycle* to *pool\\smali\\androidx\\lifecycle*.
-7. Copy **liblog.so** and **libpoolpredictor.so** files from *predictor\\lib\\armeabi-v7a* to *pool\\lib\\armeabi-v7a*.
-8. Copy **iwex** folder from *predictor\\smali\\com* to *pool\\smali_classes4\\com\\*.
+7. Open *predictor* and rename **smali** folder to **smali_classes5**, copy this folder to *pool*
+8. Copy **libpoolpredictor.so** file from *predictor\\lib\\armeabi-v7a* to *pool\\lib\\armeabi-v7a*.
 9. Open **predictor\\smali\\com\\iwex\\poolpredictor\\MainActivity.smali** file and find **onCreate** method. Find the Pool Predictor launching code and copy it. It should look like this:
 ```
     sget-object v0, Lcom/iwex/poolpredictor/app/LauncherActivity;->Companion:Lcom/iwex/poolpredictor/app/LauncherActivity$Companion;

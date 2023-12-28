@@ -112,6 +112,8 @@ public:
         static ADDRESS cuePropertiesSpin;
         static const double cuePower[14];
         static const double cueSpin[14];
+        static double currentCuePower;
+        static double currentCueSpin;
 
     public:
         static void initialize(ADDRESS _gameModuleBase);
@@ -119,6 +121,7 @@ public:
         static void setCuePower(const int level);
         static double getCueSpin();
         static void setCueSpin(const int level);
+        static void writeCuePropertiesToMemory();
     };
 
 };

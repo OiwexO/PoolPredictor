@@ -19,8 +19,7 @@ jmethodID NativeBridge::mUpdateEspData = nullptr;
 
 void* NativeBridge::cuePropertiesThread(void*) {
     while (NativeBridge::isShouldRunThread) {
-        MemoryManager::CueProperties::setCuePower(GlobalSettings::cuePower);
-        MemoryManager::CueProperties::setCueSpin(GlobalSettings::cueSpin);
+        MemoryManager::CueProperties::writeCuePropertiesToMemory();
     }
     return nullptr;
 }
@@ -53,7 +52,7 @@ void* NativeBridge::predictorThread(void*) {
         pthread_t thread;
         pthread_create(&thread, nullptr, cuePropertiesThread, nullptr);
         while (NativeBridge::isShouldRunThread) {
-            if (MemoryManager::MenuManager::isInGame()) {
+            if ((GlobalSettings::isDrawLinesEnabled || GlobalSettings::isDrawShotStateEnabled) && MemoryManager::MenuManager::isInGame()) {
                 if (MemoryManager::GameManager::isValidGameState(GlobalSettings::isDrawOpponentsLinesEnabled)) {
                     isShouldRedraw = gPrediction->predictShotResult();
                     if (isShouldRedraw) {
@@ -91,10 +90,12 @@ void NativeBridge::setPreciseTrajectoriesEnabled(JNIEnv*, jobject, jboolean valu
 
 void NativeBridge::setCuePower(JNIEnv*, jobject, jint power) {
     GlobalSettings::cuePower = power;
+    MemoryManager::CueProperties::setCuePower(GlobalSettings::cuePower);
 }
 
 void NativeBridge::setCueSpin(JNIEnv*, jobject, jint spin) {
     GlobalSettings::cueSpin = spin;
+    MemoryManager::CueProperties::setCueSpin(GlobalSettings::cueSpin);
 }
 
 // PredictorService methods

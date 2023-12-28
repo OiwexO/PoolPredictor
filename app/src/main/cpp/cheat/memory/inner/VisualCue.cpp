@@ -33,11 +33,7 @@ double MemoryManager::VisualCue::getShotPower() {
 	else {
 		power = NumberUtils::truncateTo4Places(power);
 	}
-	double maxPower = CueProperties::getCuePower();
-	if (maxPower <= 0.0) {
-		return power;
-	}
-	return (1.0 - sqrt(1.0 - power)) * maxPower;
+	return (1.0 - sqrt(1.0 - power)) * CueProperties::getCuePower();
 }
 
 void MemoryManager::VisualCue::setShotPower(const double power) {
@@ -52,11 +48,8 @@ Point2D MemoryManager::VisualCue::getShotSpin() {
 		return spin;
 	}
 	double cueSpin = CueProperties::getCueSpin();
-	if (cueSpin <= 0.0) {
-		return spin;
-	}
 	return {
-            NumberUtils::truncateTo4Places(spin.x) * cueSpin,
-            NumberUtils::truncateTo4Places(spin.y) * cueSpin
+        NumberUtils::truncateTo4Places(spin.x) * cueSpin,
+        NumberUtils::truncateTo4Places(spin.y) * cueSpin
 	};
 }

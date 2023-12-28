@@ -10,8 +10,6 @@ public:
     static bool isDrawShotStateEnabled;
     static bool isDrawOpponentsLinesEnabled;
     static bool isPreciseTrajectoriesEnabled;
-    static bool isCueStatsInitialized;
-    static int cueAccuracy;
     static int cuePower;
     static int cueSpin;
 

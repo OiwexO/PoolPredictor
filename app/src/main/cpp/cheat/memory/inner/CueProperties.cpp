@@ -5,6 +5,8 @@
 
 ADDRESS MemoryManager::CueProperties::cuePropertiesMaxPower = 0;
 ADDRESS MemoryManager::CueProperties::cuePropertiesSpin = 0;
+double MemoryManager::CueProperties::currentCuePower = cuePower[0];
+double MemoryManager::CueProperties::currentCueSpin = cueSpin[0];
 
 const double MemoryManager::CueProperties::cuePower[] = {
         666.0,
@@ -46,25 +48,22 @@ void MemoryManager::CueProperties::initialize(ADDRESS _gameModuleBase) {
 }
 
 double MemoryManager::CueProperties::getCuePower() {
-    return read<double>(cuePropertiesMaxPower);
+    return currentCuePower;
 }
 
 void MemoryManager::CueProperties::setCuePower(int level) {
-    if (level < 0 || level > 13) {
-        return;
-    }
-    double power = cuePower[level];
-    write(cuePropertiesMaxPower, power);
+    currentCuePower = cuePower[level];
 }
 
 double MemoryManager::CueProperties::getCueSpin() {
-    return read<double>(cuePropertiesSpin);
+    return currentCueSpin;
 }
 
 void MemoryManager::CueProperties::setCueSpin(int level) {
-    if (level < 0 || level > 13) {
-        return;
-    }
-    double spinConstantValue = cueSpin[level];
-    write(cuePropertiesSpin, spinConstantValue);
+    currentCueSpin = cueSpin[level];
+}
+
+void MemoryManager::CueProperties::writeCuePropertiesToMemory() {
+    write(cuePropertiesMaxPower, currentCuePower);
+    write(cuePropertiesSpin, currentCueSpin);
 }

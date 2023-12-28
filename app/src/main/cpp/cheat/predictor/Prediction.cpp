@@ -4,6 +4,8 @@
 #include "../data/GlobalSettings.h"
 #include "../data/table/TableProperties.h"
 #include "../../utils/NumberUtils.h"
+#include "../../utils/logger.h"
+#include <array>
 
 static Prediction prediction;
 Prediction* gPrediction = &prediction;
@@ -69,8 +71,8 @@ void Prediction::calculateEspDataSize() {
                 espDataSize += (int) ball.positions.size() * 2 + 2;
             }
         }
+        espDataSize++;
     }
-    espDataSize++;
     if (GlobalSettings::isDrawShotStateEnabled) {
         espDataSize += TABLE_POCKETS_COUNT;
     }

@@ -12,8 +12,6 @@ bool GlobalSettings::isDrawLinesEnabled = false;
 bool GlobalSettings::isDrawShotStateEnabled = false;
 bool GlobalSettings::isDrawOpponentsLinesEnabled = false;
 bool GlobalSettings::isPreciseTrajectoriesEnabled = false;
-bool GlobalSettings::isCueStatsInitialized = false;
-int GlobalSettings::cueAccuracy = 13;
 int GlobalSettings::cuePower = 0;
 int GlobalSettings::cueSpin = 0;
 

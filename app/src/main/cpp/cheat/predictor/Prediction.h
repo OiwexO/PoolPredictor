@@ -4,7 +4,6 @@
 #include "../data/type/Vector3D.h"
 #include "../data/type/Point2D.h"
 #include <vector>
-#include <array>
 
 class Prediction {
 public:

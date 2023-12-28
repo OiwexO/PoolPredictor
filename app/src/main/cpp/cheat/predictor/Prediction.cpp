@@ -4,7 +4,6 @@
 #include "../data/GlobalSettings.h"
 #include "../data/table/TableProperties.h"
 #include "../../utils/NumberUtils.h"
-#include "../../utils/logger.h"
 #include <array>
 
 static Prediction prediction;
@@ -27,34 +26,32 @@ constexpr double unk_35B3F80 = MIN_TIME;
 
 /* PREDICTION PUBLIC METHODS ==================================================================== */
 
-std::vector<float>& Prediction::getEspData() {
+float* Prediction::getEspData() {
     this->calculateEspDataSize();
-    if (!espData.empty()) {
-        espData.clear();
-    }
-    espData.reserve(espDataSize);
+    float* espData = new float [espDataSize];
+    int index = 0;
     constexpr int nOfBallsIndex = 1;
-    espData.push_back((float) GlobalSettings::isDrawLinesEnabled);
+    espData[index++] = (float) GlobalSettings::isDrawLinesEnabled;
     if (GlobalSettings::isDrawLinesEnabled) {
-        espData.push_back(0.0f);
+        espData[index++] = 0.0f;
         for (int i = 0; i < guiData.ballsCount; i++) {
             Ball& ball = this->guiData.balls[i];
             if (ball.initialPosition != ball.predictedPosition) {
-                espData[nOfBallsIndex] += 1.0f; // exclude balls that didn't change their positions
-                espData.push_back((float) ball.index);
-                espData.push_back((float) ball.positions.size());
+                espData[nOfBallsIndex] += 1.0f; // include only balls that changed their positions
+                espData[index++] = (float) ball.index;
+                espData[index++] = (float) ball.positions.size();
                 for (auto& position : ball.positions) {
                     ScreenPoint point = position.toScreen();
-                    espData.push_back(point.x);
-                    espData.push_back(point.y);
+                    espData[index++] = point.x;
+                    espData[index++] = point.y;
                 }
             }
         }
     }
-    espData.push_back((float) GlobalSettings::isDrawShotStateEnabled);
+    espData[index++] = (float) GlobalSettings::isDrawShotStateEnabled;
     if (GlobalSettings::isDrawShotStateEnabled) {
         for (bool _pocketStatus : Prediction::pocketStatus) {
-            espData.push_back((float) (_pocketStatus && this->guiData.shotState));
+            espData[index++] = (float) (_pocketStatus && this->guiData.shotState);
         }
     }
     return espData;

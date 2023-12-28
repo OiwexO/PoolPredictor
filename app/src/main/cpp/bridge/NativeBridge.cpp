@@ -16,6 +16,7 @@ JavaVM* NativeBridge::mJvm = nullptr;
 JNIEnv* NativeBridge::mEnv = nullptr;
 jobject NativeBridge::mEspView = nullptr;
 jmethodID NativeBridge::mUpdateEspData = nullptr;
+jfloatArray NativeBridge::mEmptyEspData = nullptr;
 
 void* NativeBridge::cuePropertiesThread(void*) {
     while (NativeBridge::isShouldRunThread) {
@@ -34,13 +35,14 @@ void* NativeBridge::predictorThread(void*) {
         LOGE(TAG, "Could not attach predictorThread");
         return nullptr;
     }
+    NativeBridge::initEmptyEspData();
     bool isShouldRedraw;
     if (GlobalSettings::IS_DEBUG) {
         LOGD(TAG, "DEBUG build");
         while (NativeBridge::isShouldRunThread) {
             isShouldRedraw = gPrediction->mockPredictShotResult();
             if (isShouldRedraw) {
-                NativeBridge::updateEspData(gPrediction->getEspData());
+                NativeBridge::updateEspData(gPrediction->getEspData(), gPrediction->getEspDataSize());
             }
         }
     } else {
@@ -56,11 +58,11 @@ void* NativeBridge::predictorThread(void*) {
                 if (MemoryManager::GameManager::isValidGameState(GlobalSettings::isDrawOpponentsLinesEnabled)) {
                     isShouldRedraw = gPrediction->predictShotResult();
                     if (isShouldRedraw) {
-                        NativeBridge::updateEspData(gPrediction->getEspData());
+                        NativeBridge::updateEspData(gPrediction->getEspData(), gPrediction->getEspDataSize());
                     }
                 }
             } else {
-                NativeBridge::updateEspData(std::vector<float>(2));
+                NativeBridge::clearEspData();
                 sleep(1);
             }
         }
@@ -69,6 +71,13 @@ void* NativeBridge::predictorThread(void*) {
     mJvm->DetachCurrentThread();
     LOGD(TAG, "Exiting predictorThread()");
     return nullptr;
+}
+
+void NativeBridge::initEmptyEspData() {
+    mEmptyEspData = mEnv->NewFloatArray(2);
+    jfloat initialValues[2] = {0.0f, 0.0f};
+    mEnv->SetFloatArrayRegion(mEmptyEspData, 0, 2, initialValues);
+    mEmptyEspData = (jfloatArray) mEnv->NewGlobalRef(mEmptyEspData);
 }
 
 // AimTabViewModel methods
@@ -135,17 +144,26 @@ int NativeBridge::setUpdateEspDataMethodId(JNIEnv* env) {
     return JNI_OK;
 }
 
-void NativeBridge::updateEspData(const std::vector<float>& espData) {
-    jfloatArray jEspData = mEnv->NewFloatArray((int) espData.size());
-    mEnv->SetFloatArrayRegion(jEspData, 0, (int) espData.size(), &(espData[0]));
+void NativeBridge::updateEspData(float* espData, int size) {
+    jfloatArray jEspData = mEnv->NewFloatArray(size);
+    mEnv->SetFloatArrayRegion(jEspData, 0, size, &(espData[0]));
+    delete[] espData;
     mEnv->CallVoidMethod(mEspView, mUpdateEspData, jEspData);
     mEnv->DeleteLocalRef(jEspData);
+}
+
+void NativeBridge::clearEspData() {
+    mEnv->CallVoidMethod(mEspView, mUpdateEspData, mEmptyEspData);
 }
 
 void NativeBridge::releaseGlobalRefs(JNIEnv *env) {
     if (mEspView != nullptr) {
         env->DeleteGlobalRef(mEspView);
         mEspView = nullptr;
+    }
+    if (mEmptyEspData != nullptr) {
+        env->DeleteGlobalRef(mEmptyEspData);
+        mEmptyEspData = nullptr;
     }
 }
 

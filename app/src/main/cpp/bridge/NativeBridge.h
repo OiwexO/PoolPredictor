@@ -12,11 +12,14 @@ private:
     static JNIEnv* mEnv;
     static jobject mEspView;
     static jmethodID mUpdateEspData;
+    static jfloatArray mEmptyEspData;
 
     // changes cue power and spin according to GlobalSettings
     static void* cuePropertiesThread(void*);
     // runs prediction and updates EspView
     static void* predictorThread(void*);
+
+    static void initEmptyEspData();
 
     // AimTabViewModel methods
     static void setDrawLines(JNIEnv*, jobject, jboolean value);
@@ -36,7 +39,10 @@ private:
     static int setUpdateEspDataMethodId(JNIEnv* env);
 
     // updates EspView shotState (trajectories and shot shotState)
-    static void updateEspData(const std::vector<float>& espData);
+    static void updateEspData(float* espData, int size);
+
+    // clears EspView
+    static void clearEspData();
 
     // releases GlobalRef to mEspView
     static void releaseGlobalRefs(JNIEnv* env);

@@ -12,7 +12,10 @@ public:
     Prediction() {}
     ~Prediction() {}
 
-    std::vector<float>& getEspData();
+    float* getEspData();
+    int getEspDataSize() {
+        return espDataSize;
+    }
     bool predictShotResult();
 
     bool mockPredictShotResult();
@@ -106,9 +109,7 @@ public:
     } guiData;
 
 private:
-    unsigned int espDataSize = 0;
-
-    std::vector<float> espData;
+    int espDataSize = 0;
 
     void calculateEspDataSize();
 

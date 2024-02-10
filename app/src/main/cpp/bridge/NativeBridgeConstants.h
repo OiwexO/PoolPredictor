@@ -4,8 +4,8 @@
 
 /* CLASS NAMES ===================================================================================*/
 
-#define CLASS_NATIVE_BRIDGE_KOTLIN "com/iwex/poolpredictor/app/NativeBridge$Companion"
-//#define CLASS_ESP_VIEW_KOTLIN "com/iwex/poolpredictor/app/view/EspView"
+#define CLASS_NATIVE_BRIDGE_KOTLIN "com/iwex/poolpredictor/domain/NativeBridge$Companion"
+//#define CLASS_ESP_VIEW_KOTLIN "com/iwex/poolpredictor/presentation/view/EspView"
 
 /*================================================================================================*/
 
@@ -49,7 +49,7 @@
 #define SIG_EXIT_THREAD "()V"
 
 // PredictorService kotlin signatures
-#define SIG_SET_ESP_VIEW "(Lcom/iwex/poolpredictor/app/view/EspView;)V"
+#define SIG_SET_ESP_VIEW "(Lcom/iwex/poolpredictor/presentation/view/EspView;)V"
 #define SIG_GET_POCKET_POSITIONS_IN_SCREEN "(IIII)[F"
 
 // EspView kotlin methods

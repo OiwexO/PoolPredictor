@@ -18,13 +18,13 @@ This mod only works with 8 Ball Pool version 5.8.0 armeabi-v7a (32-bit). You can
 8. Copy **libpoolpredictor.so** file from *predictor\\lib\\armeabi-v7a* to *pool\\lib\\armeabi-v7a*.
 9. Open **predictor\\smali\\com\\iwex\\poolpredictor\\MainActivity.smali** file and find **onCreate** method. Find the Pool Predictor launching code and copy it. It should look like this:
 ```
-    sget-object v0, Lcom/iwex/poolpredictor/app/LauncherActivity;->Companion:Lcom/iwex/poolpredictor/app/LauncherActivity$Companion;
+    sget-object v0, Lcom/iwex/poolpredictor/presentation/activity/LauncherActivity;->Companion:Lcom/iwex/poolpredictor/presentation/activity/LauncherActivity$Companion;
 
     move-object v1, p0
 
     check-cast v1, Landroid/content/Context;
 
-    invoke-virtual {v0, v1}, Lcom/iwex/poolpredictor/app/LauncherActivity$Companion;->launch(Landroid/content/Context;)V
+    invoke-virtual {v0, v1}, Lcom/iwex/poolpredictor/presentation/activity/LauncherActivity$Companion;->launch(Landroid/content/Context;)V
 ```
 10. Open **pool\\smali_classes3\\com\\miniclip\eightballpool\\EightBallPoolActivity.smali** file and find **onCreate** method. Paste the copied code at the end of **onCreate** method (before the **return-void** instruction).
 11. Open **pool\\AndroidManifest.xml** file and add overlay permissions:
@@ -39,7 +39,7 @@ This mod only works with 8 Ball Pool version 5.8.0 armeabi-v7a (32-bit). You can
             android:enabled="true"
             android:exported="false" />
         <activity
-            android:name="com.iwex.poolpredictor.app.LauncherActivity" />
+            android:name="com.iwex.poolpredictor.presentation.activity.LauncherActivity" />
 ```
 13. Recompile pool apk, install it and enjoy.
 

@@ -1,6 +1,6 @@
-package com.iwex.poolpredictor.domain.model.menu.tabs
+package com.iwex.poolpredictor.domain.model
 
-data class EspTabState(
+data class EspSettings(
     val lineWidth: Int,
     val ballRadius: Int,
     val trajectoryOpacity: Int,
@@ -11,7 +11,7 @@ data class EspTabState(
 
     companion object {
 
-        val DEFAULT = EspTabState(
+        val DEFAULT = EspSettings(
             lineWidth = 5,
             ballRadius = 21,
             trajectoryOpacity = 100,

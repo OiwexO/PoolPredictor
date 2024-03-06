@@ -2,9 +2,9 @@ package com.iwex.poolpredictor.di.factory
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.iwex.poolpredictor.data.local.repository.MenuStateRepositoryImpl
+import com.iwex.poolpredictor.data.local.repository.MenuSettingsRepositoryImpl
 import com.iwex.poolpredictor.data.local.repository.TablePositionRepositoryImpl
-import com.iwex.poolpredictor.domain.repository.MenuStateRepository
+import com.iwex.poolpredictor.domain.repository.MenuSettingsRepository
 import com.iwex.poolpredictor.domain.repository.TablePositionRepository
 
 class RepositoryFactory private constructor(context: Context) {
@@ -13,8 +13,8 @@ class RepositoryFactory private constructor(context: Context) {
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
     }
 
-    val menuStateRepository: MenuStateRepository by lazy {
-        MenuStateRepositoryImpl(sharedPreferences)
+    val menuSettingsRepository: MenuSettingsRepository by lazy {
+        MenuSettingsRepositoryImpl(sharedPreferences)
     }
 
     val tablePositionRepository: TablePositionRepository by lazy {

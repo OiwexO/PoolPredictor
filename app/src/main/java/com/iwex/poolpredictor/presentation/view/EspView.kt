@@ -37,7 +37,7 @@ class EspView(
         viewModel.espParameters.observeForever {
             params = it
             updateEspParameters()
-            postInvalidate()
+            invalidate()
         }
         initPaints()
     }

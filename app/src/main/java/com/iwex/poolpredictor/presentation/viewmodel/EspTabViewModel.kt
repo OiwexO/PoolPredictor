@@ -4,54 +4,54 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iwex.poolpredictor.domain.model.EspParameters
-import com.iwex.poolpredictor.domain.model.menu.tabs.EspTabState
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspTabStateUseCase
+import com.iwex.poolpredictor.domain.model.EspSettings
+import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.ResetTablePositionUseCase
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspTabStateUseCase
+import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspSettingsUseCase
 
 class EspTabViewModel(
-    private val getEspTabStateUseCase: GetEspTabStateUseCase,
-    private val saveEspTabStateUseCase: SaveEspTabStateUseCase,
+    private val getEspSettingsUseCase: GetEspSettingsUseCase,
+    private val saveEspSettingsUseCase: SaveEspSettingsUseCase,
     private val resetTablePositionUseCase: ResetTablePositionUseCase
 ) : ViewModel() {
 
-    private var espTabState = getEspTabStateUseCase()
+    private var espSettings = getEspSettingsUseCase()
         set(value) {
             field = value
             _espParameters.value = EspParameters(value)
         }
 
-    private val _espParameters = MutableLiveData(EspParameters(espTabState))
+    private val _espParameters = MutableLiveData(EspParameters(espSettings))
 
     val espParameters: LiveData<EspParameters>
         get() = _espParameters
 
-    fun getEspTabState(): EspTabState {
-        return espTabState
+    fun getEspSettings(): EspSettings {
+        return espSettings
     }
 
     fun onLineWidthChange(width: Int) {
-        espTabState = espTabState.copy(lineWidth = width)
+        espSettings = espSettings.copy(lineWidth = width)
     }
 
     fun onBallRadiusChange(radius: Int) {
-        espTabState = espTabState.copy(ballRadius = radius)
+        espSettings = espSettings.copy(ballRadius = radius)
     }
 
     fun onTrajectoryOpacityChange(opacity: Int) {
-        espTabState = espTabState.copy(trajectoryOpacity = opacity)
+        espSettings = espSettings.copy(trajectoryOpacity = opacity)
     }
 
     fun onShotStateCircleWidthChange(width: Int) {
-        espTabState = espTabState.copy(shotStateCircleWidth = width)
+        espSettings = espSettings.copy(shotStateCircleWidth = width)
     }
 
     fun onShotStateCircleRadiusChange(radius: Int) {
-        espTabState = espTabState.copy(shotStateCircleRadius = radius)
+        espSettings = espSettings.copy(shotStateCircleRadius = radius)
     }
 
     fun onShotStateCircleOpacityChange(opacity: Int) {
-        espTabState = espTabState.copy(shotStateCircleOpacity = opacity)
+        espSettings = espSettings.copy(shotStateCircleOpacity = opacity)
     }
 
     fun onResetTableListener() {
@@ -59,7 +59,7 @@ class EspTabViewModel(
     }
 
     fun saveState() {
-        saveEspTabStateUseCase(espTabState)
+        saveEspSettingsUseCase(espSettings)
     }
 
 }

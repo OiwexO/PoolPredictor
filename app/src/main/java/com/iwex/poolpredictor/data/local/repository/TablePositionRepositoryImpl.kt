@@ -10,10 +10,10 @@ class TablePositionRepositoryImpl(
 
     override fun getTablePosition(): TablePosition = with(preferences) {
         return TablePosition(
-            getInt(KEY_TABLE_LEFT, TablePosition.DEFAULT.left),
-            getInt(KEY_TABLE_TOP, TablePosition.DEFAULT.top),
-            getInt(KEY_TABLE_RIGHT, TablePosition.DEFAULT.right),
-            getInt(KEY_TABLE_BOTTOM, TablePosition.DEFAULT.bottom)
+            left = getInt(KEY_TABLE_LEFT, TablePosition.DEFAULT.left),
+            top = getInt(KEY_TABLE_TOP, TablePosition.DEFAULT.top),
+            right = getInt(KEY_TABLE_RIGHT, TablePosition.DEFAULT.right),
+            bottom = getInt(KEY_TABLE_BOTTOM, TablePosition.DEFAULT.bottom)
         )
     }
 

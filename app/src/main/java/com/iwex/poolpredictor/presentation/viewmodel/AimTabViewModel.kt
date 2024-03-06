@@ -2,19 +2,19 @@ package com.iwex.poolpredictor.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.iwex.poolpredictor.domain.NativeBridge
-import com.iwex.poolpredictor.domain.model.menu.tabs.AimTabState
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetAimTabStateUseCase
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveAimTabStateUseCase
+import com.iwex.poolpredictor.domain.model.AimSettings
+import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetAimSettingsUseCase
+import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveAimSettingsUseCase
 
 class AimTabViewModel(
-    private val getAimTabStateUseCase: GetAimTabStateUseCase,
-    private val saveAimTabStateUseCase: SaveAimTabStateUseCase
+    private val getAimSettingsUseCase: GetAimSettingsUseCase,
+    private val saveAimSettingsUseCase: SaveAimSettingsUseCase
 ) : ViewModel() {
 
-    private var aimTabState = getAimTabStateUseCase()
+    private var aimSettings = getAimSettingsUseCase()
 
     init {
-        with(aimTabState) {
+        with(aimSettings) {
             NativeBridge.setDrawLines(drawLinesEnabled)
             NativeBridge.setDrawShotState(drawShotStateEnabled)
             NativeBridge.setDrawOpponentsLines(drawOpponentsLinesEnabled)
@@ -24,42 +24,42 @@ class AimTabViewModel(
         }
     }
 
-    fun getAimTabState(): AimTabState {
-        return aimTabState
+    fun getAimSettings(): AimSettings {
+        return aimSettings
     }
 
     fun onDrawLinesChange(isChecked: Boolean) {
-        aimTabState = aimTabState.copy(drawLinesEnabled = isChecked)
+        aimSettings = aimSettings.copy(drawLinesEnabled = isChecked)
         NativeBridge.setDrawLines(isChecked)
     }
 
     fun onDrawShotStateChange(isChecked: Boolean) {
-        aimTabState = aimTabState.copy(drawShotStateEnabled = isChecked)
+        aimSettings = aimSettings.copy(drawShotStateEnabled = isChecked)
         NativeBridge.setDrawShotState(isChecked)
     }
 
     fun onDrawOpponentsLinesChange(isChecked: Boolean) {
-        aimTabState = aimTabState.copy(drawOpponentsLinesEnabled = isChecked)
+        aimSettings = aimSettings.copy(drawOpponentsLinesEnabled = isChecked)
         NativeBridge.setDrawOpponentsLines(isChecked)
     }
 
     fun onPreciseTrajectoriesEnabledChange(isChecked: Boolean) {
-        aimTabState = aimTabState.copy(preciseTrajectoriesEnabled = isChecked)
+        aimSettings = aimSettings.copy(preciseTrajectoriesEnabled = isChecked)
         NativeBridge.setPreciseTrajectoriesEnabled(isChecked)
     }
 
     fun onCuePowerChange(power: Int) {
-        aimTabState = aimTabState.copy(cuePower = power)
+        aimSettings = aimSettings.copy(cuePower = power)
         NativeBridge.setCuePower(power)
     }
 
     fun onCueSpinChange(spin: Int) {
-        aimTabState = aimTabState.copy(cueSpin = spin)
+        aimSettings = aimSettings.copy(cueSpin = spin)
         NativeBridge.setCueSpin(spin)
     }
 
     fun saveState() {
-        saveAimTabStateUseCase(aimTabState)
+        saveAimSettingsUseCase(aimSettings)
     }
 
 }

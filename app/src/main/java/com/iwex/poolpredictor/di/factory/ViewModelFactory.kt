@@ -11,13 +11,13 @@ class ViewModelFactory private constructor(context: Context) {
     private val useCaseFactory = UseCaseFactory.getInstance(context)
 
     val aimTabViewModel: AimTabViewModel by lazy {
-        AimTabViewModel(useCaseFactory.getAimTabStateUseCase, useCaseFactory.saveAimTabStateUseCase)
+        AimTabViewModel(useCaseFactory.getAimSettingsUseCase, useCaseFactory.saveAimSettingsUseCase)
     }
 
     val espTabViewModel: EspTabViewModel by lazy {
         EspTabViewModel(
-            useCaseFactory.getEspTabStateUseCase,
-            useCaseFactory.saveEspTabStateUseCase,
+            useCaseFactory.getEspSettingsUseCase,
+            useCaseFactory.saveEspSettingsUseCase,
             useCaseFactory.resetTablePositionUseCase
         )
     }

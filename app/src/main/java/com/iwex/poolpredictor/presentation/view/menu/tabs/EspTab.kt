@@ -40,11 +40,11 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
     }
 
     init {
-        val state = viewModel.getEspTabState()
+        val espSettings = viewModel.getEspSettings()
         lineWidthSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_LINE_WIDTH_SEEKBAR,
             MAX_LINE_WIDTH,
-            state.lineWidth,
+            espSettings.lineWidth,
             viewModel::onLineWidthChange,
             context,
             this
@@ -52,7 +52,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
         ballRadiusSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_BALL_RADIUS_SEEKBAR,
             MAX_BALL_RADIUS,
-            state.ballRadius,
+            espSettings.ballRadius,
             viewModel::onBallRadiusChange,
             context,
             this
@@ -60,7 +60,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
         trajectoryOpacitySeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_TRAJECTORY_OPACITY_SEEKBAR,
             MAX_TRAJECTORY_OPACITY,
-            state.trajectoryOpacity,
+            espSettings.trajectoryOpacity,
             viewModel::onTrajectoryOpacityChange,
             context,
             this
@@ -68,7 +68,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
         shotStateCircleWidthSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_SHOT_STATE_CIRCLE_WIDTH_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_WIDTH,
-            state.shotStateCircleWidth,
+            espSettings.shotStateCircleWidth,
             viewModel::onShotStateCircleWidthChange,
             context,
             this
@@ -76,7 +76,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
         shotStateCircleRadiusSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_SHOT_STATE_CIRCLE_RADIUS_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_RADIUS,
-            state.shotStateCircleRadius,
+            espSettings.shotStateCircleRadius,
             viewModel::onShotStateCircleRadiusChange,
             context,
             this
@@ -84,7 +84,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
         shotStateCircleOpacitySeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_SHOT_STATE_CIRCLE_OPACITY_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_OPACITY,
-            state.shotStateCircleOpacity,
+            espSettings.shotStateCircleOpacity,
             viewModel::onShotStateCircleOpacityChange,
             context,
             this

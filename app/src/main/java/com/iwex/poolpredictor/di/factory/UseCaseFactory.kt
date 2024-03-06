@@ -1,11 +1,11 @@
 package com.iwex.poolpredictor.di.factory
 
 import android.content.Context
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetAimTabStateUseCase
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspTabStateUseCase
+import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetAimSettingsUseCase
+import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.ResetTablePositionUseCase
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveAimTabStateUseCase
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspTabStateUseCase
+import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveAimSettingsUseCase
+import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetIsTableSetUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.table.SaveTablePositionUseCase
@@ -14,24 +14,24 @@ class UseCaseFactory private constructor(context: Context){
 
     private val repositoryFactory = RepositoryFactory.getInstance(context)
 
-    val getAimTabStateUseCase: GetAimTabStateUseCase by lazy {
-        GetAimTabStateUseCase(repositoryFactory.menuStateRepository)
+    val getAimSettingsUseCase: GetAimSettingsUseCase by lazy {
+        GetAimSettingsUseCase(repositoryFactory.menuSettingsRepository)
     }
 
-    val getEspTabStateUseCase: GetEspTabStateUseCase by lazy {
-        GetEspTabStateUseCase(repositoryFactory.menuStateRepository)
+    val getEspSettingsUseCase: GetEspSettingsUseCase by lazy {
+        GetEspSettingsUseCase(repositoryFactory.menuSettingsRepository)
     }
 
     val resetTablePositionUseCase: ResetTablePositionUseCase by lazy {
         ResetTablePositionUseCase(repositoryFactory.tablePositionRepository)
     }
 
-    val saveAimTabStateUseCase: SaveAimTabStateUseCase by lazy {
-        SaveAimTabStateUseCase(repositoryFactory.menuStateRepository)
+    val saveAimSettingsUseCase: SaveAimSettingsUseCase by lazy {
+        SaveAimSettingsUseCase(repositoryFactory.menuSettingsRepository)
     }
 
-    val saveEspTabStateUseCase: SaveEspTabStateUseCase by lazy {
-        SaveEspTabStateUseCase(repositoryFactory.menuStateRepository)
+    val saveEspSettingsUseCase: SaveEspSettingsUseCase by lazy {
+        SaveEspSettingsUseCase(repositoryFactory.menuSettingsRepository)
     }
 
     val getIsTableSetUseCase: GetIsTableSetUseCase by lazy {

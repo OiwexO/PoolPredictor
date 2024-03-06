@@ -31,30 +31,30 @@ class AimTab(context: Context, private val viewModel: AimTabViewModel) : BaseMen
     }
 
     init {
-        val state = viewModel.getAimTabState()
+        val aimSettings = viewModel.getAimSettings()
         drawLinesSwitch = MenuWidgetFactory.addSwitch(
-            state.drawLinesEnabled,
+            aimSettings.drawLinesEnabled,
             viewModel::onDrawLinesChange,
             LABEL_DRAW_LINES_SWITCH,
             context,
             this
         )
         drawShotStateSwitch = MenuWidgetFactory.addSwitch(
-            state.drawShotStateEnabled,
+            aimSettings.drawShotStateEnabled,
             viewModel::onDrawShotStateChange,
             LABEL_DRAW_SHOT_STATE_SWITCH,
             context,
             this
         )
         drawOpponentsLinesSwitch = MenuWidgetFactory.addSwitch(
-            state.drawOpponentsLinesEnabled,
+            aimSettings.drawOpponentsLinesEnabled,
             viewModel::onDrawOpponentsLinesChange,
             LABEL_DRAW_OPPONENTS_LINES_SWITCH,
             context,
             this
         )
         powerControlSwitch = MenuWidgetFactory.addSwitch(
-            state.preciseTrajectoriesEnabled,
+            aimSettings.preciseTrajectoriesEnabled,
             viewModel::onPreciseTrajectoriesEnabledChange,
             LABEL_POWER_CONTROL_MODE_SWITCH,
             context,
@@ -63,7 +63,7 @@ class AimTab(context: Context, private val viewModel: AimTabViewModel) : BaseMen
         cuePowerSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_CUE_POWER_SEEKBAR,
             MAX_CUE_POWER,
-            state.cuePower,
+            aimSettings.cuePower,
             viewModel::onCuePowerChange,
             context,
             this
@@ -71,7 +71,7 @@ class AimTab(context: Context, private val viewModel: AimTabViewModel) : BaseMen
         cueSpinSeekbar = MenuWidgetFactory.addSeekBar(
             LABEL_CUE_SPIN_SEEKBAR,
             MAX_CUE_SPIN,
-            state.cueSpin,
+            aimSettings.cueSpin,
             viewModel::onCueSpinChange,
             context,
             this

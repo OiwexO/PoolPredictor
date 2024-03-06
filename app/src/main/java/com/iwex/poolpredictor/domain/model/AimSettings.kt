@@ -1,6 +1,6 @@
-package com.iwex.poolpredictor.domain.model.menu.tabs
+package com.iwex.poolpredictor.domain.model
 
-data class AimTabState(
+data class AimSettings(
     val drawLinesEnabled: Boolean,
     val drawShotStateEnabled: Boolean,
     val drawOpponentsLinesEnabled: Boolean,
@@ -11,7 +11,7 @@ data class AimTabState(
 
     companion object {
 
-        val DEFAULT = AimTabState(
+        val DEFAULT = AimSettings(
             drawLinesEnabled = false,
             drawShotStateEnabled = false,
             drawOpponentsLinesEnabled = false,

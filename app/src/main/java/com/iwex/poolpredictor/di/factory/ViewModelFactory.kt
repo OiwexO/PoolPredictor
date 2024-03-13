@@ -3,32 +3,37 @@ package com.iwex.poolpredictor.di.factory
 import android.content.Context
 import com.iwex.poolpredictor.presentation.resource.Dimensions
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
-import com.iwex.poolpredictor.presentation.viewmodel.EspTabViewModel
-import com.iwex.poolpredictor.presentation.viewmodel.TablePositionViewModel
+import com.iwex.poolpredictor.presentation.viewmodel.esp.EspSharedViewModel
+import com.iwex.poolpredictor.presentation.viewmodel.tablePosition.TablePositionSharedViewModel
 
 class ViewModelFactory private constructor(context: Context) {
 
     private val useCaseFactory = UseCaseFactory.getInstance(context)
 
     val aimTabViewModel: AimTabViewModel by lazy {
-        AimTabViewModel(useCaseFactory.getAimSettingsUseCase, useCaseFactory.saveAimSettingsUseCase)
+        AimTabViewModel(
+            useCaseFactory.getAimSettingsUseCase,
+            useCaseFactory.updateAimSettingsNativeUseCase,
+            useCaseFactory.saveAimSettingsUseCase
+        )
     }
 
-    val espTabViewModel: EspTabViewModel by lazy {
-        EspTabViewModel(
+    val espSharedViewModel: EspSharedViewModel by lazy {
+        EspSharedViewModel(
             useCaseFactory.getEspSettingsUseCase,
             useCaseFactory.saveEspSettingsUseCase,
             useCaseFactory.resetTablePositionUseCase
         )
     }
 
-    val tablePositionViewModel: TablePositionViewModel by lazy {
-        TablePositionViewModel(
+    val tablePositionSharedViewModel: TablePositionSharedViewModel by lazy {
+        TablePositionSharedViewModel(
             Dimensions.getInstance(context).displayHeight,
             Dimensions.getInstance(context).displayWidth,
             useCaseFactory.getIsTableSetUseCase,
             useCaseFactory.getTablePositionUseCase,
-            useCaseFactory.saveTablePositionUseCase
+            useCaseFactory.saveTablePositionUseCase,
+            useCaseFactory.setTablePositionNativeUseCase
         )
     }
 

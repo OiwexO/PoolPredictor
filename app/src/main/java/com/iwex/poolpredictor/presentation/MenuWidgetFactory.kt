@@ -17,7 +17,7 @@ import android.widget.SeekBar
 import android.widget.Switch
 import android.widget.TextView
 import androidx.core.view.setMargins
-import com.iwex.poolpredictor.presentation.resource.Colors
+import com.iwex.poolpredictor.presentation.resource.MenuColors
 import com.iwex.poolpredictor.presentation.resource.Dimensions
 
 class MenuWidgetFactory {
@@ -39,14 +39,14 @@ class MenuWidgetFactory {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     thumbTintList = ColorStateList(
                         arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
-                        intArrayOf(Colors.SWITCH_THUMB_ENABLED, Colors.SWITCH_THUMB_DISABLED)
+                        intArrayOf(MenuColors.SWITCH_THUMB_ENABLED, MenuColors.SWITCH_THUMB_DISABLED)
                     )
                     trackTintList = ColorStateList(
                         arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
-                        intArrayOf(Colors.SWITCH_TRACK_ENABLED, Colors.SWITCH_TRACK_DISABLED)
+                        intArrayOf(MenuColors.SWITCH_TRACK_ENABLED, MenuColors.SWITCH_TRACK_DISABLED)
                     )
                 }
-                setTextColor(Colors.MAIN_TEXT)
+                setTextColor(MenuColors.MAIN_TEXT)
                 parent.addView(this)
                 setOnCheckedChangeListener { _, isChecked ->
                     checkedListener(isChecked)
@@ -66,9 +66,9 @@ class MenuWidgetFactory {
             return SeekBar(context).apply {
                 this.max = max
                 this.progress = progress
-                thumbTintList = ColorStateList.valueOf(Colors.SEEKBAR_THUMB)
+                thumbTintList = ColorStateList.valueOf(MenuColors.SEEKBAR_THUMB)
                 progressDrawable.colorFilter = PorterDuffColorFilter(
-                    Colors.SEEKBAR_PROGRESS, PorterDuff.Mode.SRC_ATOP
+                    MenuColors.SEEKBAR_PROGRESS, PorterDuff.Mode.SRC_ATOP
                 )
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     minHeight = Dimensions.getInstance(context).seekbarHeightPx
@@ -94,7 +94,7 @@ class MenuWidgetFactory {
             return TextView(context).apply {
                 text = String.format(label, progress)
                 textSize = Dimensions.getInstance(context).seekbarTextSizeSp
-                setTextColor(Colors.MAIN_TEXT)
+                setTextColor(MenuColors.MAIN_TEXT)
                 parent.addView(this)
             }
         }
@@ -114,7 +114,7 @@ class MenuWidgetFactory {
                     }
                 }
                 background = getButtonBackground(context)
-                setTextColor(Colors.BUTTON_TEXT)
+                setTextColor(MenuColors.BUTTON_TEXT)
                 gravity = Gravity.CENTER
                 parent.addView(this)
             }
@@ -124,7 +124,7 @@ class MenuWidgetFactory {
             return GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = Dimensions.getInstance(context).buttonCornerRadiusPx
-                setColor(Colors.BUTTON_BACKGROUND)
+                setColor(MenuColors.BUTTON_BACKGROUND)
             }
         }
 
@@ -136,7 +136,7 @@ class MenuWidgetFactory {
             return TextView(context).apply {
                 text = label
                 textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                setTextColor(Colors.MAIN_TEXT)
+                setTextColor(MenuColors.MAIN_TEXT)
                 textSize = Dimensions.getInstance(context).titleTextSizeSp
                 parent.addView(this)
             }

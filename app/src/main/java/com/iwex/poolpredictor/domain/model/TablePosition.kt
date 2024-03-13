@@ -1,19 +1,19 @@
 package com.iwex.poolpredictor.domain.model
 
 data class TablePosition(
-    val left: Int,
-    val top: Int,
-    val right: Int,
-    val bottom: Int
+    val left: Float,
+    val top: Float,
+    val right: Float,
+    val bottom: Float
 ) {
 
     companion object {
 
         val DEFAULT = TablePosition(
-            left = 0,
-            top = 0,
-            right = 0,
-            bottom = 0
+            left = 0f,
+            top = 0f,
+            right = 0f,
+            bottom = 0f
         )
     }
 }

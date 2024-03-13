@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.PixelFormat
-import android.os.Build
 import android.util.Base64
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowManager
 import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-import android.view.WindowManager.LayoutParams.TYPE_APPLICATION
-import android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -21,13 +18,14 @@ import android.widget.ScrollView
 import androidx.core.view.isVisible
 import androidx.core.view.setMargins
 import com.iwex.poolpredictor.presentation.MenuWidgetFactory
-import com.iwex.poolpredictor.presentation.resource.Colors
 import com.iwex.poolpredictor.presentation.resource.Dimensions
 import com.iwex.poolpredictor.presentation.resource.FloatingIcon
+import com.iwex.poolpredictor.presentation.resource.MenuColors
 import com.iwex.poolpredictor.presentation.view.menu.tabs.AimTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.BaseMenuTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.EspTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.OtherTab
+import com.iwex.poolpredictor.util.Utils
 
 @SuppressLint("ViewConstructor")
 class FloatingMenu(
@@ -36,6 +34,7 @@ class FloatingMenu(
     private val espTab: EspTab,
     private val otherTab: OtherTab
 ) : RelativeLayout(context) {
+
     val layoutParams: WindowManager.LayoutParams
     private val floatingIconView: ImageView
     private val floatingMenuLayout: LinearLayout
@@ -43,15 +42,6 @@ class FloatingMenu(
     private val tabButtonsLayout: LinearLayout
     private val closeMenuButton: Button
     private val defaultTab = aimTab
-
-    companion object {
-        private const val TAG = "FloatingMenu.kt"
-        private const val LABEL_MENU_TITLE = "Pool Predictor by IWEX"
-        private const val LABEL_AIM_BUTTON = "AIM"
-        private const val LABEL_ESP_BUTTON = "ESP"
-        private const val LABEL_OTHER_BUTTON = "OTHER"
-        private const val LABEL_CLOSE_MENU_BUTTON = "CLOSE MENU"
-    }
 
     init {
         layoutParams = initLayoutParams(context)
@@ -85,14 +75,12 @@ class FloatingMenu(
     }
 
     private fun initLayoutParams(context: Context): WindowManager.LayoutParams {
-        val windowType =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) TYPE_APPLICATION_OVERLAY else TYPE_APPLICATION
         return WindowManager.LayoutParams(
             WRAP_CONTENT,
             WRAP_CONTENT,
             Dimensions.getInstance(context).iconPositionX,
             Dimensions.getInstance(context).iconPositionY,
-            windowType,
+            Utils.overlayWindowType,
             FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )
@@ -117,7 +105,7 @@ class FloatingMenu(
                 Dimensions.getInstance(context).menuWidthPx,
                 Dimensions.getInstance(context).menuHeightPx
             )
-            setBackgroundColor(Colors.MENU_BACKGROUND)
+            setBackgroundColor(MenuColors.MENU_BACKGROUND)
             MenuWidgetFactory.addTitle(LABEL_MENU_TITLE, context, this)
             visibility = GONE
         }
@@ -169,4 +157,15 @@ class FloatingMenu(
         return true
     }
 
+    companion object {
+
+        @Suppress("unused")
+        private const val TAG = "FloatingMenu.kt"
+
+        private const val LABEL_MENU_TITLE = "Pool Predictor by OiwexO"
+        private const val LABEL_AIM_BUTTON = "AIM"
+        private const val LABEL_ESP_BUTTON = "ESP"
+        private const val LABEL_OTHER_BUTTON = "OTHER"
+        private const val LABEL_CLOSE_MENU_BUTTON = "CLOSE MENU"
+    }
 }

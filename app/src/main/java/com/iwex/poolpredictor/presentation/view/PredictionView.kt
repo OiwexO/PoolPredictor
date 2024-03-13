@@ -5,41 +5,38 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
-import com.iwex.poolpredictor.domain.NativeBridge
 import com.iwex.poolpredictor.domain.model.EspParameters
-import com.iwex.poolpredictor.domain.model.TablePosition
 import com.iwex.poolpredictor.presentation.resource.EspColors
-import com.iwex.poolpredictor.presentation.viewmodel.EspTabViewModel
+import com.iwex.poolpredictor.presentation.viewmodel.esp.PredictionViewModel
 
 //TODO Refactor EspView
 @SuppressLint("ViewConstructor")
-class EspView(
+class PredictionView(
     context: Context,
-    private val viewModel: EspTabViewModel
+    private val viewModel: PredictionViewModel
 ) : NonInteractiveOverlayView(context) {
 
     private val trajectoryPaints = Array(NUMBER_OF_BALLS) { Paint() }
     private val shotStatePaints = Array(2) { Paint() }
+
     private var params = EspParameters.DEFAULT
     private var espData = floatArrayOf(0.0f, 0.0f)
     private var pocketPositions = FloatArray(NUMBER_OF_POCKETS * 2)
-    private var isCanUpdateEspData = false
+
     private val trajectoryPath = Path()
 
-    companion object {
-        @Suppress("unused")
-        private const val TAG = "EspView.kt"
-        private const val NUMBER_OF_POCKETS = 6
-        private const val NUMBER_OF_BALLS = 16
+    init {
+        setLayerType(LAYER_TYPE_HARDWARE, null) //TODO check if this improves performance
+        initPaints()
+        observeViewModel()
     }
 
-    init {
+    private fun observeViewModel() {
         viewModel.espParameters.observeForever {
             params = it
             updateEspParameters()
             invalidate()
         }
-        initPaints()
     }
 
     private fun initPaints() {
@@ -82,18 +79,8 @@ class EspView(
     // called from cpp/bridge/NativeBridge/predictorThread only
     @Suppress("unused")
     fun updateEspData(data: FloatArray) {
-        if (isCanUpdateEspData) {
-            isCanUpdateEspData = false
-            espData = data
-            postInvalidate()
-        }
-    }
-
-    // should be called before updateEspData
-    fun getPocketPositionsInScreen(tablePosition: TablePosition) {
-        pocketPositions = NativeBridge.getPocketPositionsInScreen(
-            tablePosition.left, tablePosition.top, tablePosition.right, tablePosition.bottom
-        )
+        espData = data
+        postInvalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -113,6 +100,7 @@ class EspView(
          *            pocketState: 0.0f or 1.0f shows if a valid ball has been potted to this pocket, pocketX, pocketY
          */
         // draw trajectories
+        val espData = espData.clone() //TODO remove array cloning in onDraw
         var index = 0
         val isTrajectoryEnabled = (espData[index++] == 1.0f)
         if (isTrajectoryEnabled) {
@@ -170,7 +158,14 @@ class EspView(
                 )
             }
         }
-        isCanUpdateEspData = true
     }
 
+    companion object {
+
+        @Suppress("unused")
+        private const val TAG = "EspView.kt"
+
+        private const val NUMBER_OF_POCKETS = 6
+        private const val NUMBER_OF_BALLS = 16
+    }
 }

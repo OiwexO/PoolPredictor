@@ -10,19 +10,19 @@ class TablePositionRepositoryImpl(
 
     override fun getTablePosition(): TablePosition = with(preferences) {
         return TablePosition(
-            left = getInt(KEY_TABLE_LEFT, TablePosition.DEFAULT.left),
-            top = getInt(KEY_TABLE_TOP, TablePosition.DEFAULT.top),
-            right = getInt(KEY_TABLE_RIGHT, TablePosition.DEFAULT.right),
-            bottom = getInt(KEY_TABLE_BOTTOM, TablePosition.DEFAULT.bottom)
+            left = getFloat(KEY_TABLE_LEFT, TablePosition.DEFAULT.left),
+            top = getFloat(KEY_TABLE_TOP, TablePosition.DEFAULT.top),
+            right = getFloat(KEY_TABLE_RIGHT, TablePosition.DEFAULT.right),
+            bottom = getFloat(KEY_TABLE_BOTTOM, TablePosition.DEFAULT.bottom)
         )
     }
 
     override fun putTablePosition(tablePosition: TablePosition) {
         with(preferences.edit()) {
-            putInt(KEY_TABLE_LEFT, tablePosition.left)
-            putInt(KEY_TABLE_TOP, tablePosition.top)
-            putInt(KEY_TABLE_RIGHT, tablePosition.right)
-            putInt(KEY_TABLE_BOTTOM, tablePosition.bottom)
+            putFloat(KEY_TABLE_LEFT, tablePosition.left)
+            putFloat(KEY_TABLE_TOP, tablePosition.top)
+            putFloat(KEY_TABLE_RIGHT, tablePosition.right)
+            putFloat(KEY_TABLE_BOTTOM, tablePosition.bottom)
             apply()
         }
     }

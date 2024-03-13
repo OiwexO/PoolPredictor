@@ -36,7 +36,7 @@ class Dimensions private constructor(context: Context) {
     val buttonCornerRadiusPx: Float = dpToPx(5.5f)
     val buttonTextSizeSp: Float = 15.5f
 
-    val arrowButtonSizePx: Int = dpToPx(40f).roundToInt()
+    val arrowButtonSizePx: Float = dpToPx(40f)
 
     val titleTextSizeSp: Float = 24f
 

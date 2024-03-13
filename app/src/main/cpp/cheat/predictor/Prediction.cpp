@@ -369,18 +369,18 @@ void Prediction::mockInitBalls() {
     };
     for (int i = 0; i < this->guiData.ballsCount; i++) {
         Ball& ball = this->guiData.balls[i];
-        ball.index = i;
-        ball.state = BallState::DEFAULT;
-        ball.originalOnTable = true;
-        ball.onTable = ball.originalOnTable;
-        ball.classification = ballClassifications[i];
-        ball.initialPosition = ballPositions[i];
-        ball.predictedPosition = ball.initialPosition;
-        ball.velocity.nullify();
-        ball.spin.nullify();
-        if (!ball.positions.empty())
-            ball.positions.clear();
-        ball.positions.reserve(20);
+            ball.index = i;
+            ball.state = BallState::DEFAULT;
+            ball.originalOnTable = true;
+            ball.onTable = ball.originalOnTable;
+            ball.classification = ballClassifications[i];
+            ball.initialPosition = ballPositions[i];
+            ball.predictedPosition = ball.initialPosition;
+            ball.velocity.nullify();
+            ball.spin.nullify();
+            if (!ball.positions.empty())
+                ball.positions.clear();
+            ball.positions.reserve(20);
         ball.positions.push_back(ball.initialPosition);
     }
 }

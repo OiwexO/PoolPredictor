@@ -6,22 +6,20 @@ import android.content.Intent
 import android.os.IBinder
 import android.view.WindowManager
 import android.widget.Toast
+import com.iwex.poolpredictor.data.NativeBridge
 import com.iwex.poolpredictor.di.factory.ViewModelFactory
-import com.iwex.poolpredictor.domain.NativeBridge
-import com.iwex.poolpredictor.domain.model.TablePosition
 import com.iwex.poolpredictor.presentation.resource.Dimensions
-import com.iwex.poolpredictor.presentation.view.EspView
+import com.iwex.poolpredictor.presentation.view.PredictionView
 import com.iwex.poolpredictor.presentation.view.menu.FloatingMenu
 import com.iwex.poolpredictor.presentation.view.menu.FloatingMenuTouchListener
 import com.iwex.poolpredictor.presentation.view.menu.tabs.AimTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.EspTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.OtherTab
-import com.iwex.poolpredictor.presentation.view.tablePosition.OnTablePositionSavedListener
-import com.iwex.poolpredictor.presentation.view.tablePosition.TablePositionEspView
-import com.iwex.poolpredictor.presentation.view.tablePosition.TablePositionView
+import com.iwex.poolpredictor.presentation.view.tablePosition.OnTablePositionSetListener
+import com.iwex.poolpredictor.presentation.view.tablePosition.TableShapeView
+import com.iwex.poolpredictor.presentation.view.tablePosition.TablePositionSetupView
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
-import com.iwex.poolpredictor.presentation.viewmodel.EspTabViewModel
-import com.iwex.poolpredictor.presentation.viewmodel.TablePositionViewModel
+import com.iwex.poolpredictor.presentation.viewmodel.esp.EspSharedViewModel
 
 class PredictorService : Service() {
     private val windowManager: WindowManager by lazy {
@@ -29,10 +27,9 @@ class PredictorService : Service() {
     }
 
     private var floatingMenu: FloatingMenu? = null
-    //TODO Remove lateinit
-    private lateinit var espView: EspView
-    private var tablePositionView: TablePositionView? = null
-    private var tablePositionEspView: TablePositionEspView? = null
+    private var predictionView: PredictionView? = null
+    private var tablePositionSetupView: TablePositionSetupView? = null
+    private var tableShapeView: TableShapeView? = null
 
     override fun onBind(intent: Intent?): IBinder? {
         TODO("Not yet implemented")
@@ -44,35 +41,46 @@ class PredictorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        val viewModelFactory = ViewModelFactory.getInstance(this)
-        val tablePositionViewModel = viewModelFactory.tablePositionViewModel
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show()
-        if (tablePositionViewModel.isTableSet) {
-            startPredictor()
-        } else {
-            startTablePositionSetup(tablePositionViewModel)
+        startTablePositionSetup()
+    }
+
+    private fun startTablePositionSetup() {
+        val viewModelFactory = ViewModelFactory.getInstance(this)
+        val tablePositionViewModel = viewModelFactory.tablePositionSharedViewModel
+        val tablePositionSetupView = TablePositionSetupView(this, tablePositionViewModel)
+        tablePositionSetupView.onTablePositionSetListener = object : OnTablePositionSetListener {
+            override fun onTablePositionSet() {
+                removeTablePositionSetup()
+                startPredictor()
+            }
         }
+        val tableShapeView = TableShapeView(this, tablePositionViewModel)
+        windowManager.addView(tableShapeView, tableShapeView.layoutParams)
+        windowManager.addView(tablePositionSetupView, tablePositionSetupView.layoutParams)
+        this.tablePositionSetupView = tablePositionSetupView
+        this.tableShapeView = tableShapeView
     }
 
     private fun startPredictor() {
         val viewModelFactory = ViewModelFactory.getInstance(this)
-        val espTabViewModel = viewModelFactory.espTabViewModel
+        val espTabViewModel = viewModelFactory.espSharedViewModel
         val aimTabViewModel = viewModelFactory.aimTabViewModel
-        val tablePosition = viewModelFactory.tablePositionViewModel.tablePosition
         setupEspView(espTabViewModel)
         setupFloatingMenu(aimTabViewModel, espTabViewModel)
-        setupNativeBridge(tablePosition)
+        setupNativeBridge()
     }
 
-    private fun setupEspView(espTabViewModel: EspTabViewModel) {
-        espView = EspView(this, espTabViewModel)
-        windowManager.addView(espView, espView.layoutParams)
+    private fun setupEspView(espTabViewModel: EspSharedViewModel) {
+        val predictionView = PredictionView(this, espTabViewModel)
+        windowManager.addView(predictionView, predictionView.layoutParams)
+        this.predictionView = predictionView
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setupFloatingMenu(aimTabViewModel: AimTabViewModel, espTabViewModel: EspTabViewModel) {
+    private fun setupFloatingMenu(aimTabViewModel: AimTabViewModel, espSharedViewModel: EspSharedViewModel) {
         val aimTab = AimTab(this, aimTabViewModel)
-        val espTab = EspTab(this, espTabViewModel)
+        val espTab = EspTab(this, espSharedViewModel)
         val otherTab = OtherTab(this)
         val floatingMenu = FloatingMenu(this, aimTab, espTab, otherTab)
         floatingMenu.setOnTouchListener(
@@ -85,41 +93,28 @@ class PredictorService : Service() {
         this.floatingMenu = floatingMenu
     }
 
-    private fun setupNativeBridge(tablePosition: TablePosition) {
+    private fun setupNativeBridge() {
         // getPocketPositionsInScreen() should be called before
         // setEspView() to avoid wrong results in EspView.onDraw()
-        espView.getPocketPositionsInScreen(tablePosition)
-        NativeBridge.setEspView(espView)
-    }
-
-    //TODO Refactor this
-    private fun startTablePositionSetup(tablePositionViewModel: TablePositionViewModel) {
-        tablePositionView = TablePositionView(this, tablePositionViewModel)
-        tablePositionView!!.onTablePositionSavedListener = object : OnTablePositionSavedListener {
-            override fun onTablePositionSaved() {
-                removeTablePositionSetup()
-                startPredictor()
-            }
+        predictionView?.let {
+            NativeBridge.setEspView(it)
         }
-        tablePositionEspView = TablePositionEspView(this, tablePositionViewModel)
-        windowManager.addView(tablePositionEspView, tablePositionEspView!!.layoutParams)
-        windowManager.addView(tablePositionView, tablePositionView!!.layoutParams)
     }
 
     private fun removeTablePositionSetup() {
-        tablePositionView?.let {
+        tablePositionSetupView?.let {
             windowManager.removeView(it)
         }
-        tablePositionView = null
-        tablePositionEspView?.let {
+        tablePositionSetupView = null
+        tableShapeView?.let {
             windowManager.removeView(it)
         }
-        tablePositionEspView = null
+        tableShapeView = null
     }
 
     private fun removePredictor() {
         windowManager.removeView(floatingMenu)
-        windowManager.removeView(espView)
+        windowManager.removeView(predictionView)
     }
 
     override fun onDestroy() {

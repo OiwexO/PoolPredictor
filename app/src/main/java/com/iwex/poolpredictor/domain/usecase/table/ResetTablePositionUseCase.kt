@@ -1,4 +1,4 @@
-package com.iwex.poolpredictor.domain.usecase.menu.tabs
+package com.iwex.poolpredictor.domain.usecase.table
 
 import com.iwex.poolpredictor.domain.repository.TablePositionRepository
 

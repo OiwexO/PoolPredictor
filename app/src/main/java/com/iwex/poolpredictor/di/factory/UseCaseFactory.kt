@@ -3,9 +3,11 @@ package com.iwex.poolpredictor.di.factory
 import android.content.Context
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetAimSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspSettingsUseCase
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.ResetTablePositionUseCase
+import com.iwex.poolpredictor.domain.usecase.table.ResetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveAimSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspSettingsUseCase
+import com.iwex.poolpredictor.domain.usecase.native.SetTablePositionNativeUseCase
+import com.iwex.poolpredictor.domain.usecase.native.UpdateAimSettingsNativeUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetIsTableSetUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.table.SaveTablePositionUseCase
@@ -22,10 +24,6 @@ class UseCaseFactory private constructor(context: Context){
         GetEspSettingsUseCase(repositoryFactory.menuSettingsRepository)
     }
 
-    val resetTablePositionUseCase: ResetTablePositionUseCase by lazy {
-        ResetTablePositionUseCase(repositoryFactory.tablePositionRepository)
-    }
-
     val saveAimSettingsUseCase: SaveAimSettingsUseCase by lazy {
         SaveAimSettingsUseCase(repositoryFactory.menuSettingsRepository)
     }
@@ -34,12 +32,24 @@ class UseCaseFactory private constructor(context: Context){
         SaveEspSettingsUseCase(repositoryFactory.menuSettingsRepository)
     }
 
+    val setTablePositionNativeUseCase: SetTablePositionNativeUseCase by lazy {
+        SetTablePositionNativeUseCase(repositoryFactory.nativeRepository)
+    }
+
+    val updateAimSettingsNativeUseCase: UpdateAimSettingsNativeUseCase by lazy {
+        UpdateAimSettingsNativeUseCase(repositoryFactory.nativeRepository)
+    }
+
     val getIsTableSetUseCase: GetIsTableSetUseCase by lazy {
         GetIsTableSetUseCase(repositoryFactory.tablePositionRepository)
     }
 
     val getTablePositionUseCase: GetTablePositionUseCase by lazy {
         GetTablePositionUseCase(repositoryFactory.tablePositionRepository)
+    }
+
+    val resetTablePositionUseCase: ResetTablePositionUseCase by lazy {
+        ResetTablePositionUseCase(repositoryFactory.tablePositionRepository)
     }
 
     val saveTablePositionUseCase: SaveTablePositionUseCase by lazy {

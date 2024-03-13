@@ -11,13 +11,11 @@ class FloatingMenuTouchListener(
     private val scaledTouchSlop: Float,
     private val onViewMoveListener: (View, WindowManager.LayoutParams) -> Unit
 ) : View.OnTouchListener {
+
     private var initialTouchX = 0f
     private var initialTouchY = 0f
     private var initialX = 0
     private var initialY = 0
-
-    private val minAlpha = 0.5f
-    private val maxAlpha = 1.0f
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
@@ -31,7 +29,7 @@ class FloatingMenuTouchListener(
     }
 
     private fun handleDown(view:View, motionEvent: MotionEvent) {
-        view.animate().alpha(minAlpha)
+        view.animate().alpha(ALPHA_MIN)
         initialX = layoutParams.x
         initialY = layoutParams.y
         initialTouchX = motionEvent.rawX
@@ -39,7 +37,7 @@ class FloatingMenuTouchListener(
     }
 
     private fun handleUp(view:View, motionEvent: MotionEvent) {
-        view.animate().alpha(maxAlpha)
+        view.animate().alpha(ALPHA_MAX)
         val deltaX = (motionEvent.rawX - initialTouchX).absoluteValue
         val deltaY = (motionEvent.rawY - initialTouchY).absoluteValue
         // Check whether it's a swipe or click event
@@ -59,7 +57,13 @@ class FloatingMenuTouchListener(
     }
 
     private fun handleCancel(view:View) {
-        view.animate().alpha(maxAlpha)
+        view.animate().alpha(ALPHA_MAX)
+    }
+
+    companion object {
+
+        const val ALPHA_MIN = 0.5f
+        const val ALPHA_MAX = 1f
     }
 
 }

@@ -22,18 +22,29 @@ private:
     static void initEmptyEspData();
 
     // AimTabViewModel methods
-    static void setDrawLines(JNIEnv*, jobject, jboolean value);
-    static void setDrawShotState(JNIEnv*, jobject, jboolean value);
-    static void setDrawOpponentsLines(JNIEnv*, jobject, jboolean value);
-    static void setPreciseTrajectoriesEnabled(JNIEnv*, jobject, jboolean value);
-    static void setCuePower(JNIEnv*, jobject, jint power);
-    static void setCueSpin(JNIEnv*, jobject, jint spin);
+    static void updateAimSettings(
+            JNIEnv*,
+            jclass,
+            jboolean drawLinesEnabled,
+            jboolean drawShotStateEnabled,
+            jboolean drawOpponentsLinesEnabled,
+            jboolean preciseTrajectoriesEnabled,
+            jint cuePower,
+            jint cueSpin
+            );
 
     // PredictorService methods
-    static jfloatArray getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint top, jint right, jint bottom);
+    static jfloatArray getPocketPositionsInScreen(
+            JNIEnv* env,
+            jclass,
+            jfloat left,
+            jfloat top,
+            jfloat right,
+            jfloat bottom
+            );
 
     // creates a GlobalRef for EspView instance, starts predictorThread()
-    static void setEspView(JNIEnv* env, jobject, jobject espView);
+    static void setEspView(JNIEnv* env, jclass, jobject espView);
 
     // obtains fun updateEspData(data: FloatArray) method ID
     static int setUpdateEspDataMethodId(JNIEnv* env);
@@ -47,7 +58,7 @@ private:
     // releases GlobalRef to mEspView
     static void releaseGlobalRefs(JNIEnv* env);
 
-    static void exitThread(JNIEnv*, jobject);
+    static void exitThread(JNIEnv*, jclass);
 
 public:
     static int registerNativeMethods(JNIEnv* env);

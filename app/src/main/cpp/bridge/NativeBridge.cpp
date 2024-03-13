@@ -81,35 +81,27 @@ void NativeBridge::initEmptyEspData() {
 }
 
 // AimTabViewModel methods
-void NativeBridge::setDrawLines(JNIEnv*, jobject, jboolean value) {
-    GlobalSettings::isDrawLinesEnabled = value;
-}
-
-void NativeBridge::setDrawShotState(JNIEnv*, jobject, jboolean value) {
-    GlobalSettings::isDrawShotStateEnabled = value;
-}
-
-void NativeBridge::setDrawOpponentsLines(JNIEnv*, jobject, jboolean value) {
-    GlobalSettings::isDrawOpponentsLinesEnabled = value;
-}
-
-void NativeBridge::setPreciseTrajectoriesEnabled(JNIEnv*, jobject, jboolean value) {
-    GlobalSettings::isPreciseTrajectoriesEnabled = value;
-}
-
-void NativeBridge::setCuePower(JNIEnv*, jobject, jint power) {
-    GlobalSettings::cuePower = power;
-    MemoryManager::CueProperties::setCuePower(GlobalSettings::cuePower);
-}
-
-void NativeBridge::setCueSpin(JNIEnv*, jobject, jint spin) {
-    GlobalSettings::cueSpin = spin;
-    MemoryManager::CueProperties::setCueSpin(GlobalSettings::cueSpin);
+void NativeBridge::updateAimSettings(
+        JNIEnv*,
+        jclass,
+        jboolean drawLinesEnabled,
+        jboolean drawShotStateEnabled,
+        jboolean drawOpponentsLinesEnabled,
+        jboolean preciseTrajectoriesEnabled,
+        jint cuePower,
+        jint cueSpin
+) {
+    GlobalSettings::isDrawLinesEnabled = drawLinesEnabled;
+    GlobalSettings::isDrawShotStateEnabled = drawShotStateEnabled;
+    GlobalSettings::isDrawOpponentsLinesEnabled = drawOpponentsLinesEnabled;
+    GlobalSettings::isPreciseTrajectoriesEnabled = preciseTrajectoriesEnabled;
+    GlobalSettings::cuePower = cuePower;
+    GlobalSettings::cueSpin = cueSpin;
 }
 
 // PredictorService methods
-jfloatArray NativeBridge::getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint, jint right, jint bottom) {
-//    LOGD(TAG, "left: %d top: %d right: %d bottom: %d", left, top, right, bottom);
+jfloatArray NativeBridge::getPocketPositionsInScreen(JNIEnv* env, jclass, jfloat left, jfloat, jfloat right, jfloat bottom) {
+//    LOGD(TAG, "left: %f top: %f right: %f bottom: %f", left, top, right, bottom);
     Point2D::setTableData(left, right, bottom);
     float* pocketPositions = TableProperties::getPocketPositionsInScreen();
     jfloatArray jPocketPositions = env->NewFloatArray(TABLE_POCKETS_COUNT * 2);
@@ -118,7 +110,7 @@ jfloatArray NativeBridge::getPocketPositionsInScreen(JNIEnv* env, jobject, jint 
     return jPocketPositions;
 }
 
-void NativeBridge::setEspView(JNIEnv* env, jobject, jobject espView) {
+void NativeBridge::setEspView(JNIEnv* env, jclass, jobject espView) {
     env->GetJavaVM(&mJvm);
     mEspView = env->NewGlobalRef(espView);
     if (setUpdateEspDataMethodId(env) != JNI_OK) {
@@ -167,7 +159,7 @@ void NativeBridge::releaseGlobalRefs(JNIEnv *env) {
     }
 }
 
-void NativeBridge::exitThread(JNIEnv*, jobject) {
+void NativeBridge::exitThread(JNIEnv*, jclass) {
     isShouldRunThread = false;
 }
 
@@ -183,12 +175,7 @@ int NativeBridge::registerNativeMethods(JNIEnv* env) {
     }
     JNINativeMethod methods[] = {
             // AimTabViewModel native methods
-            {METHOD_SET_DRAW_LINES,                   SIG_SET_DRAW_LINES,                   reinterpret_cast<void*>(NativeBridge::setDrawLines)},
-            {METHOD_SET_DRAW_SHOT_STATE,              SIG_SET_DRAW_SHOT_STATE,              reinterpret_cast<void*>(NativeBridge::setDrawShotState)},
-            {METHOD_SET_DRAW_OPPONENTS_LINES,         SIG_SET_DRAW_OPPONENTS_LINES,         reinterpret_cast<void*>(NativeBridge::setDrawOpponentsLines)},
-            {METHOD_SET_PRECISE_TRAJECTORIES_ENABLED, SIG_SET_PRECISE_TRAJECTORIES_ENABLED, reinterpret_cast<void *>(NativeBridge::setPreciseTrajectoriesEnabled)},
-            {METHOD_SET_CUE_POWER,                    SIG_SET_CUE_POWER,                    reinterpret_cast<void*>(NativeBridge::setCuePower)},
-            {METHOD_SET_CUE_SPIN,                     SIG_SET_CUE_SPIN,                     reinterpret_cast<void*>(NativeBridge::setCueSpin)},
+            {METHOD_UPDATE_AIM_SETTINGS,              SIG_UPDATE_AIM_SETTINGS,              reinterpret_cast<void*>(NativeBridge::updateAimSettings)},
 
             // OtherTabViewModel native methods
             {METHOD_EXIT_THREAD,                      SIG_EXIT_THREAD,                      reinterpret_cast<void*>(NativeBridge::exitThread)},

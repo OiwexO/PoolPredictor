@@ -1,4 +1,4 @@
-package com.iwex.poolpredictor.presentation.viewmodel
+package com.iwex.poolpredictor.presentation.viewmodel.esp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import com.iwex.poolpredictor.domain.model.EspParameters
 import com.iwex.poolpredictor.domain.model.EspSettings
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspSettingsUseCase
-import com.iwex.poolpredictor.domain.usecase.menu.tabs.ResetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspSettingsUseCase
+import com.iwex.poolpredictor.domain.usecase.table.ResetTablePositionUseCase
 
-class EspTabViewModel(
+class EspSharedViewModel(
     private val getEspSettingsUseCase: GetEspSettingsUseCase,
     private val saveEspSettingsUseCase: SaveEspSettingsUseCase,
     private val resetTablePositionUseCase: ResetTablePositionUseCase
-) : ViewModel() {
+) : ViewModel(), EspTabViewModel, PredictionViewModel {
 
     private var espSettings = getEspSettingsUseCase()
         set(value) {
@@ -23,42 +23,40 @@ class EspTabViewModel(
 
     private val _espParameters = MutableLiveData(EspParameters(espSettings))
 
-    val espParameters: LiveData<EspParameters>
+    override val espParameters: LiveData<EspParameters>
         get() = _espParameters
 
-    fun getEspSettings(): EspSettings {
-        return espSettings
-    }
+    override fun getEspSettings(): EspSettings = espSettings
 
-    fun onLineWidthChange(width: Int) {
+    override fun onLineWidthChange(width: Int) {
         espSettings = espSettings.copy(lineWidth = width)
     }
 
-    fun onBallRadiusChange(radius: Int) {
+    override fun onBallRadiusChange(radius: Int) {
         espSettings = espSettings.copy(ballRadius = radius)
     }
 
-    fun onTrajectoryOpacityChange(opacity: Int) {
+    override fun onTrajectoryOpacityChange(opacity: Int) {
         espSettings = espSettings.copy(trajectoryOpacity = opacity)
     }
 
-    fun onShotStateCircleWidthChange(width: Int) {
+    override fun onShotStateCircleWidthChange(width: Int) {
         espSettings = espSettings.copy(shotStateCircleWidth = width)
     }
 
-    fun onShotStateCircleRadiusChange(radius: Int) {
+    override fun onShotStateCircleRadiusChange(radius: Int) {
         espSettings = espSettings.copy(shotStateCircleRadius = radius)
     }
 
-    fun onShotStateCircleOpacityChange(opacity: Int) {
+    override fun onShotStateCircleOpacityChange(opacity: Int) {
         espSettings = espSettings.copy(shotStateCircleOpacity = opacity)
     }
 
-    fun onResetTableListener() {
+    override fun onResetTableListener() {
         resetTablePositionUseCase()
     }
 
-    fun saveState() {
+    override fun saveEspSettings() {
         saveEspSettingsUseCase(espSettings)
     }
 

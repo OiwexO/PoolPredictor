@@ -32,7 +32,7 @@
 
 #define SIG_EXIT_THREAD "()V"
 
-#define SIG_SET_ESP_VIEW "(Lcom/iwex/poolpredictor/presentation/view/EspView;)V"
+#define SIG_SET_ESP_VIEW "(Lcom/iwex/poolpredictor/presentation/view/PredictionView;)V"
 
 #define SIG_GET_POCKET_POSITIONS_IN_SCREEN "(FFFF)[F"
 

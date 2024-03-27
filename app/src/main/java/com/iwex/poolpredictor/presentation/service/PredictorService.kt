@@ -4,11 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.view.ViewConfiguration
 import android.view.WindowManager
 import android.widget.Toast
-import com.iwex.poolpredictor.data.NativeBridge
 import com.iwex.poolpredictor.di.factory.ViewModelFactory
-import com.iwex.poolpredictor.presentation.resource.Dimensions
 import com.iwex.poolpredictor.presentation.view.PredictionView
 import com.iwex.poolpredictor.presentation.view.menu.FloatingMenu
 import com.iwex.poolpredictor.presentation.view.menu.FloatingMenuTouchListener
@@ -16,8 +15,8 @@ import com.iwex.poolpredictor.presentation.view.menu.tabs.AimTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.EspTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.OtherTab
 import com.iwex.poolpredictor.presentation.view.tablePosition.OnTablePositionSetListener
-import com.iwex.poolpredictor.presentation.view.tablePosition.TableShapeView
 import com.iwex.poolpredictor.presentation.view.tablePosition.TablePositionSetupView
+import com.iwex.poolpredictor.presentation.view.tablePosition.TableShapeView
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
 import com.iwex.poolpredictor.presentation.viewmodel.esp.EspSharedViewModel
 
@@ -68,7 +67,6 @@ class PredictorService : Service() {
         val aimTabViewModel = viewModelFactory.aimTabViewModel
         setupEspView(espTabViewModel)
         setupFloatingMenu(aimTabViewModel, espTabViewModel)
-        setupNativeBridge()
     }
 
     private fun setupEspView(espTabViewModel: EspSharedViewModel) {
@@ -86,19 +84,11 @@ class PredictorService : Service() {
         floatingMenu.setOnTouchListener(
             FloatingMenuTouchListener(
                 floatingMenu.layoutParams,
-                Dimensions.getInstance(this).scaledTouchSlop
+                ViewConfiguration.get(this).scaledTouchSlop.toFloat()
             ) { view, layoutParams -> windowManager.updateViewLayout(view, layoutParams) }
         )
         windowManager.addView(floatingMenu, floatingMenu.layoutParams)
         this.floatingMenu = floatingMenu
-    }
-
-    private fun setupNativeBridge() {
-        // getPocketPositionsInScreen() should be called before
-        // setEspView() to avoid wrong results in EspView.onDraw()
-        predictionView?.let {
-            NativeBridge.setEspView(it)
-        }
     }
 
     private fun removeTablePositionSetup() {

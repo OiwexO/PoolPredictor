@@ -37,6 +37,10 @@ class PredictionView(
             updateEspParameters()
             invalidate()
         }
+        viewModel.predictionData.observeForever {
+            espData = it
+            invalidate()
+        }
     }
 
     private fun initPaints() {
@@ -76,13 +80,6 @@ class PredictionView(
 
     }
 
-    // called from cpp/bridge/NativeBridge/predictorThread only
-    @Suppress("unused")
-    fun updateEspData(data: FloatArray) {
-        espData = data
-        postInvalidate()
-    }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         /**
@@ -100,7 +97,6 @@ class PredictionView(
          *            pocketState: 0.0f or 1.0f shows if a valid ball has been potted to this pocket, pocketX, pocketY
          */
         // draw trajectories
-        val espData = espData.clone() //TODO remove array cloning in onDraw
         var index = 0
         val isTrajectoryEnabled = (espData[index++] == 1.0f)
         if (isTrajectoryEnabled) {

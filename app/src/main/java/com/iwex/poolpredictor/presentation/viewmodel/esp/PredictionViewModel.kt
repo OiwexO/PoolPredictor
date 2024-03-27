@@ -6,4 +6,6 @@ import com.iwex.poolpredictor.domain.model.EspParameters
 interface PredictionViewModel {
 
     val espParameters: LiveData<EspParameters>
+
+    val predictionData: LiveData<FloatArray>
 }

@@ -52,6 +52,7 @@ class OtherTab(context: Context) : BaseMenuTab(context) {
             Toast.makeText(context, TOAST_LONG_CLICK_TO_EXIT, Toast.LENGTH_LONG).show()
         }
         exitButton.setOnLongClickListener {
+            //TODO remove dependency on data layer
             NativeBridge.exitThread()
             val serviceIntent = Intent(context, PredictorService::class.java)
             context.stopService(serviceIntent)

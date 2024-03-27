@@ -22,7 +22,8 @@ class ViewModelFactory private constructor(context: Context) {
         EspSharedViewModel(
             useCaseFactory.getEspSettingsUseCase,
             useCaseFactory.saveEspSettingsUseCase,
-            useCaseFactory.resetTablePositionUseCase
+            useCaseFactory.resetTablePositionUseCase,
+            useCaseFactory.getPredictionDataUseCase
         )
     }
 

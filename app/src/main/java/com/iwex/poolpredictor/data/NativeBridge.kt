@@ -1,6 +1,6 @@
 package com.iwex.poolpredictor.data
 
-import com.iwex.poolpredictor.presentation.view.PredictionView
+import com.iwex.poolpredictor.domain.repository.NativeRepository
 
 @Suppress("KotlinJniMissingFunction")
 class NativeBridge {
@@ -25,7 +25,7 @@ class NativeBridge {
         external fun exitThread()
 
         @JvmStatic
-        external fun setEspView(predictionView: PredictionView)
+        external fun setNativeRepository(nativeRepository: NativeRepository)
 
         @JvmStatic
         external fun getPocketPositionsInScreen(left: Float, top: Float, right: Float, bottom: Float): FloatArray

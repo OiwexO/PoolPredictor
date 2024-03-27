@@ -14,9 +14,9 @@ const char* NativeBridge::TAG = "jni_NativeBridge";
 bool NativeBridge::isShouldRunThread = true;
 JavaVM* NativeBridge::mJvm = nullptr;
 JNIEnv* NativeBridge::mEnv = nullptr;
-jobject NativeBridge::mEspView = nullptr;
-jmethodID NativeBridge::mUpdateEspData = nullptr;
-jfloatArray NativeBridge::mEmptyEspData = nullptr;
+jobject NativeBridge::mNativeRepository = nullptr;
+jmethodID NativeBridge::mUpdatePredictionDataData = nullptr;
+jfloatArray NativeBridge::mEmptyPredictionData = nullptr;
 
 void* NativeBridge::cuePropertiesThread(void*) {
     while (NativeBridge::isShouldRunThread) {
@@ -35,14 +35,15 @@ void* NativeBridge::predictorThread(void*) {
         LOGE(TAG, "Could not attach predictorThread");
         return nullptr;
     }
-    NativeBridge::initEmptyEspData();
+    NativeBridge::initEmptyPredictionData();
     bool isShouldRedraw;
     if (GlobalSettings::IS_DEBUG) {
         LOGD(TAG, "DEBUG build");
         while (NativeBridge::isShouldRunThread) {
             isShouldRedraw = gPrediction->mockPredictShotResult();
             if (isShouldRedraw) {
-                NativeBridge::updateEspData(gPrediction->getEspData(), gPrediction->getEspDataSize());
+                NativeBridge::updatePredictionData(gPrediction->getEspData(),
+                                                   gPrediction->getEspDataSize());
             }
         }
     } else {
@@ -58,11 +59,12 @@ void* NativeBridge::predictorThread(void*) {
                 if (MemoryManager::GameManager::isValidGameState(GlobalSettings::isDrawOpponentsLinesEnabled)) {
                     isShouldRedraw = gPrediction->predictShotResult();
                     if (isShouldRedraw) {
-                        NativeBridge::updateEspData(gPrediction->getEspData(), gPrediction->getEspDataSize());
+                        NativeBridge::updatePredictionData(gPrediction->getEspData(),
+                                                           gPrediction->getEspDataSize());
                     }
                 }
             } else {
-                NativeBridge::clearEspData();
+                NativeBridge::clearPredictionData();
                 sleep(1);
             }
         }
@@ -73,11 +75,11 @@ void* NativeBridge::predictorThread(void*) {
     return nullptr;
 }
 
-void NativeBridge::initEmptyEspData() {
-    mEmptyEspData = mEnv->NewFloatArray(2);
+void NativeBridge::initEmptyPredictionData() {
+    mEmptyPredictionData = mEnv->NewFloatArray(2);
     jfloat initialValues[2] = {0.0f, 0.0f};
-    mEnv->SetFloatArrayRegion(mEmptyEspData, 0, 2, initialValues);
-    mEmptyEspData = (jfloatArray) mEnv->NewGlobalRef(mEmptyEspData);
+    mEnv->SetFloatArrayRegion(mEmptyPredictionData, 0, 2, initialValues);
+    mEmptyPredictionData = (jfloatArray) mEnv->NewGlobalRef(mEmptyPredictionData);
 }
 
 // AimTabViewModel methods
@@ -110,10 +112,10 @@ jfloatArray NativeBridge::getPocketPositionsInScreen(JNIEnv* env, jclass, jfloat
     return jPocketPositions;
 }
 
-void NativeBridge::setEspView(JNIEnv* env, jclass, jobject espView) {
+void NativeBridge::setNativeRepository(JNIEnv* env, jclass, jobject nativeRepository) {
     env->GetJavaVM(&mJvm);
-    mEspView = env->NewGlobalRef(espView);
-    if (setUpdateEspDataMethodId(env) != JNI_OK) {
+    mNativeRepository = env->NewGlobalRef(nativeRepository);
+    if (setUpdatePredictionDataMethodId(env) != JNI_OK) {
         LOGE(TAG, "Could not get methodID");
         releaseGlobalRefs(env);
         return;
@@ -122,40 +124,40 @@ void NativeBridge::setEspView(JNIEnv* env, jclass, jobject espView) {
     pthread_create(&thread, nullptr, predictorThread, nullptr);
 }
 
-int NativeBridge::setUpdateEspDataMethodId(JNIEnv* env) {
-    jclass espViewClass = env->GetObjectClass(mEspView);
-    if (!espViewClass) {
-        LOGE(TAG, "Could not find desired View class");
+int NativeBridge::setUpdatePredictionDataMethodId(JNIEnv* env) {
+    jclass nativeRepositoryClass = env->GetObjectClass(mNativeRepository);
+    if (!nativeRepositoryClass) {
+        LOGE(TAG, "Could not find NativeRepository class");
         return JNI_ERR;
     }
-    mUpdateEspData = env->GetMethodID(espViewClass, METHOD_UPDATE_ESP_DATA,SIG_UPDATE_ESP_DATA);
-    if (!mUpdateEspData) {
-        LOGE(TAG, "Could not find desired method in View class");
+    mUpdatePredictionDataData = env->GetMethodID(nativeRepositoryClass, METHOD_UPDATE_PREDICTION_DATA, SIG_UPDATE_PREDICTION_DATA);
+    if (!mUpdatePredictionDataData) {
+        LOGE(TAG, "Could not find updatePredictionData method in the NativeRepository class");
         return JNI_ERR;
     }
     return JNI_OK;
 }
 
-void NativeBridge::updateEspData(float* espData, int size) {
-    jfloatArray jEspData = mEnv->NewFloatArray(size);
-    mEnv->SetFloatArrayRegion(jEspData, 0, size, &(espData[0]));
-    delete[] espData;
-    mEnv->CallVoidMethod(mEspView, mUpdateEspData, jEspData);
-    mEnv->DeleteLocalRef(jEspData);
+void NativeBridge::updatePredictionData(float* predictionData, int size) {
+    jfloatArray jPredictionData = mEnv->NewFloatArray(size);
+    mEnv->SetFloatArrayRegion(jPredictionData, 0, size, &(predictionData[0]));
+    delete[] predictionData;
+    mEnv->CallVoidMethod(mNativeRepository, mUpdatePredictionDataData, jPredictionData);
+    mEnv->DeleteLocalRef(jPredictionData);
 }
 
-void NativeBridge::clearEspData() {
-    mEnv->CallVoidMethod(mEspView, mUpdateEspData, mEmptyEspData);
+void NativeBridge::clearPredictionData() {
+    mEnv->CallVoidMethod(mNativeRepository, mUpdatePredictionDataData, mEmptyPredictionData);
 }
 
 void NativeBridge::releaseGlobalRefs(JNIEnv *env) {
-    if (mEspView != nullptr) {
-        env->DeleteGlobalRef(mEspView);
-        mEspView = nullptr;
+    if (mNativeRepository != nullptr) {
+        env->DeleteGlobalRef(mNativeRepository);
+        mNativeRepository = nullptr;
     }
-    if (mEmptyEspData != nullptr) {
-        env->DeleteGlobalRef(mEmptyEspData);
-        mEmptyEspData = nullptr;
+    if (mEmptyPredictionData != nullptr) {
+        env->DeleteGlobalRef(mEmptyPredictionData);
+        mEmptyPredictionData = nullptr;
     }
 }
 
@@ -175,14 +177,14 @@ int NativeBridge::registerNativeMethods(JNIEnv* env) {
     }
     JNINativeMethod methods[] = {
             // AimTabViewModel native methods
-            {METHOD_UPDATE_AIM_SETTINGS,              SIG_UPDATE_AIM_SETTINGS,              reinterpret_cast<void*>(NativeBridge::updateAimSettings)},
+            {METHOD_UPDATE_AIM_SETTINGS,            SIG_UPDATE_AIM_SETTINGS,            reinterpret_cast<void*>(NativeBridge::updateAimSettings)},
 
             // OtherTabViewModel native methods
-            {METHOD_EXIT_THREAD,                      SIG_EXIT_THREAD,                      reinterpret_cast<void*>(NativeBridge::exitThread)},
+            {METHOD_EXIT_THREAD,                    SIG_EXIT_THREAD,                    reinterpret_cast<void*>(NativeBridge::exitThread)},
 
             // PredictorService native methods
-            {METHOD_SET_ESP_VIEW,                     SIG_SET_ESP_VIEW,                     reinterpret_cast<void*>(NativeBridge::setEspView)},
-            {METHOD_GET_POCKET_POSITIONS_IN_SCREEN,   SIG_GET_POCKET_POSITIONS_IN_SCREEN,   reinterpret_cast<void*>(NativeBridge::getPocketPositionsInScreen)},
+            {METHOD_SET_NATIVE_REPOSITORY,          SIG_SET_NATIVE_REPOSITORY, reinterpret_cast<void *>(NativeBridge::setNativeRepository)},
+            {METHOD_GET_POCKET_POSITIONS_IN_SCREEN, SIG_GET_POCKET_POSITIONS_IN_SCREEN, reinterpret_cast<void*>(NativeBridge::getPocketPositionsInScreen)},
 
             //
 

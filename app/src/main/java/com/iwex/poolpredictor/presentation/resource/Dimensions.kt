@@ -3,7 +3,6 @@ package com.iwex.poolpredictor.presentation.resource
 import android.content.Context
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.view.ViewConfiguration
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -14,8 +13,6 @@ class Dimensions private constructor(context: Context) {
 
     val displayHeight: Int = min(displayMetrics.widthPixels, displayMetrics.heightPixels)
     val displayWidth: Int = max(displayMetrics.widthPixels, displayMetrics.heightPixels)
-
-    val scaledTouchSlop: Float = ViewConfiguration.get(context).scaledTouchSlop.toFloat()
 
     val iconSizePx: Int = dpToPx(65f).roundToInt()
     val iconPositionX: Int = max(displayMetrics.heightPixels, displayMetrics.widthPixels)

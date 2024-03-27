@@ -1,7 +1,6 @@
 package com.iwex.poolpredictor.presentation.activity
 
 import android.os.Bundle
-import android.os.StrictMode
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {

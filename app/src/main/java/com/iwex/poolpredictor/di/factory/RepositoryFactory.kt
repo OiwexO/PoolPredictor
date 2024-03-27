@@ -2,7 +2,6 @@ package com.iwex.poolpredictor.di.factory
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.iwex.poolpredictor.data.NativeBridge
 import com.iwex.poolpredictor.data.local.repository.MenuSettingsRepositoryImpl
 import com.iwex.poolpredictor.data.local.repository.NativeRepositoryImpl
 import com.iwex.poolpredictor.data.local.repository.TablePositionRepositoryImpl

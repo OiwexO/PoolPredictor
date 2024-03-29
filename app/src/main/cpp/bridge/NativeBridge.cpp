@@ -15,7 +15,7 @@ bool NativeBridge::isShouldRunThread = true;
 JavaVM* NativeBridge::mJvm = nullptr;
 JNIEnv* NativeBridge::mEnv = nullptr;
 jobject NativeBridge::mNativeRepository = nullptr;
-jmethodID NativeBridge::mUpdatePredictionDataData = nullptr;
+jmethodID NativeBridge::mUpdatePredictionData = nullptr;
 jfloatArray NativeBridge::mEmptyPredictionData = nullptr;
 
 void* NativeBridge::cuePropertiesThread(void*) {
@@ -42,8 +42,10 @@ void* NativeBridge::predictorThread(void*) {
         while (NativeBridge::isShouldRunThread) {
             isShouldRedraw = gPrediction->mockPredictShotResult();
             if (isShouldRedraw) {
-                NativeBridge::updatePredictionData(gPrediction->getEspData(),
-                                                   gPrediction->getEspDataSize());
+                NativeBridge::updatePredictionData(
+                        gPrediction->getEspData(),
+                        gPrediction->getEspDataSize()
+                );
             }
         }
     } else {
@@ -55,13 +57,13 @@ void* NativeBridge::predictorThread(void*) {
         pthread_t thread;
         pthread_create(&thread, nullptr, cuePropertiesThread, nullptr);
         while (NativeBridge::isShouldRunThread) {
-            if ((GlobalSettings::isDrawLinesEnabled || GlobalSettings::isDrawShotStateEnabled) && MemoryManager::MenuManager::isInGame()) {
-                if (MemoryManager::GameManager::isValidGameState(GlobalSettings::isDrawOpponentsLinesEnabled)) {
-                    isShouldRedraw = gPrediction->predictShotResult();
-                    if (isShouldRedraw) {
-                        NativeBridge::updatePredictionData(gPrediction->getEspData(),
-                                                           gPrediction->getEspDataSize());
-                    }
+            if (GlobalSettings::isDrawLinesEnabled || GlobalSettings::isDrawShotStateEnabled) {
+                isShouldRedraw = gPrediction->predictShotResult();
+                if (isShouldRedraw) {
+                    NativeBridge::updatePredictionData(
+                            gPrediction->getEspData(),
+                            gPrediction->getEspDataSize()
+                    );
                 }
             } else {
                 NativeBridge::clearPredictionData();
@@ -116,7 +118,6 @@ void NativeBridge::setNativeRepository(JNIEnv* env, jclass, jobject nativeReposi
     env->GetJavaVM(&mJvm);
     mNativeRepository = env->NewGlobalRef(nativeRepository);
     if (setUpdatePredictionDataMethodId(env) != JNI_OK) {
-        LOGE(TAG, "Could not get methodID");
         releaseGlobalRefs(env);
         return;
     }
@@ -130,8 +131,8 @@ int NativeBridge::setUpdatePredictionDataMethodId(JNIEnv* env) {
         LOGE(TAG, "Could not find NativeRepository class");
         return JNI_ERR;
     }
-    mUpdatePredictionDataData = env->GetMethodID(nativeRepositoryClass, METHOD_UPDATE_PREDICTION_DATA, SIG_UPDATE_PREDICTION_DATA);
-    if (!mUpdatePredictionDataData) {
+    mUpdatePredictionData = env->GetMethodID(nativeRepositoryClass, METHOD_UPDATE_PREDICTION_DATA, SIG_UPDATE_PREDICTION_DATA);
+    if (!mUpdatePredictionData) {
         LOGE(TAG, "Could not find updatePredictionData method in the NativeRepository class");
         return JNI_ERR;
     }
@@ -142,12 +143,12 @@ void NativeBridge::updatePredictionData(float* predictionData, int size) {
     jfloatArray jPredictionData = mEnv->NewFloatArray(size);
     mEnv->SetFloatArrayRegion(jPredictionData, 0, size, &(predictionData[0]));
     delete[] predictionData;
-    mEnv->CallVoidMethod(mNativeRepository, mUpdatePredictionDataData, jPredictionData);
+    mEnv->CallVoidMethod(mNativeRepository, mUpdatePredictionData, jPredictionData);
     mEnv->DeleteLocalRef(jPredictionData);
 }
 
 void NativeBridge::clearPredictionData() {
-    mEnv->CallVoidMethod(mNativeRepository, mUpdatePredictionDataData, mEmptyPredictionData);
+    mEnv->CallVoidMethod(mNativeRepository, mUpdatePredictionData, mEmptyPredictionData);
 }
 
 void NativeBridge::releaseGlobalRefs(JNIEnv *env) {
@@ -176,18 +177,10 @@ int NativeBridge::registerNativeMethods(JNIEnv* env) {
         return JNI_ERR;
     }
     JNINativeMethod methods[] = {
-            // AimTabViewModel native methods
             {METHOD_UPDATE_AIM_SETTINGS,            SIG_UPDATE_AIM_SETTINGS,            reinterpret_cast<void*>(NativeBridge::updateAimSettings)},
-
-            // OtherTabViewModel native methods
             {METHOD_EXIT_THREAD,                    SIG_EXIT_THREAD,                    reinterpret_cast<void*>(NativeBridge::exitThread)},
-
-            // PredictorService native methods
             {METHOD_SET_NATIVE_REPOSITORY,          SIG_SET_NATIVE_REPOSITORY, reinterpret_cast<void *>(NativeBridge::setNativeRepository)},
             {METHOD_GET_POCKET_POSITIONS_IN_SCREEN, SIG_GET_POCKET_POSITIONS_IN_SCREEN, reinterpret_cast<void*>(NativeBridge::getPocketPositionsInScreen)},
-
-            //
-
     };
     int nMethods = (sizeof(methods) / sizeof(methods[0]));
     int registrationResult = env->RegisterNatives(kotlinNativeBridgeClass, methods, nMethods);

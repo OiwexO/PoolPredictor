@@ -11,7 +11,7 @@ private:
     static JavaVM* mJvm;
     static JNIEnv* mEnv;
     static jobject mNativeRepository;
-    static jmethodID mUpdatePredictionDataData;
+    static jmethodID mUpdatePredictionData;
     static jfloatArray mEmptyPredictionData;
 
     // changes cue power and spin according to GlobalSettings

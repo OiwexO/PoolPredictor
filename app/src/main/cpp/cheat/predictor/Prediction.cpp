@@ -76,6 +76,9 @@ void Prediction::calculateEspDataSize() {
 }
 
 bool Prediction::predictShotResult() {
+    if (!MemoryManager::MenuManager::isInGame() || !MemoryManager::GameManager::isValidGameState(GlobalSettings::isDrawOpponentsLinesEnabled)) {
+        return false;
+    }
     double shotAngle = MemoryManager::VisualCue::getShotAngle();
     double shotPower = MemoryManager::VisualCue::getShotPower();
     Point2D shotSpin = MemoryManager::VisualCue::getShotSpin();

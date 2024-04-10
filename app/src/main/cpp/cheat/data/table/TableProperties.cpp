@@ -3,6 +3,8 @@
 #include <array>
 #include "TableProperties.h"
 
+ScreenPoint TableProperties::pocketPositionsInScreen[TABLE_POCKETS_COUNT];
+
 const std::array<Point2D, TABLE_POCKETS_COUNT>& TableProperties::getPockets() {
     static const std::array<Point2D, TABLE_POCKETS_COUNT> POCKET_POSITIONS = {
             Point2D(-130.8, -67.3),
@@ -67,15 +69,16 @@ const std::array<Point2D, TABLE_SHAPE_SIZE>& TableProperties::getTableShape() {
     return TABLE_SHAPE;
 }
 
-float* TableProperties::getPocketPositionsInScreen() {
-    float* pocketPositions = new float[TABLE_POCKETS_COUNT * 2];
+void TableProperties::initializePocketPositionsInScreen() {
     auto pockets = getPockets();
     for (int pocketIndex = 0; pocketIndex < TABLE_POCKETS_COUNT; ++pocketIndex) {
-        ScreenPoint screenPosition = pockets[pocketIndex].toScreen();
-        pocketPositions[pocketIndex] = screenPosition.x;
-        pocketPositions[pocketIndex + TABLE_POCKETS_COUNT] = screenPosition.y;
+        ScreenPoint pocketPositionInScreen = pockets[pocketIndex].toScreen();
+        pocketPositionsInScreen[pocketIndex] = pocketPositionInScreen;
     }
-    return pocketPositions;
+}
+
+ScreenPoint* TableProperties::getPocketPositionsInScreen() {
+    return pocketPositionsInScreen;
 }
 
 /*

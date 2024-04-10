@@ -7,7 +7,7 @@
 enum BallState : int {
     DEFAULT = 1,
     IN_POCKET = 2,
-    UNKNOWN = 3, // I'm not sure what shotState 3 means
+    UNKNOWN = 3,
     POTTED = 4,
     ERR_STATE = -8
 };
@@ -58,6 +58,8 @@ constexpr int TABLE_SHAPE_SIZE = 46;
 constexpr double POCKET_RADIUS = 8.0;
 
 constexpr double POCKET_RADIUS_SQUARE = POCKET_RADIUS * POCKET_RADIUS;
+
+constexpr int MAX_PREDICTION_DATA_SIZE = 50000;
 
 
 

@@ -10,44 +10,55 @@ private:
     static bool isShouldRunThread;
     static JavaVM* mJvm;
     static JNIEnv* mEnv;
-    static jobject mEspView;
-    static jmethodID mUpdateEspData;
-    static jfloatArray mEmptyEspData;
+    static jobject mNativeRepository;
+    static jmethodID mUpdatePredictionData;
+    static jfloatArray mEmptyPredictionData;
 
     // changes cue power and spin according to GlobalSettings
     static void* cuePropertiesThread(void*);
     // runs prediction and updates EspView
     static void* predictorThread(void*);
 
-    static void initEmptyEspData();
+    static void initEmptyPredictionData();
 
     // AimTabViewModel methods
-    static void setDrawLines(JNIEnv*, jobject, jboolean value);
-    static void setDrawShotState(JNIEnv*, jobject, jboolean value);
-    static void setDrawOpponentsLines(JNIEnv*, jobject, jboolean value);
-    static void setPreciseTrajectoriesEnabled(JNIEnv*, jobject, jboolean value);
-    static void setCuePower(JNIEnv*, jobject, jint power);
-    static void setCueSpin(JNIEnv*, jobject, jint spin);
+    static void updateAimSettings(
+            JNIEnv*,
+            jclass,
+            jboolean drawLinesEnabled,
+            jboolean drawShotStateEnabled,
+            jboolean drawOpponentsLinesEnabled,
+            jboolean preciseTrajectoriesEnabled,
+            jint cuePower,
+            jint cueSpin
+            );
 
     // PredictorService methods
-    static jfloatArray getPocketPositionsInScreen(JNIEnv* env, jobject, jint left, jint top, jint right, jint bottom);
+    static void setTablePosition(
+            JNIEnv*,
+            jclass,
+            jfloat left,
+            jfloat,
+            jfloat right,
+            jfloat bottom
+            );
 
-    // creates a GlobalRef for EspView instance, starts predictorThread()
-    static void setEspView(JNIEnv* env, jobject, jobject espView);
+    // creates a GlobalRef for NativeRepository instance, starts predictorThread()
+    static void setNativeRepository(JNIEnv* env, jclass, jobject nativeRepository);
 
-    // obtains fun updateEspData(data: FloatArray) method ID
-    static int setUpdateEspDataMethodId(JNIEnv* env);
+    // obtains fun updatePredictionData(predictionData: FloatArray) method ID
+    static int setUpdatePredictionDataMethodId(JNIEnv* env);
 
-    // updates EspView shotState (trajectories and shot shotState)
-    static void updateEspData(float* espData, int size);
+    // updates trajectories and shot state
+    static void updatePredictionData(float* predictionData, int size);
 
     // clears EspView
-    static void clearEspData();
+    static void clearPredictionData();
 
-    // releases GlobalRef to mEspView
+    // releases GlobalRef to mNativeRepository
     static void releaseGlobalRefs(JNIEnv* env);
 
-    static void exitThread(JNIEnv*, jobject);
+    static void exitThread(JNIEnv*, jclass);
 
 public:
     static int registerNativeMethods(JNIEnv* env);

@@ -16,13 +16,13 @@
         android:theme="@style/Theme.PoolPredictor"
         tools:targetApi="31">
         <service
-            android:name=".app.service.PredictorService"
+            android:name=".presentation.service.PredictorService"
             android:enabled="true"
             android:exported="false">
         </service>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.LauncherActivity" />
+        <activity android:name=".presentation.activity.LauncherActivity" />
     </application>
 
 </manifest>

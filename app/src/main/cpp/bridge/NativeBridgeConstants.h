@@ -4,8 +4,7 @@
 
 /* CLASS NAMES ===================================================================================*/
 
-#define CLASS_NATIVE_BRIDGE_KOTLIN "com/iwex/poolpredictor/app/NativeBridge$Companion"
-//#define CLASS_ESP_VIEW_KOTLIN "com/iwex/poolpredictor/app/view/EspView"
+#define CLASS_NATIVE_BRIDGE_KOTLIN "com/iwex/poolpredictor/data/NativeBridge"
 
 /*================================================================================================*/
 
@@ -13,23 +12,15 @@
 
 /* METHOD NAMES ==================================================================================*/
 
-// AimTabViewModel kotlin methods
-#define METHOD_SET_DRAW_LINES "setDrawLines"
-#define METHOD_SET_DRAW_SHOT_STATE "setDrawShotState"
-#define METHOD_SET_DRAW_OPPONENTS_LINES "setDrawOpponentsLines"
-#define METHOD_SET_PRECISE_TRAJECTORIES_ENABLED "setPreciseTrajectoriesEnabled"
-#define METHOD_SET_CUE_POWER "setCuePower"
-#define METHOD_SET_CUE_SPIN "setCueSpin"
+#define METHOD_UPDATE_AIM_SETTINGS "updateAimSettings"
 
-// OtherTabViewModel kotlin methods
 #define METHOD_EXIT_THREAD "exitThread"
 
-// PredictorService kotlin methods
-#define METHOD_SET_ESP_VIEW "setEspView"
-#define METHOD_GET_POCKET_POSITIONS_IN_SCREEN "getPocketPositionsInScreen"
+#define METHOD_SET_NATIVE_REPOSITORY "setNativeRepository"
 
-// EspView kotlin methods
-#define METHOD_UPDATE_ESP_DATA "updateEspData"
+#define METHOD_SET_TABLE_POSITION "setTablePosition"
+
+#define METHOD_UPDATE_PREDICTION_DATA "updatePredictionData"
 
 /*================================================================================================*/
 
@@ -37,22 +28,14 @@
 
 /* METHOD SIGNATURES =============================================================================*/
 
-// AimTabViewModel kotlin signatures
-#define SIG_SET_DRAW_LINES "(Z)V"
-#define SIG_SET_DRAW_SHOT_STATE "(Z)V"
-#define SIG_SET_DRAW_OPPONENTS_LINES "(Z)V"
-#define SIG_SET_PRECISE_TRAJECTORIES_ENABLED "(Z)V"
-#define SIG_SET_CUE_POWER "(I)V"
-#define SIG_SET_CUE_SPIN "(I)V"
+#define SIG_UPDATE_AIM_SETTINGS "(ZZZZII)V"
 
-// OtherTabViewModel kotlin methods
 #define SIG_EXIT_THREAD "()V"
 
-// PredictorService kotlin signatures
-#define SIG_SET_ESP_VIEW "(Lcom/iwex/poolpredictor/app/view/EspView;)V"
-#define SIG_GET_POCKET_POSITIONS_IN_SCREEN "(IIII)[F"
+#define SIG_SET_NATIVE_REPOSITORY "(Lcom/iwex/poolpredictor/domain/repository/NativeRepository;)V"
 
-// EspView kotlin methods
-#define SIG_UPDATE_ESP_DATA "([F)V"
+#define SIG_SET_TABLE_POSITION "(FFFF)V"
+
+#define SIG_UPDATE_PREDICTION_DATA "([F)V"
 
 /*================================================================================================*/

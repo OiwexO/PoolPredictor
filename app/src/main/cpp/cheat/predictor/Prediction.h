@@ -8,13 +8,12 @@
 class Prediction {
 public:
     static bool pocketStatus[TABLE_POCKETS_COUNT];
-//    Prediction() : espDataSize(0), espData(std::vector<float>()), guiData() {}
     Prediction() {}
     ~Prediction() {}
 
-    float* getEspData();
-    int getEspDataSize() {
-        return espDataSize;
+    float* getPredictionData();
+    int getPredictionDataSize() {
+        return predictionDataSize;
     }
     bool predictShotResult();
 
@@ -109,9 +108,11 @@ public:
     } guiData;
 
 private:
-    int espDataSize = 0;
+    int predictionDataSize = 0;
 
-    void calculateEspDataSize();
+    static float predictionData[MAX_PREDICTION_DATA_SIZE];
+
+    void calculatePredictionDataSize();
 
     // initializes balls' position, shotState, classification etc
     void initBalls();

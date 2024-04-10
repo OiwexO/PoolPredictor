@@ -38,7 +38,7 @@ Point2D &Point2D::operator=(const Point2D& other) {
     return *this;
 }
 
-void Point2D::setTableData(int tableLeft, int tableRight, int tableBottom) {
+void Point2D::setTableData(float tableLeft, float tableRight, float tableBottom) {
     Point2D::TABLE_LEFT = double (tableLeft);
     Point2D::TABLE_BOTTOM = double (tableBottom);
     Point2D::TABLE_SCALE = double (tableRight - tableLeft) / TABLE_WIDTH;

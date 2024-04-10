@@ -41,5 +41,5 @@ public:
     bool operator!=(const Point2D& other) const;
     Point2D& operator=(const Point2D& other);
 
-    static void setTableData(int tableLeft, int tableRight, int tableBottom);
+    static void setTableData(float tableLeft, float tableRight, float tableBottom);
 };

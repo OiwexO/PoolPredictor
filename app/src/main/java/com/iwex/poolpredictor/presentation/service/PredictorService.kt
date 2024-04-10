@@ -40,7 +40,6 @@ class PredictorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show()
         startTablePositionSetup()
     }
 
@@ -62,6 +61,7 @@ class PredictorService : Service() {
     }
 
     private fun startPredictor() {
+        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show()
         val viewModelFactory = ViewModelFactory.getInstance(this)
         val espTabViewModel = viewModelFactory.espSharedViewModel
         val aimTabViewModel = viewModelFactory.aimTabViewModel

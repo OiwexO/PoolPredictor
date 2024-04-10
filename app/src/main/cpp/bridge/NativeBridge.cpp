@@ -43,8 +43,8 @@ void* NativeBridge::predictorThread(void*) {
             isShouldRedraw = gPrediction->mockPredictShotResult();
             if (isShouldRedraw) {
                 NativeBridge::updatePredictionData(
-                        gPrediction->getEspData(),
-                        gPrediction->getEspDataSize()
+                        gPrediction->getPredictionData(),
+                        gPrediction->getPredictionDataSize()
                 );
             }
         }
@@ -61,8 +61,8 @@ void* NativeBridge::predictorThread(void*) {
                 isShouldRedraw = gPrediction->predictShotResult();
                 if (isShouldRedraw) {
                     NativeBridge::updatePredictionData(
-                            gPrediction->getEspData(),
-                            gPrediction->getEspDataSize()
+                            gPrediction->getPredictionData(),
+                            gPrediction->getPredictionDataSize()
                     );
                 }
             } else {
@@ -104,14 +104,10 @@ void NativeBridge::updateAimSettings(
 }
 
 // PredictorService methods
-jfloatArray NativeBridge::getPocketPositionsInScreen(JNIEnv* env, jclass, jfloat left, jfloat, jfloat right, jfloat bottom) {
+void NativeBridge::setTablePosition(JNIEnv*, jclass, jfloat left, jfloat, jfloat right, jfloat bottom) {
 //    LOGD(TAG, "left: %f top: %f right: %f bottom: %f", left, top, right, bottom);
     Point2D::setTableData(left, right, bottom);
-    float* pocketPositions = TableProperties::getPocketPositionsInScreen();
-    jfloatArray jPocketPositions = env->NewFloatArray(TABLE_POCKETS_COUNT * 2);
-    env->SetFloatArrayRegion(jPocketPositions, 0, TABLE_POCKETS_COUNT * 2, pocketPositions);
-    delete[] pocketPositions;
-    return jPocketPositions;
+    TableProperties::initializePocketPositionsInScreen();
 }
 
 void NativeBridge::setNativeRepository(JNIEnv* env, jclass, jobject nativeRepository) {
@@ -142,7 +138,6 @@ int NativeBridge::setUpdatePredictionDataMethodId(JNIEnv* env) {
 void NativeBridge::updatePredictionData(float* predictionData, int size) {
     jfloatArray jPredictionData = mEnv->NewFloatArray(size);
     mEnv->SetFloatArrayRegion(jPredictionData, 0, size, &(predictionData[0]));
-    delete[] predictionData;
     mEnv->CallVoidMethod(mNativeRepository, mUpdatePredictionData, jPredictionData);
     mEnv->DeleteLocalRef(jPredictionData);
 }
@@ -177,10 +172,10 @@ int NativeBridge::registerNativeMethods(JNIEnv* env) {
         return JNI_ERR;
     }
     JNINativeMethod methods[] = {
-            {METHOD_UPDATE_AIM_SETTINGS,            SIG_UPDATE_AIM_SETTINGS,            reinterpret_cast<void*>(NativeBridge::updateAimSettings)},
-            {METHOD_EXIT_THREAD,                    SIG_EXIT_THREAD,                    reinterpret_cast<void*>(NativeBridge::exitThread)},
-            {METHOD_SET_NATIVE_REPOSITORY,          SIG_SET_NATIVE_REPOSITORY, reinterpret_cast<void *>(NativeBridge::setNativeRepository)},
-            {METHOD_GET_POCKET_POSITIONS_IN_SCREEN, SIG_GET_POCKET_POSITIONS_IN_SCREEN, reinterpret_cast<void*>(NativeBridge::getPocketPositionsInScreen)},
+            {METHOD_UPDATE_AIM_SETTINGS,   SIG_UPDATE_AIM_SETTINGS,   reinterpret_cast<void*>(NativeBridge::updateAimSettings)},
+            {METHOD_EXIT_THREAD,           SIG_EXIT_THREAD,           reinterpret_cast<void*>(NativeBridge::exitThread)},
+            {METHOD_SET_NATIVE_REPOSITORY, SIG_SET_NATIVE_REPOSITORY, reinterpret_cast<void *>(NativeBridge::setNativeRepository)},
+            {METHOD_SET_TABLE_POSITION,    SIG_SET_TABLE_POSITION,    reinterpret_cast<void *>(NativeBridge::setTablePosition)},
     };
     int nMethods = (sizeof(methods) / sizeof(methods[0]));
     int registrationResult = env->RegisterNatives(kotlinNativeBridgeClass, methods, nMethods);

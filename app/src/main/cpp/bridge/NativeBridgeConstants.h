@@ -18,7 +18,7 @@
 
 #define METHOD_SET_NATIVE_REPOSITORY "setNativeRepository"
 
-#define METHOD_GET_POCKET_POSITIONS_IN_SCREEN "getPocketPositionsInScreen"
+#define METHOD_SET_TABLE_POSITION "setTablePosition"
 
 #define METHOD_UPDATE_PREDICTION_DATA "updatePredictionData"
 
@@ -34,7 +34,7 @@
 
 #define SIG_SET_NATIVE_REPOSITORY "(Lcom/iwex/poolpredictor/domain/repository/NativeRepository;)V"
 
-#define SIG_GET_POCKET_POSITIONS_IN_SCREEN "(FFFF)[F"
+#define SIG_SET_TABLE_POSITION "(FFFF)V"
 
 #define SIG_UPDATE_PREDICTION_DATA "([F)V"
 

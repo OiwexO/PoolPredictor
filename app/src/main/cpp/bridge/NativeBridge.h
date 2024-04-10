@@ -34,11 +34,11 @@ private:
             );
 
     // PredictorService methods
-    static jfloatArray getPocketPositionsInScreen(
-            JNIEnv* env,
+    static void setTablePosition(
+            JNIEnv*,
             jclass,
             jfloat left,
-            jfloat top,
+            jfloat,
             jfloat right,
             jfloat bottom
             );

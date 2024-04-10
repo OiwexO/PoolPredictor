@@ -28,7 +28,7 @@ class NativeBridge {
         external fun setNativeRepository(nativeRepository: NativeRepository)
 
         @JvmStatic
-        external fun getPocketPositionsInScreen(left: Float, top: Float, right: Float, bottom: Float): FloatArray
+        external fun setTablePosition(left: Float, top: Float, right: Float, bottom: Float)
     }
 
 }

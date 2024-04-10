@@ -29,7 +29,7 @@ class NativeRepositoryImpl : NativeRepository {
     }
 
     override fun setTablePosition(tablePosition: TablePosition) {
-        NativeBridge.getPocketPositionsInScreen(
+        NativeBridge.setTablePosition(
             left = tablePosition.left,
             top = tablePosition.top,
             right = tablePosition.right,

@@ -20,8 +20,7 @@ class PredictionView(
     private val shotStatePaints = Array(2) { Paint() }
 
     private var params = EspParameters.DEFAULT
-    private var espData = floatArrayOf(0.0f, 0.0f)
-    private var pocketPositions = FloatArray(NUMBER_OF_POCKETS * 2)
+    private var predictionData = floatArrayOf(0.0f, 0.0f)
 
     private val trajectoryPath = Path()
 
@@ -38,7 +37,7 @@ class PredictionView(
             invalidate()
         }
         viewModel.predictionData.observeForever {
-            espData = it
+            predictionData = it
             invalidate()
         }
     }
@@ -98,9 +97,9 @@ class PredictionView(
          */
         // draw trajectories
         var index = 0
-        val isTrajectoryEnabled = (espData[index++] == 1.0f)
+        val isTrajectoryEnabled = (predictionData[index++] == 1.0f)
         if (isTrajectoryEnabled) {
-            val nOfBalls = espData[index++].toInt()
+            val nOfBalls = predictionData[index++].toInt()
             var ballIndex: Int
             var nOfBallPositions: Int
             var startX: Float
@@ -110,14 +109,14 @@ class PredictionView(
             var isSolidBall: Boolean
             var ballRadius: Float
             for (i in 0 until nOfBalls) {
-                ballIndex = espData[index++].toInt()
-                nOfBallPositions = espData[index++].toInt()
-                startX = espData[index++]
-                startY = espData[index++]
+                ballIndex = predictionData[index++].toInt()
+                nOfBallPositions = predictionData[index++].toInt()
+                startX = predictionData[index++]
+                startY = predictionData[index++]
                 trajectoryPath.moveTo(startX, startY)
                 for (j in 1 until nOfBallPositions) {
-                    endX = espData[index++]
-                    endY = espData[index++]
+                    endX = predictionData[index++]
+                    endY = predictionData[index++]
                     trajectoryPath.lineTo(endX, endY)
                     startX = endX
                     startY = endY
@@ -141,14 +140,18 @@ class PredictionView(
             }
         }
         // draw shot shotState
-        val isShotStateEnabled = (espData[index++] == 1.0f)
+        val isShotStateEnabled = (predictionData[index++] == 1.0f)
         if (isShotStateEnabled) {
             var pocketState: Int
+            var pocketX: Float
+            var pocketY: Float
             for (i in 0 until NUMBER_OF_POCKETS) {
-                pocketState = espData[index++].toInt()
+                pocketState = predictionData[index++].toInt()
+                pocketX = predictionData[index++]
+                pocketY = predictionData[index++]
                 canvas.drawCircle(
-                    pocketPositions[i],
-                    pocketPositions[i + NUMBER_OF_POCKETS],
+                    pocketX,
+                    pocketY,
                     params.shotStateCircleRadius,
                     shotStatePaints[pocketState]
                 )

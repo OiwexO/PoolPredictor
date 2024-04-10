@@ -11,6 +11,8 @@ Prediction* gPrediction = &prediction;
 
 bool Prediction::pocketStatus[] = {};
 
+float Prediction::predictionData[MAX_PREDICTION_DATA_SIZE];
+
 static double prevAngle = 0.0;
 static double prevPower = 0.0;
 static Point2D prevSpin = { 0.0, 0.0 };
@@ -26,52 +28,55 @@ constexpr double unk_35B3F80 = MIN_TIME;
 
 /* PREDICTION PUBLIC METHODS ==================================================================== */
 
-float* Prediction::getEspData() {
-    this->calculateEspDataSize();
-    float* espData = new float [espDataSize];
+float* Prediction::getPredictionData() {
+    this->calculatePredictionDataSize();
     int index = 0;
     constexpr int nOfBallsIndex = 1;
-    espData[index++] = (float) GlobalSettings::isDrawLinesEnabled;
+    predictionData[index++] = (float) GlobalSettings::isDrawLinesEnabled;
     if (GlobalSettings::isDrawLinesEnabled) {
-        espData[index++] = 0.0f;
+        predictionData[index++] = 0.0f;
         for (int i = 0; i < guiData.ballsCount; i++) {
             Ball& ball = this->guiData.balls[i];
             if (ball.initialPosition != ball.predictedPosition) {
-                espData[nOfBallsIndex] += 1.0f; // include only balls that changed their positions
-                espData[index++] = (float) ball.index;
-                espData[index++] = (float) ball.positions.size();
+                predictionData[nOfBallsIndex] += 1.0f; // include only balls that changed their positions
+                predictionData[index++] = (float) ball.index;
+                predictionData[index++] = (float) ball.positions.size();
                 for (auto& position : ball.positions) {
                     ScreenPoint point = position.toScreen();
-                    espData[index++] = point.x;
-                    espData[index++] = point.y;
+                    predictionData[index++] = point.x;
+                    predictionData[index++] = point.y;
                 }
             }
         }
     }
-    espData[index++] = (float) GlobalSettings::isDrawShotStateEnabled;
+    predictionData[index++] = (float) GlobalSettings::isDrawShotStateEnabled;
     if (GlobalSettings::isDrawShotStateEnabled) {
+        ScreenPoint* pocketPositions = TableProperties::getPocketPositionsInScreen();
         for (bool _pocketStatus : Prediction::pocketStatus) {
-            espData[index++] = (float) (_pocketStatus && this->guiData.shotState);
+            predictionData[index++] = (float) (_pocketStatus && this->guiData.shotState);
+            predictionData[index++] = pocketPositions->x;
+            predictionData[index++] = pocketPositions->y;
+            pocketPositions++;
         }
     }
-    return espData;
+    return predictionData;
 }
 
-void Prediction::calculateEspDataSize() {
-    espDataSize = 2; // isTrajectoryEnabled, nOfBalls
+void Prediction::calculatePredictionDataSize() {
+    predictionDataSize = 2; // isTrajectoryEnabled, nOfBalls
     if (GlobalSettings::isDrawLinesEnabled) {
         int ballsCount = this->guiData.ballsCount;
         for (int i = 0; i < ballsCount; i++) {
             Ball& ball = this->guiData.balls[i];
             if (ball.initialPosition != ball.predictedPosition) {
                 // ballX, ballY, nOfBalls, ballIndex, nOfBallPositions
-                espDataSize += (int) ball.positions.size() * 2 + 2;
+                predictionDataSize += (int) ball.positions.size() * 2 + 2;
             }
         }
-        espDataSize++;
+        predictionDataSize++;
     }
     if (GlobalSettings::isDrawShotStateEnabled) {
-        espDataSize += TABLE_POCKETS_COUNT;
+        predictionDataSize += TABLE_POCKETS_COUNT * 3; //pocketIndex, pocketX, pocketY
     }
 }
 

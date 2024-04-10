@@ -32,21 +32,21 @@ add_library(
         # Provides a relative path to your source file(s).
         bridge/NativeBridge.cpp
 
-        cheat/data/table/TableProperties.cpp
+        mod/data/table/TableProperties.cpp
 
-        cheat/data/type/Point2D.cpp
+        mod/data/type/Point2D.cpp
 
-        cheat/data/GlobalSettings.cpp
+        mod/data/GlobalSettings.cpp
 
-        cheat/memory/MemoryManager.cpp
-        cheat/memory/inner/Balls.cpp
-        cheat/memory/inner/CueProperties.cpp
-        cheat/memory/inner/GameManager.cpp
-        cheat/memory/inner/MenuManager.cpp
-        cheat/memory/inner/UserSettings.cpp
-        cheat/memory/inner/VisualCue.cpp
+        mod/memory/MemoryManager.cpp
+        mod/memory/inner/Balls.cpp
+        mod/memory/inner/CueProperties.cpp
+        mod/memory/inner/GameManager.cpp
+        mod/memory/inner/MenuManager.cpp
+        mod/memory/inner/UserSettings.cpp
+        mod/memory/inner/VisualCue.cpp
 
-        cheat/predictor/Prediction.cpp
+        mod/predictor/Prediction.cpp
 
         native-lib.cpp
 )

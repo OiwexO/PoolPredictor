@@ -4,11 +4,11 @@
 #include <unistd.h>
 #include "NativeBridge.h"
 #include "NativeBridgeConstants.h"
-#include "../cheat/data/GlobalSettings.h"
-#include "../cheat/data/table/TableProperties.h"
-#include "../cheat/predictor/Prediction.h"
+#include "../mod/data/GlobalSettings.h"
+#include "../mod/data/table/TableProperties.h"
+#include "../mod/memory/MemoryManager.h"
+#include "../mod/predictor/Prediction.h"
 #include "../utils/logger.h"
-#include "../cheat/memory/MemoryManager.h"
 
 const char* NativeBridge::TAG = "jni_NativeBridge";
 bool NativeBridge::isShouldRunThread = true;

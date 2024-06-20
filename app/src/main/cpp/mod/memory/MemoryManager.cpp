@@ -8,7 +8,6 @@
 #include <cstdio>
 #include <cstdlib>
 
-bool MemoryManager::isInitialised = false;
 ADDRESS MemoryManager::gameModuleBase = 0;
 ADDRESS MemoryManager::sharedGameManager = 0;
 ADDRESS MemoryManager::sharedMenuManager = 0;
@@ -50,11 +49,5 @@ bool MemoryManager::initialize() {
     MenuManager::initialize(sharedMenuManager);
     UserSettings::initialize(sharedUserSettings);
     CueProperties::initialize(gameModuleBase);
-//    MSHookFunction(
-//            (void *) (gameModuleBase + Offsets::VisualCue::setCuePropertiesMethod),
-//            (void *) hook_setCueProperties,
-//            (void **) &orig_setCueProperties
-//    );
-    isInitialised = true;
     return true;
 }

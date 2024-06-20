@@ -10,28 +10,28 @@
 #include "../mod/predictor/Prediction.h"
 #include "../utils/logger.h"
 
-const char* NativeBridge::TAG = "jni_NativeBridge";
+const char *NativeBridge::TAG = "jni_NativeBridge";
 bool NativeBridge::isShouldRunThread = true;
-JavaVM* NativeBridge::mJvm = nullptr;
-JNIEnv* NativeBridge::mEnv = nullptr;
+JavaVM *NativeBridge::mJvm = nullptr;
+JNIEnv *NativeBridge::mEnv = nullptr;
 jobject NativeBridge::mNativeRepository = nullptr;
 jmethodID NativeBridge::mUpdatePredictionData = nullptr;
 jfloatArray NativeBridge::mEmptyPredictionData = nullptr;
 
-void* NativeBridge::cuePropertiesThread(void*) {
+void *NativeBridge::cuePropertiesThread(void *) {
     while (NativeBridge::isShouldRunThread) {
         MemoryManager::CueProperties::writeCuePropertiesToMemory();
     }
     return nullptr;
 }
 
-void* NativeBridge::predictorThread(void*) {
+void *NativeBridge::predictorThread(void *) {
     JavaVMAttachArgs args;
     args.version = JNI_VERSION_1_6;
     args.name = "predictorThread";
     args.group = nullptr;
     int attachResult = mJvm->AttachCurrentThread(&mEnv, &args);
-    if(attachResult != JNI_OK) {
+    if (attachResult != JNI_OK) {
         LOGE(TAG, "Could not attach predictorThread");
         return nullptr;
     }
@@ -58,7 +58,7 @@ void* NativeBridge::predictorThread(void*) {
         pthread_create(&thread, nullptr, cuePropertiesThread, nullptr);
         while (NativeBridge::isShouldRunThread) {
             if (GlobalSettings::isDrawLinesEnabled || GlobalSettings::isDrawShotStateEnabled) {
-                isShouldRedraw = gPrediction->predictShotResult();
+                isShouldRedraw = gPrediction->determineShotResult();
                 if (isShouldRedraw) {
                     NativeBridge::updatePredictionData(
                             gPrediction->getPredictionData(),
@@ -86,7 +86,7 @@ void NativeBridge::initEmptyPredictionData() {
 
 // AimTabViewModel methods
 void NativeBridge::updateAimSettings(
-        JNIEnv*,
+        JNIEnv *,
         jclass,
         jboolean drawLinesEnabled,
         jboolean drawShotStateEnabled,
@@ -103,14 +103,12 @@ void NativeBridge::updateAimSettings(
     GlobalSettings::cueSpin = cueSpin;
 }
 
-// PredictorService methods
-void NativeBridge::setTablePosition(JNIEnv*, jclass, jfloat left, jfloat, jfloat right, jfloat bottom) {
-//    LOGD(TAG, "left: %f top: %f right: %f bottom: %f", left, top, right, bottom);
+void NativeBridge::setTablePosition(JNIEnv *, jclass, jfloat left, jfloat, jfloat right, jfloat bottom) {
     Point2D::setTableData(left, right, bottom);
     TableProperties::initializePocketPositionsInScreen();
 }
 
-void NativeBridge::setNativeRepository(JNIEnv* env, jclass, jobject nativeRepository) {
+void NativeBridge::setNativeRepository(JNIEnv *env, jclass, jobject nativeRepository) {
     env->GetJavaVM(&mJvm);
     mNativeRepository = env->NewGlobalRef(nativeRepository);
     if (setUpdatePredictionDataMethodId(env) != JNI_OK) {
@@ -121,13 +119,17 @@ void NativeBridge::setNativeRepository(JNIEnv* env, jclass, jobject nativeReposi
     pthread_create(&thread, nullptr, predictorThread, nullptr);
 }
 
-int NativeBridge::setUpdatePredictionDataMethodId(JNIEnv* env) {
+int NativeBridge::setUpdatePredictionDataMethodId(JNIEnv *env) {
     jclass nativeRepositoryClass = env->GetObjectClass(mNativeRepository);
     if (!nativeRepositoryClass) {
         LOGE(TAG, "Could not find NativeRepository class");
         return JNI_ERR;
     }
-    mUpdatePredictionData = env->GetMethodID(nativeRepositoryClass, METHOD_UPDATE_PREDICTION_DATA, SIG_UPDATE_PREDICTION_DATA);
+    mUpdatePredictionData = env->GetMethodID(
+            nativeRepositoryClass,
+            METHOD_UPDATE_PREDICTION_DATA,
+            SIG_UPDATE_PREDICTION_DATA
+    );
     if (!mUpdatePredictionData) {
         LOGE(TAG, "Could not find updatePredictionData method in the NativeRepository class");
         return JNI_ERR;
@@ -135,7 +137,7 @@ int NativeBridge::setUpdatePredictionDataMethodId(JNIEnv* env) {
     return JNI_OK;
 }
 
-void NativeBridge::updatePredictionData(float* predictionData, int size) {
+void NativeBridge::updatePredictionData(float *predictionData, int size) {
     jfloatArray jPredictionData = mEnv->NewFloatArray(size);
     mEnv->SetFloatArrayRegion(jPredictionData, 0, size, &(predictionData[0]));
     mEnv->CallVoidMethod(mNativeRepository, mUpdatePredictionData, jPredictionData);
@@ -157,11 +159,11 @@ void NativeBridge::releaseGlobalRefs(JNIEnv *env) {
     }
 }
 
-void NativeBridge::exitThread(JNIEnv*, jclass) {
+void NativeBridge::exitThread(JNIEnv *, jclass) {
     isShouldRunThread = false;
 }
 
-int NativeBridge::registerNativeMethods(JNIEnv* env) {
+int NativeBridge::registerNativeMethods(JNIEnv *env) {
     if (env == nullptr) {
         LOGE(TAG, "JNIEnv pointer is nullptr");
         return JNI_ERR;
@@ -172,8 +174,8 @@ int NativeBridge::registerNativeMethods(JNIEnv* env) {
         return JNI_ERR;
     }
     JNINativeMethod methods[] = {
-            {METHOD_UPDATE_AIM_SETTINGS,   SIG_UPDATE_AIM_SETTINGS,   reinterpret_cast<void*>(NativeBridge::updateAimSettings)},
-            {METHOD_EXIT_THREAD,           SIG_EXIT_THREAD,           reinterpret_cast<void*>(NativeBridge::exitThread)},
+            {METHOD_UPDATE_AIM_SETTINGS,   SIG_UPDATE_AIM_SETTINGS,   reinterpret_cast<void *>(NativeBridge::updateAimSettings)},
+            {METHOD_EXIT_THREAD,           SIG_EXIT_THREAD,           reinterpret_cast<void *>(NativeBridge::exitThread)},
             {METHOD_SET_NATIVE_REPOSITORY, SIG_SET_NATIVE_REPOSITORY, reinterpret_cast<void *>(NativeBridge::setNativeRepository)},
             {METHOD_SET_TABLE_POSITION,    SIG_SET_TABLE_POSITION,    reinterpret_cast<void *>(NativeBridge::setTablePosition)},
     };

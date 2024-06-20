@@ -1,10 +1,11 @@
 // Created by Denys on 05.07.2023.
 #pragma once
+
 #include "ScreenPoint.h"
 
 class Point2D {
 private:
-    // used to convert game points to screen points
+    // used to scale game points to screen points
     static double TABLE_LEFT;
     static double TABLE_BOTTOM;
     static double TABLE_SCALE;
@@ -35,11 +36,15 @@ public:
 
     ScreenPoint toScreen() const;
 
-    Point2D operator-(const Point2D& other) const;
-    Point2D operator*(const double value) const;
-    bool operator==(const Point2D& other) const;
-    bool operator!=(const Point2D& other) const;
-    Point2D& operator=(const Point2D& other);
+    Point2D operator-(const Point2D &other) const;
+
+    Point2D operator*(double value) const;
+
+    bool operator==(const Point2D &other) const;
+
+    bool operator!=(const Point2D &other) const;
+
+    Point2D &operator=(const Point2D &other);
 
     static void setTableData(float tableLeft, float tableRight, float tableBottom);
 };

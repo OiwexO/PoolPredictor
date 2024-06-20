@@ -1,4 +1,4 @@
-package com.iwex.poolpredictor.data.local.repository
+package com.iwex.poolpredictor.data.repository
 
 import android.content.SharedPreferences
 import com.iwex.poolpredictor.domain.model.TablePosition
@@ -9,7 +9,7 @@ class TablePositionRepositoryImpl(
 ) : TablePositionRepository {
 
     override fun getTablePosition(): TablePosition = with(preferences) {
-        return TablePosition(
+        TablePosition(
             left = getFloat(KEY_TABLE_LEFT, TablePosition.DEFAULT.left),
             top = getFloat(KEY_TABLE_TOP, TablePosition.DEFAULT.top),
             right = getFloat(KEY_TABLE_RIGHT, TablePosition.DEFAULT.right),
@@ -18,13 +18,12 @@ class TablePositionRepositoryImpl(
     }
 
     override fun putTablePosition(tablePosition: TablePosition) {
-        with(preferences.edit()) {
-            putFloat(KEY_TABLE_LEFT, tablePosition.left)
-            putFloat(KEY_TABLE_TOP, tablePosition.top)
-            putFloat(KEY_TABLE_RIGHT, tablePosition.right)
-            putFloat(KEY_TABLE_BOTTOM, tablePosition.bottom)
-            apply()
-        }
+        preferences.edit()
+            .putFloat(KEY_TABLE_LEFT, tablePosition.left)
+            .putFloat(KEY_TABLE_TOP, tablePosition.top)
+            .putFloat(KEY_TABLE_RIGHT, tablePosition.right)
+            .putFloat(KEY_TABLE_BOTTOM, tablePosition.bottom)
+            .apply()
     }
 
     override fun getIsTableSet(): Boolean = preferences.getBoolean(KEY_IS_TABLE_SET, false)

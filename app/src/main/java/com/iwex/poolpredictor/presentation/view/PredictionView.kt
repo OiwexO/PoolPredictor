@@ -95,7 +95,6 @@ class PredictionView(
          *      5. for 0..5 (there are 6 pockets on the table):
          *            pocketState: 0.0f or 1.0f shows if a valid ball has been potted to this pocket, pocketX, pocketY
          */
-        // draw trajectories
         var index = 0
         val isTrajectoryEnabled = (predictionData[index++] == 1.0f)
         if (isTrajectoryEnabled) {
@@ -139,7 +138,6 @@ class PredictionView(
                 )
             }
         }
-        // draw shot shotState
         val isShotStateEnabled = (predictionData[index++] == 1.0f)
         if (isShotStateEnabled) {
             var pocketState: Int

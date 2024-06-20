@@ -16,9 +16,9 @@ import androidx.constraintlayout.widget.ConstraintSet.START
 import androidx.constraintlayout.widget.ConstraintSet.TOP
 import com.iwex.poolpredictor.presentation.MenuWidgetFactory
 import com.iwex.poolpredictor.presentation.resource.Dimensions
+import com.iwex.poolpredictor.presentation.util.OverlayUtils
 import com.iwex.poolpredictor.presentation.view.ArrowButton
 import com.iwex.poolpredictor.presentation.viewmodel.tablePosition.TablePositionSetupViewModel
-import com.iwex.poolpredictor.util.Utils
 
 @SuppressLint("ViewConstructor")
 class TablePositionSetupView(
@@ -40,22 +40,16 @@ class TablePositionSetupView(
     private val buttonMargin = Dimensions.getInstance(context).buttonMarginPx
 
     init {
-        val arrowButtonSize = Dimensions.getInstance(context).arrowButtonSizePx
-        val arrowButtonCornerRadius = Dimensions.getInstance(context).buttonCornerRadiusPx
-        buttonLeft = ArrowButton.left(context, arrowButtonSize, arrowButtonCornerRadius)
-        buttonTop = ArrowButton.top(context, arrowButtonSize, arrowButtonCornerRadius)
-        buttonRight = ArrowButton.right(context, arrowButtonSize, arrowButtonCornerRadius)
-        buttonBottom = ArrowButton.bottom(context, arrowButtonSize, arrowButtonCornerRadius)
+        buttonLeft = MenuWidgetFactory.addArrowButtonLeft(context, this)
+        buttonTop = MenuWidgetFactory.addArrowButtonTop(context, this)
+        buttonRight  = MenuWidgetFactory.addArrowButtonRight(context, this)
+        buttonBottom = MenuWidgetFactory.addArrowButtonBottom(context, this)
         buttonReset = MenuWidgetFactory.addButton(LABEL_RESET_BUTTON, true, context, this)
         buttonSave = MenuWidgetFactory.addButton(LABEL_SAVE_BUTTON,true, context, this)
         observeViewModel()
         layoutParams = initLayoutParams()
         setButtonIds()
         setButtonClickListeners()
-        addView(buttonLeft)
-        addView(buttonTop)
-        addView(buttonRight)
-        addView(buttonBottom)
         applyConstraints()
     }
 
@@ -69,6 +63,18 @@ class TablePositionSetupView(
                 viewModel.onTableSet()
             }
         }
+    }
+
+    private fun initLayoutParams(): WindowManager.LayoutParams {
+        return WindowManager.LayoutParams(
+            WRAP_CONTENT,
+            WRAP_CONTENT,
+            0,
+            0,
+            OverlayUtils.overlayWindowType,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        )
     }
 
     private fun setButtonIds() {
@@ -87,18 +93,6 @@ class TablePositionSetupView(
         buttonBottom.setOnClickListener { viewModel.onButtonBottom() }
         buttonSave.setOnClickListener { viewModel.onSaveButton() }
         buttonReset.setOnClickListener { viewModel.onResetButton() }
-    }
-
-    private fun initLayoutParams(): WindowManager.LayoutParams {
-        return WindowManager.LayoutParams(
-            WRAP_CONTENT,
-            WRAP_CONTENT,
-            0,
-            0,
-            Utils.overlayWindowType,
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-            PixelFormat.TRANSLUCENT
-        )
     }
 
     private fun applyConstraints() {

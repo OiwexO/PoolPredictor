@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.core.view.setMargins
 import com.iwex.poolpredictor.presentation.resource.MenuColors
 import com.iwex.poolpredictor.presentation.resource.Dimensions
+import com.iwex.poolpredictor.presentation.view.ArrowButton
 
 class MenuWidgetFactory {
     companion object {
@@ -142,5 +143,32 @@ class MenuWidgetFactory {
             }
         }
 
+        fun addArrowButtonLeft(context: Context, parent: ViewGroup) : ArrowButton {
+            return addArrowButton(context, parent, ArrowButton.ArrowDirection.LEFT)
+        }
+
+        fun addArrowButtonTop(context: Context, parent: ViewGroup) : ArrowButton {
+            return addArrowButton(context, parent, ArrowButton.ArrowDirection.TOP)
+        }
+
+        fun addArrowButtonRight(context: Context, parent: ViewGroup) : ArrowButton {
+            return addArrowButton(context, parent, ArrowButton.ArrowDirection.RIGHT)
+        }
+
+        fun addArrowButtonBottom(context: Context, parent: ViewGroup) : ArrowButton {
+            return addArrowButton(context, parent, ArrowButton.ArrowDirection.BOTTOM)
+        }
+
+        private fun addArrowButton(
+            context: Context,
+            parent: ViewGroup,
+            arrowDirection: ArrowButton.ArrowDirection
+        ) : ArrowButton {
+            val size = Dimensions.getInstance(context).arrowButtonSizePx
+            val cornerRadius = Dimensions.getInstance(context).buttonCornerRadiusPx
+            val button = ArrowButton(context, size, cornerRadius, arrowDirection)
+            parent.addView(button)
+            return button
+        }
     }
 }

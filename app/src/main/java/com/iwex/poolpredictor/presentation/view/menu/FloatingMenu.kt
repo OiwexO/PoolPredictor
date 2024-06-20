@@ -25,7 +25,7 @@ import com.iwex.poolpredictor.presentation.view.menu.tabs.AimTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.BaseMenuTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.EspTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.OtherTab
-import com.iwex.poolpredictor.util.Utils
+import com.iwex.poolpredictor.presentation.util.OverlayUtils
 
 @SuppressLint("ViewConstructor")
 class FloatingMenu(
@@ -80,7 +80,7 @@ class FloatingMenu(
             WRAP_CONTENT,
             Dimensions.getInstance(context).iconPositionX,
             Dimensions.getInstance(context).iconPositionY,
-            Utils.overlayWindowType,
+            OverlayUtils.overlayWindowType,
             FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
         )

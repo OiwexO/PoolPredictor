@@ -1,9 +1,9 @@
-package com.iwex.poolpredictor.util
+package com.iwex.poolpredictor.presentation.util
 
 import android.os.Build
 import android.view.WindowManager
 
-class Utils {
+class OverlayUtils {
 
     companion object {
 

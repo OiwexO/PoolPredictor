@@ -5,7 +5,7 @@
 
 ScreenPoint TableProperties::pocketPositionsInScreen[TABLE_POCKETS_COUNT];
 
-const std::array<Point2D, TABLE_POCKETS_COUNT>& TableProperties::getPockets() {
+const std::array<Point2D, TABLE_POCKETS_COUNT> &TableProperties::getPockets() {
     static const std::array<Point2D, TABLE_POCKETS_COUNT> POCKET_POSITIONS = {
             Point2D(-130.8, -67.3),
             Point2D(0, -72),
@@ -17,7 +17,7 @@ const std::array<Point2D, TABLE_POCKETS_COUNT>& TableProperties::getPockets() {
     return POCKET_POSITIONS;
 }
 
-const std::array<Point2D, TABLE_SHAPE_SIZE>& TableProperties::getTableShape() {
+const std::array<Point2D, TABLE_SHAPE_SIZE> &TableProperties::getTableShape() {
     static const std::array<Point2D, TABLE_SHAPE_SIZE> TABLE_SHAPE = {
             Point2D(-127, 53.5),
             Point2D(-136.9, 64.1),
@@ -77,7 +77,7 @@ void TableProperties::initializePocketPositionsInScreen() {
     }
 }
 
-ScreenPoint* TableProperties::getPocketPositionsInScreen() {
+ScreenPoint *TableProperties::getPocketPositionsInScreen() {
     return pocketPositionsInScreen;
 }
 

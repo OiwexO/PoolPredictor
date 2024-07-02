@@ -6,10 +6,10 @@
 ADDRESS MemoryManager::UserSettings::wideGuideline = 0;
 
 void MemoryManager::UserSettings::initialize(ADDRESS _sharedUserSettings) {
-	wideGuideline = _sharedUserSettings + Offsets::UserSettings::WideGuideline;
+    wideGuideline = _sharedUserSettings + Offsets::UserSettings::WideGuideline;
 }
 
 void MemoryManager::UserSettings::switchWideGuideline(bool isEnabled) {
-	write(wideGuideline, (unsigned char) isEnabled);
+    write(wideGuideline, (unsigned char) isEnabled);
 }
 

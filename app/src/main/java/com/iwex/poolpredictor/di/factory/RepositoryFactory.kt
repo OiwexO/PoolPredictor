@@ -2,9 +2,9 @@ package com.iwex.poolpredictor.di.factory
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.iwex.poolpredictor.data.local.repository.MenuSettingsRepositoryImpl
-import com.iwex.poolpredictor.data.local.repository.NativeRepositoryImpl
-import com.iwex.poolpredictor.data.local.repository.TablePositionRepositoryImpl
+import com.iwex.poolpredictor.data.repository.MenuSettingsRepositoryImpl
+import com.iwex.poolpredictor.data.repository.NativeRepositoryImpl
+import com.iwex.poolpredictor.data.repository.TablePositionRepositoryImpl
 import com.iwex.poolpredictor.domain.repository.MenuSettingsRepository
 import com.iwex.poolpredictor.domain.repository.NativeRepository
 import com.iwex.poolpredictor.domain.repository.TablePositionRepository

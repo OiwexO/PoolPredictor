@@ -20,7 +20,7 @@
 
 #define METHOD_SET_TABLE_POSITION "setTablePosition"
 
-#define METHOD_UPDATE_PREDICTION_DATA "updatePredictionData"
+#define METHOD_UPDATE_SHOT_RESULT "updateShotResult"
 
 /*================================================================================================*/
 
@@ -36,6 +36,6 @@
 
 #define SIG_SET_TABLE_POSITION "(FFFF)V"
 
-#define SIG_UPDATE_PREDICTION_DATA "([F)V"
+#define SIG_UPDATE_SHOT_RESULT "([F)V"
 
 /*================================================================================================*/

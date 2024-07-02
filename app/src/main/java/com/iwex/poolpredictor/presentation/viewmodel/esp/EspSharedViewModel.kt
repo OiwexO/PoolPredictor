@@ -5,16 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iwex.poolpredictor.domain.model.EspParameters
 import com.iwex.poolpredictor.domain.model.EspSettings
+import com.iwex.poolpredictor.domain.model.ShotResult
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspSettingsUseCase
-import com.iwex.poolpredictor.domain.usecase.native.GetPredictionDataUseCase
+import com.iwex.poolpredictor.domain.usecase.native.GetShotResultUseCase
 import com.iwex.poolpredictor.domain.usecase.table.ResetTablePositionUseCase
 
 class EspSharedViewModel(
     private val getEspSettingsUseCase: GetEspSettingsUseCase,
     private val saveEspSettingsUseCase: SaveEspSettingsUseCase,
     private val resetTablePositionUseCase: ResetTablePositionUseCase,
-    private val getPredictionDataUseCase: GetPredictionDataUseCase
+    private val getShotResultUseCase: GetShotResultUseCase
 ) : ViewModel(), EspTabViewModel, PredictionViewModel {
 
     private var espSettings = getEspSettingsUseCase()
@@ -28,8 +29,8 @@ class EspSharedViewModel(
     override val espParameters: LiveData<EspParameters>
         get() = _espParameters
 
-    override val predictionData: LiveData<FloatArray>
-        get() = getPredictionDataUseCase()
+    override val shotResult: LiveData<ShotResult>
+        get() = getShotResultUseCase()
 
     override fun getEspSettings(): EspSettings = espSettings
 

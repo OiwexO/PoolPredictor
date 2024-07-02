@@ -20,7 +20,6 @@ enum BallClassification : int {
     NINE_BALL_RULE = 3,
     EIGHT_BALL = 4,
     ERR_CLASSIFICATION = -8
-
 };
 
 
@@ -59,7 +58,7 @@ constexpr double POCKET_RADIUS = 8.0;
 
 constexpr double POCKET_RADIUS_SQUARE = POCKET_RADIUS * POCKET_RADIUS;
 
-constexpr int MAX_PREDICTION_DATA_SIZE = 50000;
+constexpr int MAX_SHOT_RESULT_SIZE = 50000;
 
 
 
@@ -73,9 +72,9 @@ constexpr double MIN_TIME = 1E-11;
 // ANGLE CONSTANTS
 
 constexpr double PI = 3.14159265358979;
-constexpr double PI_0_5 = 1.570796326794895;
-constexpr double PI_1_5 = 4.7123889803846852;
+constexpr double PI_0_5 = PI / 2.0;
+constexpr double PI_1_5 = PI * 1.5;
 
-constexpr double MAX_ANGLE_RADIANS = 6.28318530717958; // 360.0 / (180.0 / PI)
+constexpr double MAX_ANGLE_RADIANS = 360.0 / (180.0 / PI);
 
-constexpr double MIN_ANGLE_STEP_RADIANS = 0.0174;// * 361.0;
+constexpr double MIN_ANGLE_STEP_RADIANS = 0.0174;

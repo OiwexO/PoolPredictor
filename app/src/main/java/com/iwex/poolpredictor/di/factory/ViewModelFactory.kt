@@ -23,7 +23,7 @@ class ViewModelFactory private constructor(context: Context) {
             useCaseFactory.getEspSettingsUseCase,
             useCaseFactory.saveEspSettingsUseCase,
             useCaseFactory.resetTablePositionUseCase,
-            useCaseFactory.getPredictionDataUseCase
+            useCaseFactory.getShotResultUseCase
         )
     }
 

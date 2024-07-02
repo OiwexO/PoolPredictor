@@ -1,6 +1,7 @@
 // Created by Denys on 13.06.2023.
 
 #pragma once
+
 #include <android/log.h>
 
 #ifdef ENABLE_LOGS

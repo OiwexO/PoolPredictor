@@ -11,7 +11,7 @@ Prediction *gPrediction = &prediction;
 
 bool Prediction::pocketStatus[] = {};
 
-float Prediction::predictionData[MAX_PREDICTION_DATA_SIZE];
+float Prediction::shotResult[MAX_SHOT_RESULT_SIZE];
 
 static double prevAngle = 0.0;
 static double prevPower = 0.0;
@@ -28,55 +28,55 @@ constexpr double unk_35B3F80 = MIN_TIME;
 
 /* PREDICTION PUBLIC METHODS ==================================================================== */
 
-float *Prediction::getPredictionData() {
-    this->calculatePredictionDataSize();
+float *Prediction::getShotResult() {
+    this->calculateShotResultSize();
     int index = 0;
     constexpr int nOfBallsIndex = 1;
-    predictionData[index++] = (float) GlobalSettings::isDrawLinesEnabled;
+    shotResult[index++] = (float) GlobalSettings::isDrawLinesEnabled;
     if (GlobalSettings::isDrawLinesEnabled) {
-        predictionData[index++] = 0.0f;
+        shotResult[index++] = 0.0f;
         for (int i = 0; i < guiData.ballsCount; i++) {
             Ball &ball = this->guiData.balls[i];
             if (ball.initialPosition != ball.predictedPosition) {
-                predictionData[nOfBallsIndex] += 1.0f; // include only balls that changed their positions
-                predictionData[index++] = (float) ball.index;
-                predictionData[index++] = (float) ball.positions.size();
+                shotResult[nOfBallsIndex] += 1.0f; // include only balls that changed their positions
+                shotResult[index++] = (float) ball.index;
+                shotResult[index++] = (float) ball.positions.size();
                 for (auto &position: ball.positions) {
                     ScreenPoint point = position.toScreen();
-                    predictionData[index++] = point.x;
-                    predictionData[index++] = point.y;
+                    shotResult[index++] = point.x;
+                    shotResult[index++] = point.y;
                 }
             }
         }
     }
-    predictionData[index++] = (float) GlobalSettings::isDrawShotStateEnabled;
+    shotResult[index++] = (float) GlobalSettings::isDrawShotStateEnabled;
     if (GlobalSettings::isDrawShotStateEnabled) {
         ScreenPoint *pocketPositions = TableProperties::getPocketPositionsInScreen();
         for (bool _pocketStatus: Prediction::pocketStatus) {
-            predictionData[index++] = (float) (_pocketStatus && this->guiData.shotState);
-            predictionData[index++] = pocketPositions->x;
-            predictionData[index++] = pocketPositions->y;
+            shotResult[index++] = (float) (_pocketStatus && this->guiData.shotState);
+            shotResult[index++] = pocketPositions->x;
+            shotResult[index++] = pocketPositions->y;
             pocketPositions++;
         }
     }
-    return predictionData;
+    return shotResult;
 }
 
-void Prediction::calculatePredictionDataSize() {
-    predictionDataSize = 2; // isTrajectoryEnabled, nOfBalls
+void Prediction::calculateShotResultSize() {
+    shotResultSize = 2; // isTrajectoryEnabled, nOfBalls
     if (GlobalSettings::isDrawLinesEnabled) {
         int ballsCount = this->guiData.ballsCount;
         for (int i = 0; i < ballsCount; i++) {
             Ball &ball = this->guiData.balls[i];
             if (ball.initialPosition != ball.predictedPosition) {
                 // ballX, ballY, nOfBalls, ballIndex, nOfBallPositions
-                predictionDataSize += (int) ball.positions.size() * 2 + 2;
+                shotResultSize += (int) ball.positions.size() * 2 + 2;
             }
         }
-        predictionDataSize++;
+        shotResultSize++;
     }
     if (GlobalSettings::isDrawShotStateEnabled) {
-        predictionDataSize += TABLE_POCKETS_COUNT * 3; //pocketIndex, pocketX, pocketY
+        shotResultSize += TABLE_POCKETS_COUNT * 3; //pocketIndex, pocketX, pocketY
     }
 }
 

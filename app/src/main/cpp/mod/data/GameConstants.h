@@ -58,7 +58,7 @@ constexpr double POCKET_RADIUS = 8.0;
 
 constexpr double POCKET_RADIUS_SQUARE = POCKET_RADIUS * POCKET_RADIUS;
 
-constexpr int MAX_PREDICTION_DATA_SIZE = 50000;
+constexpr int MAX_SHOT_RESULT_SIZE = 50000;
 
 
 

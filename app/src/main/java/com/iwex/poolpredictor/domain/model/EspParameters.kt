@@ -3,10 +3,10 @@ package com.iwex.poolpredictor.domain.model
 import kotlin.math.roundToInt
 
 data class EspParameters(
-    val solidLineWidth: Float,
-    val stripeLineWidth: Float,
-    val solidBallRadius: Float,
-    val stripeBallRadius: Float,
+    private val solidLineWidth: Float,
+    private val stripeLineWidth: Float,
+    private val solidBallRadius: Float,
+    private val stripeBallRadius: Float,
     val trajectoryOpacity: Int,
     val shotStateCircleWidth: Float,
     val shotStateCircleRadius: Float,
@@ -23,6 +23,12 @@ data class EspParameters(
         shotStateCircleRadius = espSettings.shotStateCircleRadius.toFloat(),
         shotStateCircleOpacity = (espSettings.shotStateCircleOpacity * 2.55f).roundToInt()
     )
+
+    fun getLineWidth(ballIndex: Int) =
+        if (isSolidBall(ballIndex)) solidLineWidth else stripeLineWidth
+
+    fun getBallRadius(ballIndex: Int) =
+        if (isSolidBall(ballIndex)) solidBallRadius else stripeBallRadius
 
     companion object {
 

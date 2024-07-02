@@ -12,8 +12,8 @@ private:
     static JavaVM *mJvm;
     static JNIEnv *mEnv;
     static jobject mNativeRepository;
-    static jmethodID mUpdatePredictionData;
-    static jfloatArray mEmptyPredictionData;
+    static jmethodID mUpdateShotResult;
+    static jfloatArray mEmptyShotResult;
 
     // changes cue power and spin according to GlobalSettings
     static void *cuePropertiesThread(void *);
@@ -21,7 +21,7 @@ private:
     // runs prediction and updates PredictionView
     static void *predictorThread(void *);
 
-    static void initEmptyPredictionData();
+    static void initEmptyShotResult();
 
     static void updateAimSettings(
             JNIEnv *,
@@ -50,12 +50,11 @@ private:
             jobject nativeRepository
     );
 
-    static int setUpdatePredictionDataMethodId(JNIEnv *env);
+    static int setUpdateShotResultMethodId(JNIEnv *env);
 
-    // updates trajectories and shot state
-    static void updatePredictionData(float *predictionData, int size);
+    static void updateShotResult(float *shotResult, int size);
 
-    static void clearPredictionData();
+    static void clearShotResult();
 
     static void releaseGlobalRefs(JNIEnv *env);
 

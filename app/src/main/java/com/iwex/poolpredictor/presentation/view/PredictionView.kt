@@ -6,6 +6,10 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
 import com.iwex.poolpredictor.domain.model.EspParameters
+import com.iwex.poolpredictor.domain.model.NUMBER_OF_BALLS
+import com.iwex.poolpredictor.domain.model.Point2D
+import com.iwex.poolpredictor.domain.model.ShotResult
+import com.iwex.poolpredictor.domain.model.isSolidBall
 import com.iwex.poolpredictor.presentation.resource.EspColors
 import com.iwex.poolpredictor.presentation.viewmodel.esp.PredictionViewModel
 
@@ -20,7 +24,7 @@ class PredictionView(
     private val shotStatePaints = Array(2) { Paint() }
 
     private var params = EspParameters.DEFAULT
-    private var predictionData = floatArrayOf(0.0f, 0.0f)
+    private var shotResult = ShotResult.EMPTY
 
     private val trajectoryPath = Path()
 
@@ -36,23 +40,24 @@ class PredictionView(
             updateEspParameters()
             invalidate()
         }
-        viewModel.predictionData.observeForever {
-            predictionData = it
+        viewModel.shotResult.observeForever {
+            shotResult = it
             invalidate()
         }
     }
 
     private fun initPaints() {
         trajectoryPath.fillType = Path.FillType.WINDING
-        for (i in 0 until NUMBER_OF_BALLS) {
+        for (i in trajectoryPaints.indices) {
             trajectoryPaints[i].apply {
                 color = EspColors.BALLS_COLORS[i]
                 isAntiAlias = true
                 strokeCap = Paint.Cap.ROUND
+                strokeJoin = Paint.Join.ROUND
             }
 
         }
-        for (i in 0..1) {
+        for (i in shotStatePaints.indices) {
             shotStatePaints[i].apply {
                 color = EspColors.SHOT_STATE_COLORS[i]
                 isAntiAlias = true
@@ -66,8 +71,7 @@ class PredictionView(
         for (i in 0 until NUMBER_OF_BALLS) {
             trajectoryPaints[i].apply {
                 alpha = params.trajectoryOpacity
-                strokeWidth = if (i < 9) params.solidLineWidth else params.stripeLineWidth
-
+                strokeWidth = params.getLineWidth(i)
             }
         }
         for (i in shotStatePaints.indices) {
@@ -81,88 +85,38 @@ class PredictionView(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        /**
-         * Explanation of espData:
-         * 1. isTrajectoryEnabled: 0.0f or 1.0f
-         *    - If (isTrajectoryEnabled):
-         *      2. nOfBalls: number of balls that are currently on the table (0..16)
-         *         3. for 0..nOfBalls - 1:
-         *               ballIndex: 0..15, nOfBallPositions: number of ball's positions
-         *                  for 0..nOfBallPositions - 1:
-         *                      ballX, ballY
-         * 4. isShotStateEnabled: 0.0f or 1.0f
-         *    - If (isShotStateEnabled):
-         *      5. for 0..5 (there are 6 pockets on the table):
-         *            pocketState: 0.0f or 1.0f shows if a valid ball has been potted to this pocket, pocketX, pocketY
-         */
-        var index = 0
-        val isTrajectoryEnabled = (predictionData[index++] == 1.0f)
-        if (isTrajectoryEnabled) {
-            val nOfBalls = predictionData[index++].toInt()
-            var ballIndex: Int
-            var nOfBallPositions: Int
-            var startX: Float
-            var startY: Float
-            var endX: Float
-            var endY: Float
-            var isSolidBall: Boolean
-            var ballRadius: Float
-            for (i in 0 until nOfBalls) {
-                ballIndex = predictionData[index++].toInt()
-                nOfBallPositions = predictionData[index++].toInt()
-                startX = predictionData[index++]
-                startY = predictionData[index++]
-                trajectoryPath.moveTo(startX, startY)
-                for (j in 1 until nOfBallPositions) {
-                    endX = predictionData[index++]
-                    endY = predictionData[index++]
-                    trajectoryPath.lineTo(endX, endY)
-                    startX = endX
-                    startY = endY
-                }
-                trajectoryPaints[ballIndex].style = Paint.Style.STROKE
-                canvas.drawPath(trajectoryPath, trajectoryPaints[ballIndex])
-                trajectoryPath.reset()
-                isSolidBall = ballIndex < 9
-                if (isSolidBall) {
-                    trajectoryPaints[ballIndex].style = Paint.Style.FILL
-                    ballRadius = params.solidBallRadius
-                } else {
-                    ballRadius = params.stripeBallRadius
-                }
-                canvas.drawCircle(
-                    startX,
-                    startY,
-                    ballRadius,
-                    trajectoryPaints[ballIndex]
-                )
+        if (shotResult.isTrajectoryEnabled) {
+            for (ball in shotResult.balls) {
+                prepareTrajectoryPath(ball.positions)
+                val index = ball.index
+                val paint = trajectoryPaints[index]
+                paint.style = Paint.Style.STROKE
+                canvas.drawPath(trajectoryPath, paint)
+                val ballRadius = params.getBallRadius(index)
+                paint.style = if (isSolidBall(index)) Paint.Style.FILL else Paint.Style.STROKE
+                val end = ball.positions.last()
+                canvas.drawCircle(end.x, end.y, ballRadius, paint)
             }
         }
-        val isShotStateEnabled = (predictionData[index++] == 1.0f)
-        if (isShotStateEnabled) {
-            var pocketState: Int
-            var pocketX: Float
-            var pocketY: Float
-            for (i in 0 until NUMBER_OF_POCKETS) {
-                pocketState = predictionData[index++].toInt()
-                pocketX = predictionData[index++]
-                pocketY = predictionData[index++]
+        if (shotResult.isShotStateEnabled) {
+            for (pocket in shotResult.pockets) {
                 canvas.drawCircle(
-                    pocketX,
-                    pocketY,
+                    pocket.position.x,
+                    pocket.position.y,
                     params.shotStateCircleRadius,
-                    shotStatePaints[pocketState]
+                    shotStatePaints[pocket.state]
                 )
             }
         }
     }
 
-    companion object {
-
-        @Suppress("unused")
-        private const val TAG = "EspView.kt"
-
-        private const val NUMBER_OF_POCKETS = 6
-        private const val NUMBER_OF_BALLS = 16
+    private fun prepareTrajectoryPath(positions: List<Point2D>) {
+        val start = positions[0]
+        trajectoryPath.reset()
+        trajectoryPath.moveTo(start.x, start.y)
+        for (i in 1 until positions.size) {
+            val next = positions[i]
+            trajectoryPath.lineTo(next.x, next.y)
+        }
     }
 }

@@ -4,13 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.iwex.poolpredictor.data.NativeBridge
 import com.iwex.poolpredictor.domain.model.AimSettings
+import com.iwex.poolpredictor.domain.model.ShotResult
 import com.iwex.poolpredictor.domain.model.TablePosition
 import com.iwex.poolpredictor.domain.repository.NativeRepository
 
 class NativeRepositoryImpl : NativeRepository {
 
-    private val _predictionData = MutableLiveData<FloatArray>()
-    override val predictionData: LiveData<FloatArray> get() = _predictionData
+    private val _shotResult = MutableLiveData<ShotResult>()
+    override val shotResult: LiveData<ShotResult> get() = _shotResult
 
     init {
         NativeBridge.setNativeRepository(this)
@@ -32,8 +33,8 @@ class NativeRepositoryImpl : NativeRepository {
         NativeBridge.setTablePosition(left, top, right, bottom)
     }
 
-    override fun updatePredictionData(predictionData: FloatArray) {
-        _predictionData.postValue(predictionData)
+    override fun updateShotResult(shotResultArray: FloatArray) {
+        _shotResult.postValue(ShotResult(shotResultArray))
     }
 
 }

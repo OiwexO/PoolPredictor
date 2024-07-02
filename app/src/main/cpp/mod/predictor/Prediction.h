@@ -13,10 +13,10 @@ public:
 
     ~Prediction() = default;
 
-    float *getPredictionData();
+    float *getShotResult();
 
-    int getPredictionDataSize() const {
-        return predictionDataSize;
+    int getShotResultSize() const {
+        return shotResultSize;
     }
 
     bool determineShotResult();
@@ -118,11 +118,11 @@ public:
     } guiData;
 
 private:
-    int predictionDataSize = 0;
+    int shotResultSize = 0;
 
-    static float predictionData[MAX_PREDICTION_DATA_SIZE];
+    static float shotResult[MAX_SHOT_RESULT_SIZE];
 
-    void calculatePredictionDataSize();
+    void calculateShotResultSize();
 
     // initializes balls' position, shotState, classification etc
     void initBalls();

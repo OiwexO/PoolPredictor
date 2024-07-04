@@ -7,7 +7,9 @@ import android.os.IBinder
 import android.view.ViewConfiguration
 import android.view.WindowManager
 import android.widget.Toast
+import com.iwex.poolpredictor.di.factory.UseCaseFactory
 import com.iwex.poolpredictor.di.factory.ViewModelFactory
+import com.iwex.poolpredictor.presentation.resource.Strings
 import com.iwex.poolpredictor.presentation.view.PredictionView
 import com.iwex.poolpredictor.presentation.view.menu.FloatingMenu
 import com.iwex.poolpredictor.presentation.view.menu.FloatingMenuTouchListener
@@ -18,6 +20,7 @@ import com.iwex.poolpredictor.presentation.view.tablePosition.OnTablePositionSet
 import com.iwex.poolpredictor.presentation.view.tablePosition.TablePositionSetupView
 import com.iwex.poolpredictor.presentation.view.tablePosition.TableShapeView
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
+import com.iwex.poolpredictor.presentation.viewmodel.OtherTabViewModel
 import com.iwex.poolpredictor.presentation.viewmodel.esp.EspSharedViewModel
 
 class PredictorService : Service() {
@@ -40,7 +43,12 @@ class PredictorService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        startTablePositionSetup()
+        val isTableSet = UseCaseFactory.getInstance(this).getIsTableSetUseCase()
+        if (isTableSet) {
+            startPredictor()
+        } else {
+            startTablePositionSetup()
+        }
     }
 
     private fun startTablePositionSetup() {
@@ -61,25 +69,30 @@ class PredictorService : Service() {
     }
 
     private fun startPredictor() {
-        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, Strings.TOAST_AUTHOR, Toast.LENGTH_LONG).show()
         val viewModelFactory = ViewModelFactory.getInstance(this)
         val espTabViewModel = viewModelFactory.espSharedViewModel
         val aimTabViewModel = viewModelFactory.aimTabViewModel
-        setupEspView(espTabViewModel)
-        setupFloatingMenu(aimTabViewModel, espTabViewModel)
+        val otherTabViewModel = viewModelFactory.otherTabViewModel
+        setupPredictionView(espTabViewModel)
+        setupFloatingMenu(aimTabViewModel, espTabViewModel, otherTabViewModel)
     }
 
-    private fun setupEspView(espTabViewModel: EspSharedViewModel) {
+    private fun setupPredictionView(espTabViewModel: EspSharedViewModel) {
         val predictionView = PredictionView(this, espTabViewModel)
         windowManager.addView(predictionView, predictionView.layoutParams)
         this.predictionView = predictionView
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setupFloatingMenu(aimTabViewModel: AimTabViewModel, espSharedViewModel: EspSharedViewModel) {
+    private fun setupFloatingMenu(
+        aimTabViewModel: AimTabViewModel,
+        espSharedViewModel: EspSharedViewModel,
+        otherTabViewModel: OtherTabViewModel
+    ) {
         val aimTab = AimTab(this, aimTabViewModel)
         val espTab = EspTab(this, espSharedViewModel)
-        val otherTab = OtherTab(this)
+        val otherTab = OtherTab(this, otherTabViewModel)
         val floatingMenu = FloatingMenu(this, aimTab, espTab, otherTab)
         floatingMenu.setOnTouchListener(
             FloatingMenuTouchListener(
@@ -103,8 +116,14 @@ class PredictorService : Service() {
     }
 
     private fun removePredictor() {
-        windowManager.removeView(floatingMenu)
-        windowManager.removeView(predictionView)
+        floatingMenu?.let {
+            windowManager.removeView(it)
+        }
+        floatingMenu = null
+        predictionView?.let {
+            windowManager.removeView(it)
+        }
+        predictionView = null
     }
 
     override fun onDestroy() {
@@ -112,9 +131,4 @@ class PredictorService : Service() {
         removeTablePositionSetup()
         removePredictor()
     }
-
-    companion object {
-        private const val TOAST_TEXT = "YouTube: @iwex\nEnjoy!"
-    }
-
 }

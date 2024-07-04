@@ -65,5 +65,4 @@ class FloatingMenuTouchListener(
         const val ALPHA_MIN = 0.5f
         const val ALPHA_MAX = 1f
     }
-
 }

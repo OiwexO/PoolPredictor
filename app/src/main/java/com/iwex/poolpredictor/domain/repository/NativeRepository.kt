@@ -14,4 +14,6 @@ interface NativeRepository {
     fun setTablePosition(tablePosition: TablePosition)
 
     fun updateShotResult(shotResultArray: FloatArray)
+
+    fun exit()
 }

@@ -1,6 +1,5 @@
 package com.iwex.poolpredictor.presentation
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
@@ -17,26 +16,28 @@ import android.widget.SeekBar
 import android.widget.Switch
 import android.widget.TextView
 import androidx.core.view.setMargins
-import com.iwex.poolpredictor.presentation.resource.MenuColors
 import com.iwex.poolpredictor.presentation.resource.Dimensions
+import com.iwex.poolpredictor.presentation.resource.MenuColors
+import com.iwex.poolpredictor.presentation.util.StringUtils.Companion.formatStringWithNumber
 import com.iwex.poolpredictor.presentation.view.ArrowButton
 
 class MenuWidgetFactory {
+
     companion object {
 
-        @SuppressLint("UseSwitchCompatOrMaterialCode")
         fun addSwitch(
-            value: Boolean,
+            isChecked: Boolean,
             checkedListener: (isChecked: Boolean) -> Unit,
             label: String,
             context: Context,
             parent: ViewGroup
         ): Switch {
+            val dimensions = Dimensions.getInstance(context)
             return Switch(context).apply {
-                isChecked = value
+                this.isChecked = isChecked
                 text = label
-                textSize = Dimensions.getInstance(context).switchTextSizeSp
-                minHeight = Dimensions.getInstance(context).switchHeightPx
+                textSize = dimensions.switchTextSizeSp
+                minHeight = dimensions.switchHeightPx
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     thumbTintList = ColorStateList(
                         arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
@@ -63,6 +64,7 @@ class MenuWidgetFactory {
             context: Context,
             parent: ViewGroup
         ): SeekBar {
+            val dimensions = Dimensions.getInstance(context)
             val textViewLabel = addSeekBarLabel(label, progress, context, parent)
             return SeekBar(context).apply {
                 this.max = max
@@ -72,12 +74,12 @@ class MenuWidgetFactory {
                     MenuColors.SEEKBAR_PROGRESS, PorterDuff.Mode.SRC_ATOP
                 )
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    minHeight = Dimensions.getInstance(context).seekbarHeightPx
+                    minHeight = dimensions.seekbarHeightPx
                 }
                 parent.addView(this)
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                        textViewLabel.text = String.format(label, progress)
+                        textViewLabel.text = formatStringWithNumber(label, progress)
                         progressListener(progress)
                     }
                     override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -92,9 +94,10 @@ class MenuWidgetFactory {
             context: Context,
             parent: ViewGroup
         ): TextView {
+            val dimensions = Dimensions.getInstance(context)
             return TextView(context).apply {
-                text = String.format(label, progress)
-                textSize = Dimensions.getInstance(context).seekbarTextSizeSp
+                text = formatStringWithNumber(label, progress)
+                textSize = dimensions.seekbarTextSizeSp
                 setTextColor(MenuColors.MAIN_TEXT)
                 parent.addView(this)
             }
@@ -106,12 +109,13 @@ class MenuWidgetFactory {
             context: Context,
             parent: ViewGroup
         ): Button {
+            val dimensions = Dimensions.getInstance(context)
             return Button(context).apply {
                 text = label
-                textSize = Dimensions.getInstance(context).buttonTextSizeSp
+                textSize = dimensions.buttonTextSizeSp
                 if (addMargin) {
                     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT).apply {
-                        setMargins(Dimensions.getInstance(context).buttonMarginPx)
+                        setMargins(dimensions.buttonMarginPx)
                     }
                 }
                 background = getButtonBackground(context)
@@ -122,9 +126,10 @@ class MenuWidgetFactory {
         }
 
         private fun getButtonBackground(context: Context): GradientDrawable {
+            val dimensions = Dimensions.getInstance(context)
             return GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
-                cornerRadius = Dimensions.getInstance(context).buttonCornerRadiusPx
+                cornerRadius = dimensions.buttonCornerRadiusPx
                 setColor(MenuColors.BUTTON_BACKGROUND)
             }
         }
@@ -134,11 +139,12 @@ class MenuWidgetFactory {
             context: Context,
             parent: ViewGroup
         ): TextView {
+            val dimensions = Dimensions.getInstance(context)
             return TextView(context).apply {
                 text = label
                 textAlignment = TextView.TEXT_ALIGNMENT_CENTER
                 setTextColor(MenuColors.MAIN_TEXT)
-                textSize = Dimensions.getInstance(context).titleTextSizeSp
+                textSize = dimensions.titleTextSizeSp
                 parent.addView(this)
             }
         }
@@ -164,11 +170,12 @@ class MenuWidgetFactory {
             parent: ViewGroup,
             arrowDirection: ArrowButton.ArrowDirection
         ) : ArrowButton {
-            val size = Dimensions.getInstance(context).arrowButtonSizePx
-            val cornerRadius = Dimensions.getInstance(context).buttonCornerRadiusPx
-            val button = ArrowButton(context, size, cornerRadius, arrowDirection)
-            parent.addView(button)
-            return button
+            val dimensions = Dimensions.getInstance(context)
+            val size = dimensions.arrowButtonSizePx
+            val cornerRadius = dimensions.buttonCornerRadiusPx
+            return ArrowButton(context, size, cornerRadius, arrowDirection).apply {
+                parent.addView(this)
+            }
         }
     }
 }

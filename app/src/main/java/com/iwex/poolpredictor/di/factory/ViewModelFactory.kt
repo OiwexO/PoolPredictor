@@ -3,6 +3,7 @@ package com.iwex.poolpredictor.di.factory
 import android.content.Context
 import com.iwex.poolpredictor.presentation.resource.Dimensions
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
+import com.iwex.poolpredictor.presentation.viewmodel.OtherTabViewModel
 import com.iwex.poolpredictor.presentation.viewmodel.esp.EspSharedViewModel
 import com.iwex.poolpredictor.presentation.viewmodel.tablePosition.TablePositionSharedViewModel
 
@@ -27,6 +28,10 @@ class ViewModelFactory private constructor(context: Context) {
         )
     }
 
+    val otherTabViewModel: OtherTabViewModel by lazy {
+        OtherTabViewModel(useCaseFactory.exitNativeUseCase)
+    }
+
     val tablePositionSharedViewModel: TablePositionSharedViewModel by lazy {
         TablePositionSharedViewModel(
             Dimensions.getInstance(context).displayHeight,
@@ -47,7 +52,5 @@ class ViewModelFactory private constructor(context: Context) {
                 instance ?: ViewModelFactory(context).also { instance = it }
             }
         }
-
     }
-
 }

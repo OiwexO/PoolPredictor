@@ -18,5 +18,4 @@ abstract class NonInteractiveOverlayView(context: Context) : View(context) {
         FLAG_NOT_FOCUSABLE or FLAG_NOT_TOUCHABLE,
         PixelFormat.TRANSLUCENT
     )
-
 }

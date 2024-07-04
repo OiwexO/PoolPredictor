@@ -6,6 +6,7 @@ import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.table.ResetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveAimSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspSettingsUseCase
+import com.iwex.poolpredictor.domain.usecase.native.ExitNativeUseCase
 import com.iwex.poolpredictor.domain.usecase.native.GetShotResultUseCase
 import com.iwex.poolpredictor.domain.usecase.native.SetTablePositionNativeUseCase
 import com.iwex.poolpredictor.domain.usecase.native.UpdateAimSettingsNativeUseCase
@@ -33,6 +34,10 @@ class UseCaseFactory private constructor(context: Context){
         SaveEspSettingsUseCase(repositoryFactory.menuSettingsRepository)
     }
 
+    val exitNativeUseCase: ExitNativeUseCase by lazy {
+        ExitNativeUseCase(repositoryFactory.nativeRepository)
+    }
+    
     val getShotResultUseCase: GetShotResultUseCase by lazy {
         GetShotResultUseCase(repositoryFactory.nativeRepository)
     }

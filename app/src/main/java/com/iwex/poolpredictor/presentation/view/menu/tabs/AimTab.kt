@@ -4,7 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.SeekBar
 import android.widget.Switch
+import com.iwex.poolpredictor.domain.model.MAX_CUE_POWER
+import com.iwex.poolpredictor.domain.model.MAX_CUE_SPIN
 import com.iwex.poolpredictor.presentation.MenuWidgetFactory
+import com.iwex.poolpredictor.presentation.resource.Strings
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
 
 @SuppressLint("UseSwitchCompatOrMaterialCode", "ViewConstructor")
@@ -22,33 +25,33 @@ class AimTab(context: Context, private val viewModel: AimTabViewModel) : BaseMen
         drawLinesSwitch = MenuWidgetFactory.addSwitch(
             aimSettings.drawLinesEnabled,
             viewModel::onDrawLinesChange,
-            LABEL_DRAW_LINES_SWITCH,
+            Strings.LABEL_DRAW_LINES_SWITCH,
             context,
             this
         )
         drawShotStateSwitch = MenuWidgetFactory.addSwitch(
             aimSettings.drawShotStateEnabled,
             viewModel::onDrawShotStateChange,
-            LABEL_DRAW_SHOT_STATE_SWITCH,
+            Strings.LABEL_DRAW_SHOT_STATE_SWITCH,
             context,
             this
         )
         drawOpponentsLinesSwitch = MenuWidgetFactory.addSwitch(
             aimSettings.drawOpponentsLinesEnabled,
             viewModel::onDrawOpponentsLinesChange,
-            LABEL_DRAW_OPPONENTS_LINES_SWITCH,
+            Strings.LABEL_DRAW_OPPONENTS_LINES_SWITCH,
             context,
             this
         )
         powerControlSwitch = MenuWidgetFactory.addSwitch(
             aimSettings.preciseTrajectoriesEnabled,
             viewModel::onPreciseTrajectoriesEnabledChange,
-            LABEL_POWER_CONTROL_MODE_SWITCH,
+            Strings.LABEL_POWER_CONTROL_MODE_SWITCH,
             context,
             this
         )
         cuePowerSeekbar = MenuWidgetFactory.addSeekBar(
-            LABEL_CUE_POWER_SEEKBAR,
+            Strings.LABEL_CUE_POWER_SEEKBAR,
             MAX_CUE_POWER,
             aimSettings.cuePower,
             viewModel::onCuePowerChange,
@@ -56,7 +59,7 @@ class AimTab(context: Context, private val viewModel: AimTabViewModel) : BaseMen
             this
         )
         cueSpinSeekbar = MenuWidgetFactory.addSeekBar(
-            LABEL_CUE_SPIN_SEEKBAR,
+            Strings.LABEL_CUE_SPIN_SEEKBAR,
             MAX_CUE_SPIN,
             aimSettings.cueSpin,
             viewModel::onCueSpinChange,
@@ -68,19 +71,5 @@ class AimTab(context: Context, private val viewModel: AimTabViewModel) : BaseMen
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         viewModel.saveAimSettings()
-    }
-
-    companion object {
-
-        private const val LABEL_DRAW_LINES_SWITCH = "draw lines"
-        private const val LABEL_DRAW_SHOT_STATE_SWITCH = "draw shot shotState"
-        private const val LABEL_DRAW_OPPONENTS_LINES_SWITCH = "draw opponent\'s lines"
-        private const val LABEL_POWER_CONTROL_MODE_SWITCH = "precise trajectories"
-        private const val LABEL_CUE_POWER_SEEKBAR = "cue power: %d"
-        private const val LABEL_CUE_SPIN_SEEKBAR = "cue spin: %d"
-
-        private const val MAX_CUE_POWER = 13
-        private const val MAX_CUE_SPIN = 13
-
     }
 }

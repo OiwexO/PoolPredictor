@@ -6,7 +6,7 @@ import androidx.core.view.setPadding
 import com.iwex.poolpredictor.presentation.resource.MenuColors
 import com.iwex.poolpredictor.presentation.resource.Dimensions
 
-open class BaseMenuTab(context: Context) : LinearLayout(context) {
+abstract class BaseMenuTab(context: Context) : LinearLayout(context) {
 
     init {
         initializeLayout(context)

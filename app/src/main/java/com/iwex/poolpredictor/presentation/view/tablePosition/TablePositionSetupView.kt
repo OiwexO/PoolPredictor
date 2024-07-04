@@ -16,7 +16,9 @@ import androidx.constraintlayout.widget.ConstraintSet.START
 import androidx.constraintlayout.widget.ConstraintSet.TOP
 import com.iwex.poolpredictor.presentation.MenuWidgetFactory
 import com.iwex.poolpredictor.presentation.resource.Dimensions
+import com.iwex.poolpredictor.presentation.resource.Strings
 import com.iwex.poolpredictor.presentation.util.OverlayUtils
+import com.iwex.poolpredictor.presentation.util.StringUtils.Companion.formatStringWithNumber
 import com.iwex.poolpredictor.presentation.view.ArrowButton
 import com.iwex.poolpredictor.presentation.viewmodel.tablePosition.TablePositionSetupViewModel
 
@@ -44,8 +46,8 @@ class TablePositionSetupView(
         buttonTop = MenuWidgetFactory.addArrowButtonTop(context, this)
         buttonRight  = MenuWidgetFactory.addArrowButtonRight(context, this)
         buttonBottom = MenuWidgetFactory.addArrowButtonBottom(context, this)
-        buttonReset = MenuWidgetFactory.addButton(LABEL_RESET_BUTTON, true, context, this)
-        buttonSave = MenuWidgetFactory.addButton(LABEL_SAVE_BUTTON,true, context, this)
+        buttonReset = MenuWidgetFactory.addButton(Strings.LABEL_RESET_BUTTON, true, context, this)
+        buttonSave = MenuWidgetFactory.addButton(Strings.LABEL_SAVE_BUTTON,true, context, this)
         observeViewModel()
         layoutParams = initLayoutParams()
         setButtonIds()
@@ -55,7 +57,7 @@ class TablePositionSetupView(
 
     private fun observeViewModel() {
         viewModel.currentPointIndex.observeForever {
-            buttonSave.text = String.format(LABEL_SAVE_BUTTON, it)
+            buttonSave.text = formatStringWithNumber(Strings.LABEL_SAVE_BUTTON, it)
         }
         viewModel.isTableSet.observeForever {
             if (it) {
@@ -124,11 +126,5 @@ class TablePositionSetupView(
             setMargin(buttonReset.id, END, buttonMargin)
             applyTo(this@TablePositionSetupView)
         }
-    }
-
-    companion object {
-
-        private const val LABEL_SAVE_BUTTON = "Save %d"
-        private const val LABEL_RESET_BUTTON = "Reset"
     }
 }

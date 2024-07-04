@@ -37,4 +37,7 @@ class NativeRepositoryImpl : NativeRepository {
         _shotResult.postValue(ShotResult(shotResultArray))
     }
 
+    override fun exit() {
+        NativeBridge.exitThread()
+    }
 }

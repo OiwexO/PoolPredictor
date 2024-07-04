@@ -13,7 +13,6 @@ import com.iwex.poolpredictor.domain.model.isSolidBall
 import com.iwex.poolpredictor.presentation.resource.EspColors
 import com.iwex.poolpredictor.presentation.viewmodel.esp.PredictionViewModel
 
-//TODO Refactor EspView
 @SuppressLint("ViewConstructor")
 class PredictionView(
     context: Context,
@@ -22,16 +21,33 @@ class PredictionView(
 
     private val trajectoryPaints = Array(NUMBER_OF_BALLS) { Paint() }
     private val shotStatePaints = Array(2) { Paint() }
+    private val trajectoryPath = Path()
 
     private var params = EspParameters.DEFAULT
     private var shotResult = ShotResult.EMPTY
 
-    private val trajectoryPath = Path()
-
     init {
-        setLayerType(LAYER_TYPE_HARDWARE, null) //TODO check if this improves performance
         initPaints()
         observeViewModel()
+    }
+
+    private fun initPaints() {
+        for (i in trajectoryPaints.indices) {
+            trajectoryPaints[i].apply {
+                color = EspColors.BALLS_COLORS[i]
+                isAntiAlias = true
+                strokeCap = Paint.Cap.ROUND
+                strokeJoin = Paint.Join.ROUND
+            }
+        }
+        for (i in shotStatePaints.indices) {
+            shotStatePaints[i].apply {
+                color = EspColors.SHOT_STATE_COLORS[i]
+                isAntiAlias = true
+                strokeCap = Paint.Cap.ROUND
+                style = Paint.Style.STROKE
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -46,29 +62,8 @@ class PredictionView(
         }
     }
 
-    private fun initPaints() {
-        trajectoryPath.fillType = Path.FillType.WINDING
-        for (i in trajectoryPaints.indices) {
-            trajectoryPaints[i].apply {
-                color = EspColors.BALLS_COLORS[i]
-                isAntiAlias = true
-                strokeCap = Paint.Cap.ROUND
-                strokeJoin = Paint.Join.ROUND
-            }
-
-        }
-        for (i in shotStatePaints.indices) {
-            shotStatePaints[i].apply {
-                color = EspColors.SHOT_STATE_COLORS[i]
-                isAntiAlias = true
-                strokeCap = Paint.Cap.ROUND
-                style = Paint.Style.STROKE
-            }
-        }
-    }
-
     private fun updateEspParameters() {
-        for (i in 0 until NUMBER_OF_BALLS) {
+        for (i in trajectoryPaints.indices) {
             trajectoryPaints[i].apply {
                 alpha = params.trajectoryOpacity
                 strokeWidth = params.getLineWidth(i)
@@ -80,7 +75,6 @@ class PredictionView(
                 strokeWidth = params.shotStateCircleWidth
             }
         }
-
     }
 
     override fun onDraw(canvas: Canvas) {

@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.Toast
 import com.iwex.poolpredictor.presentation.MenuWidgetFactory
+import com.iwex.poolpredictor.presentation.resource.Strings
 import com.iwex.poolpredictor.presentation.viewmodel.esp.EspTabViewModel
 
 @SuppressLint("ViewConstructor")
@@ -22,7 +23,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
     init {
         val espSettings = viewModel.getEspSettings()
         lineWidthSeekbar = MenuWidgetFactory.addSeekBar(
-            LABEL_LINE_WIDTH_SEEKBAR,
+            Strings.LABEL_LINE_WIDTH_SEEKBAR,
             MAX_LINE_WIDTH,
             espSettings.lineWidth,
             viewModel::onLineWidthChange,
@@ -30,7 +31,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
             this
         )
         ballRadiusSeekbar = MenuWidgetFactory.addSeekBar(
-            LABEL_BALL_RADIUS_SEEKBAR,
+            Strings.LABEL_BALL_RADIUS_SEEKBAR,
             MAX_BALL_RADIUS,
             espSettings.ballRadius,
             viewModel::onBallRadiusChange,
@@ -38,7 +39,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
             this
         )
         trajectoryOpacitySeekbar = MenuWidgetFactory.addSeekBar(
-            LABEL_TRAJECTORY_OPACITY_SEEKBAR,
+            Strings.LABEL_TRAJECTORY_OPACITY_SEEKBAR,
             MAX_TRAJECTORY_OPACITY,
             espSettings.trajectoryOpacity,
             viewModel::onTrajectoryOpacityChange,
@@ -46,7 +47,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
             this
         )
         shotStateCircleWidthSeekbar = MenuWidgetFactory.addSeekBar(
-            LABEL_SHOT_STATE_CIRCLE_WIDTH_SEEKBAR,
+            Strings.LABEL_SHOT_STATE_CIRCLE_WIDTH_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_WIDTH,
             espSettings.shotStateCircleWidth,
             viewModel::onShotStateCircleWidthChange,
@@ -54,7 +55,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
             this
         )
         shotStateCircleRadiusSeekbar = MenuWidgetFactory.addSeekBar(
-            LABEL_SHOT_STATE_CIRCLE_RADIUS_SEEKBAR,
+            Strings.LABEL_SHOT_STATE_CIRCLE_RADIUS_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_RADIUS,
             espSettings.shotStateCircleRadius,
             viewModel::onShotStateCircleRadiusChange,
@@ -62,7 +63,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
             this
         )
         shotStateCircleOpacitySeekbar = MenuWidgetFactory.addSeekBar(
-            LABEL_SHOT_STATE_CIRCLE_OPACITY_SEEKBAR,
+            Strings.LABEL_SHOT_STATE_CIRCLE_OPACITY_SEEKBAR,
             MAX_SHOT_STATE_CIRCLE_OPACITY,
             espSettings.shotStateCircleOpacity,
             viewModel::onShotStateCircleOpacityChange,
@@ -70,17 +71,17 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
             this
         )
         resetTableButton = MenuWidgetFactory.addButton(
-            LABEL_RESET_TABLE_BUTTON,
+            Strings.LABEL_RESET_TABLE_BUTTON,
             false,
             context,
             this
         )
         resetTableButton.setOnClickListener {
-            Toast.makeText(context, TOAST_LONG_CLICK_TO_RESET, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, Strings.TOAST_LONG_CLICK_TO_RESET, Toast.LENGTH_LONG).show()
         }
         resetTableButton.setOnLongClickListener {
             viewModel.onResetTableListener()
-            Toast.makeText(context, TOAST_TABLE_WAS_RESET, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, Strings.TOAST_TABLE_WAS_RESET, Toast.LENGTH_LONG).show()
             true
         }
     }
@@ -91,17 +92,6 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
     }
 
     companion object {
-
-        private const val LABEL_LINE_WIDTH_SEEKBAR = "line width: %d"
-        private const val LABEL_BALL_RADIUS_SEEKBAR = "ball radius: %d"
-        private const val LABEL_TRAJECTORY_OPACITY_SEEKBAR = "trajectory opacity: %d"
-        private const val LABEL_SHOT_STATE_CIRCLE_WIDTH_SEEKBAR = "shot shotState circle width: %d"
-        private const val LABEL_SHOT_STATE_CIRCLE_RADIUS_SEEKBAR = "shot shotState circle radius: %d"
-        private const val LABEL_SHOT_STATE_CIRCLE_OPACITY_SEEKBAR = "shot shotState circle opacity: %d"
-        private const val LABEL_RESET_TABLE_BUTTON = "reset table position\n(restart is required)"
-
-        private const val TOAST_LONG_CLICK_TO_RESET = "hold button to reset table position"
-        private const val TOAST_TABLE_WAS_RESET = "table has been reset, restart the app"
 
         private const val MAX_LINE_WIDTH = 40
         private const val MAX_BALL_RADIUS = 80

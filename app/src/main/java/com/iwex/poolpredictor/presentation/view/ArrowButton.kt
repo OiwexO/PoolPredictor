@@ -17,7 +17,6 @@ class ArrowButton(
 ) : View(context) {
 
     private val paint = Paint()
-
     private val arrowPath = Path()
 
     init {

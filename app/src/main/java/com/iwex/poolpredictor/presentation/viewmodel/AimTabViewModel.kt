@@ -12,42 +12,36 @@ class AimTabViewModel(
     private val saveAimSettingsUseCase: SaveAimSettingsUseCase
 ) : ViewModel() {
 
-    private var aimSettings: AimSettings
-
-    init {
-        aimSettings = getAimSettingsUseCase()
-        updateAimSettingsNativeUseCase(aimSettings)
-    }
-
-    private fun updateAimSettings(action: AimSettings.() -> AimSettings) {
-        aimSettings = aimSettings.action()
-        updateAimSettingsNativeUseCase(aimSettings)
-    }
+    private var aimSettings = getAimSettingsUseCase()
+        set(value) {
+            field = value
+            updateAimSettingsNativeUseCase(aimSettings)
+        }
 
     fun getAimSettings(): AimSettings = aimSettings
 
     fun onDrawLinesChange(isChecked: Boolean) {
-        updateAimSettings { copy(drawLinesEnabled = isChecked) }
+        aimSettings = aimSettings.copy(drawLinesEnabled = isChecked)
     }
 
     fun onDrawShotStateChange(isChecked: Boolean) {
-        updateAimSettings { copy(drawShotStateEnabled = isChecked) }
+        aimSettings = aimSettings.copy(drawShotStateEnabled = isChecked)
     }
 
     fun onDrawOpponentsLinesChange(isChecked: Boolean) {
-        updateAimSettings { copy(drawOpponentsLinesEnabled = isChecked) }
+        aimSettings = aimSettings.copy(drawOpponentsLinesEnabled = isChecked)
     }
 
     fun onPreciseTrajectoriesEnabledChange(isChecked: Boolean) {
-        updateAimSettings { copy(preciseTrajectoriesEnabled = isChecked) }
+        aimSettings = aimSettings.copy(preciseTrajectoriesEnabled = isChecked)
     }
 
     fun onCuePowerChange(power: Int) {
-        updateAimSettings { copy(cuePower = power) }
+        aimSettings = aimSettings.copy(cuePower = power)
     }
 
     fun onCueSpinChange(spin: Int) {
-        updateAimSettings { copy(cueSpin = spin) }
+        aimSettings = aimSettings.copy(cueSpin = spin)
     }
 
     fun saveAimSettings() {

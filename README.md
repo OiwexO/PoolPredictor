@@ -1,6 +1,6 @@
 # Balls movement prediction mod for 8 Ball Pool v5.8.0
 
-![Preview GIF](assets/preview.gif "PoolPredictor preview")
+![Preview](assets/preview.mp4 "PoolPredictor preview")
 
 This mod only works with 8 Ball Pool version 5.8.0 armeabi-v7a (32-bit). You can't use it in online matches. Use it to improve your skills in both playing pool and modding android games :-)
 

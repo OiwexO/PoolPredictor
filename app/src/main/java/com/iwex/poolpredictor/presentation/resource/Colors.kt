@@ -18,7 +18,9 @@ object MenuColors {
 
     const val BUTTON_TEXT: Int = Color.WHITE
     const val BUTTON_BACKGROUND: Int = 0xFF2196F3.toInt()
+    const val BUTTON_BACKGROUND_PRESSED: Int = 0xFF4DABF5.toInt()
 }
+
 object EspColors {
     private const val WHITE = 0xFFFFF4DA.toInt()
     private const val YELLOW = 0xFFFFAE01.toInt()
@@ -48,7 +50,7 @@ object EspColors {
         PURPLE,
         ORANGE,
         GREEN,
-        MAROON
+        MAROON,
     )
 
     val SHOT_STATE_COLORS = intArrayOf(RED, GREEN)

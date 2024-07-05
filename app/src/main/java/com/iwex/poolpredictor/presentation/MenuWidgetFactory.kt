@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.view.Gravity
 import android.view.ViewGroup
@@ -22,15 +23,13 @@ import com.iwex.poolpredictor.presentation.util.StringUtils.Companion.formatStri
 import com.iwex.poolpredictor.presentation.view.ArrowButton
 
 class MenuWidgetFactory {
-
     companion object {
-
         fun addSwitch(
             isChecked: Boolean,
             checkedListener: (isChecked: Boolean) -> Unit,
             label: String,
             context: Context,
-            parent: ViewGroup
+            parent: ViewGroup,
         ): Switch {
             val dimensions = Dimensions.getInstance(context)
             return Switch(context).apply {
@@ -41,11 +40,16 @@ class MenuWidgetFactory {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     thumbTintList = ColorStateList(
                         arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
-                        intArrayOf(MenuColors.SWITCH_THUMB_ENABLED, MenuColors.SWITCH_THUMB_DISABLED)
+                        intArrayOf(
+                            MenuColors.SWITCH_THUMB_ENABLED,
+                            MenuColors.SWITCH_THUMB_DISABLED
+                        ),
                     )
                     trackTintList = ColorStateList(
                         arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
-                        intArrayOf(MenuColors.SWITCH_TRACK_ENABLED, MenuColors.SWITCH_TRACK_DISABLED)
+                        intArrayOf(
+                            MenuColors.SWITCH_TRACK_ENABLED, MenuColors.SWITCH_TRACK_DISABLED
+                        ),
                     )
                 }
                 setTextColor(MenuColors.MAIN_TEXT)
@@ -62,7 +66,7 @@ class MenuWidgetFactory {
             progress: Int,
             progressListener: (progress: Int) -> Unit,
             context: Context,
-            parent: ViewGroup
+            parent: ViewGroup,
         ): SeekBar {
             val dimensions = Dimensions.getInstance(context)
             val textViewLabel = addSeekBarLabel(label, progress, context, parent)
@@ -78,10 +82,13 @@ class MenuWidgetFactory {
                 }
                 parent.addView(this)
                 setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    override fun onProgressChanged(
+                        seekBar: SeekBar, progress: Int, fromUser: Boolean
+                    ) {
                         textViewLabel.text = formatStringWithNumber(label, progress)
                         progressListener(progress)
                     }
+
                     override fun onStartTrackingTouch(seekBar: SeekBar) {}
                     override fun onStopTrackingTouch(seekBar: SeekBar) {}
                 })
@@ -92,7 +99,7 @@ class MenuWidgetFactory {
             label: String,
             progress: Int,
             context: Context,
-            parent: ViewGroup
+            parent: ViewGroup,
         ): TextView {
             val dimensions = Dimensions.getInstance(context)
             return TextView(context).apply {
@@ -107,7 +114,7 @@ class MenuWidgetFactory {
             label: String,
             addMargin: Boolean,
             context: Context,
-            parent: ViewGroup
+            parent: ViewGroup,
         ): Button {
             val dimensions = Dimensions.getInstance(context)
             return Button(context).apply {
@@ -125,19 +132,28 @@ class MenuWidgetFactory {
             }
         }
 
-        private fun getButtonBackground(context: Context): GradientDrawable {
+        private fun getButtonBackground(context: Context): StateListDrawable {
             val dimensions = Dimensions.getInstance(context)
-            return GradientDrawable().apply {
+            val defaultDrawable = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = dimensions.buttonCornerRadiusPx
                 setColor(MenuColors.BUTTON_BACKGROUND)
+            }
+            val pressedDrawable = GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                cornerRadius = dimensions.buttonCornerRadiusPx
+                setColor(MenuColors.BUTTON_BACKGROUND_PRESSED)
+            }
+            return StateListDrawable().apply {
+                addState(intArrayOf(android.R.attr.state_pressed), pressedDrawable)
+                addState(intArrayOf(), defaultDrawable)
             }
         }
 
         fun addTitle(
             label: String,
             context: Context,
-            parent: ViewGroup
+            parent: ViewGroup,
         ): TextView {
             val dimensions = Dimensions.getInstance(context)
             return TextView(context).apply {
@@ -149,27 +165,31 @@ class MenuWidgetFactory {
             }
         }
 
-        fun addArrowButtonLeft(context: Context, parent: ViewGroup) : ArrowButton {
-            return addArrowButton(context, parent, ArrowButton.ArrowDirection.LEFT)
-        }
+        fun addArrowButtonLeft(
+            context: Context,
+            parent: ViewGroup,
+        ): ArrowButton = addArrowButton(context, parent, ArrowButton.ArrowDirection.LEFT)
 
-        fun addArrowButtonTop(context: Context, parent: ViewGroup) : ArrowButton {
-            return addArrowButton(context, parent, ArrowButton.ArrowDirection.TOP)
-        }
+        fun addArrowButtonTop(
+            context: Context,
+            parent: ViewGroup,
+        ): ArrowButton = addArrowButton(context, parent, ArrowButton.ArrowDirection.TOP)
 
-        fun addArrowButtonRight(context: Context, parent: ViewGroup) : ArrowButton {
-            return addArrowButton(context, parent, ArrowButton.ArrowDirection.RIGHT)
-        }
+        fun addArrowButtonRight(
+            context: Context,
+            parent: ViewGroup,
+        ): ArrowButton = addArrowButton(context, parent, ArrowButton.ArrowDirection.RIGHT)
 
-        fun addArrowButtonBottom(context: Context, parent: ViewGroup) : ArrowButton {
-            return addArrowButton(context, parent, ArrowButton.ArrowDirection.BOTTOM)
-        }
+        fun addArrowButtonBottom(
+            context: Context,
+            parent: ViewGroup,
+        ): ArrowButton = addArrowButton(context, parent, ArrowButton.ArrowDirection.BOTTOM)
 
         private fun addArrowButton(
             context: Context,
             parent: ViewGroup,
-            arrowDirection: ArrowButton.ArrowDirection
-        ) : ArrowButton {
+            arrowDirection: ArrowButton.ArrowDirection,
+        ): ArrowButton {
             val dimensions = Dimensions.getInstance(context)
             val size = dimensions.arrowButtonSizePx
             val cornerRadius = dimensions.buttonCornerRadiusPx

@@ -12,12 +12,11 @@ import com.iwex.poolpredictor.domain.usecase.native.GetShotResultUseCase
 import com.iwex.poolpredictor.domain.usecase.table.ResetTablePositionUseCase
 
 class EspSharedViewModel(
-    private val getEspSettingsUseCase: GetEspSettingsUseCase,
+    getEspSettingsUseCase: GetEspSettingsUseCase,
     private val saveEspSettingsUseCase: SaveEspSettingsUseCase,
     private val resetTablePositionUseCase: ResetTablePositionUseCase,
     private val getShotResultUseCase: GetShotResultUseCase
 ) : ViewModel(), EspTabViewModel, PredictionViewModel {
-
     private var espSettings = getEspSettingsUseCase()
         set(value) {
             field = value
@@ -25,12 +24,9 @@ class EspSharedViewModel(
         }
 
     private val _espParameters = MutableLiveData(EspParameters(espSettings))
+    override val espParameters: LiveData<EspParameters> get() = _espParameters
 
-    override val espParameters: LiveData<EspParameters>
-        get() = _espParameters
-
-    override val shotResult: LiveData<ShotResult>
-        get() = getShotResultUseCase()
+    override val shotResult: LiveData<ShotResult> get() = getShotResultUseCase()
 
     override fun getEspSettings(): EspSettings = espSettings
 
@@ -65,5 +61,4 @@ class EspSharedViewModel(
     override fun saveEspSettings() {
         saveEspSettingsUseCase(espSettings)
     }
-
 }

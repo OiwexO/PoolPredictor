@@ -61,8 +61,8 @@ class TablePositionSetupView(
         }
         viewModel.isTableSet.observeForever {
             if (it) {
-                onTablePositionSetListener?.onTablePositionSet()
                 viewModel.onTableSet()
+                onTablePositionSetListener?.onTablePositionSet()
             }
         }
     }

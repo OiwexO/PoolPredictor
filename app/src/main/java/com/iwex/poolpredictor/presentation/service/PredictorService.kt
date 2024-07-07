@@ -2,6 +2,7 @@ package com.iwex.poolpredictor.presentation.service
 
 import android.annotation.SuppressLint
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.view.ViewConfiguration
@@ -34,38 +35,17 @@ class PredictorService : Service() {
     private var tableShapeView: TableShapeView? = null
 
     override fun onBind(intent: Intent?): IBinder? {
-        TODO("Not yet implemented")
+        return null
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return START_NOT_STICKY
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        val isTableSet = UseCaseFactory.getInstance(this).getIsTableSetUseCase()
+        val isTableSet = intent?.getBooleanExtra(KEY_IS_TABLE_SET, false) ?: false
         if (isTableSet) {
             startPredictor()
         } else {
             startTablePositionSetup()
         }
-    }
-
-    private fun startTablePositionSetup() {
-        val viewModelFactory = ViewModelFactory.getInstance(this)
-        val tablePositionViewModel = viewModelFactory.tablePositionSharedViewModel
-        val tablePositionSetupView = TablePositionSetupView(this, tablePositionViewModel)
-        tablePositionSetupView.onTablePositionSetListener = object : OnTablePositionSetListener {
-            override fun onTablePositionSet() {
-                removeTablePositionSetup()
-                startPredictor()
-            }
-        }
-        val tableShapeView = TableShapeView(this, tablePositionViewModel)
-        windowManager.addView(tableShapeView, tableShapeView.layoutParams)
-        windowManager.addView(tablePositionSetupView, tablePositionSetupView.layoutParams)
-        this.tablePositionSetupView = tablePositionSetupView
-        this.tableShapeView = tableShapeView
+        return START_NOT_STICKY
     }
 
     private fun startPredictor() {
@@ -109,6 +89,21 @@ class PredictorService : Service() {
         this.floatingMenu = floatingMenu
     }
 
+    private fun startTablePositionSetup() {
+        val viewModelFactory = ViewModelFactory.getInstance(this)
+        val tablePositionViewModel = viewModelFactory.tablePositionSharedViewModel
+        val tablePositionSetupView = TablePositionSetupView(this, tablePositionViewModel)
+        tablePositionSetupView.onTablePositionSetListener = OnTablePositionSetListener {
+            removeTablePositionSetup()
+            startPredictor()
+        }
+        val tableShapeView = TableShapeView(this, tablePositionViewModel)
+        windowManager.addView(tableShapeView, tableShapeView.layoutParams)
+        windowManager.addView(tablePositionSetupView, tablePositionSetupView.layoutParams)
+        this.tablePositionSetupView = tablePositionSetupView
+        this.tableShapeView = tableShapeView
+    }
+
     private fun removeTablePositionSetup() {
         tablePositionSetupView?.let {
             windowManager.removeView(it)
@@ -135,5 +130,14 @@ class PredictorService : Service() {
         super.onDestroy()
         removeTablePositionSetup()
         removePredictor()
+    }
+
+    companion object {
+        private const val KEY_IS_TABLE_SET = "is_table_set"
+
+        fun newIntent(context: Context, isTableSet: Boolean) =
+            Intent(context, PredictorService::class.java).apply {
+                putExtra(KEY_IS_TABLE_SET, isTableSet)
+            }
     }
 }

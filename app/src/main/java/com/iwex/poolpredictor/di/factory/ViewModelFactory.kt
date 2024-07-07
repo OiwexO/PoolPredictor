@@ -3,13 +3,17 @@ package com.iwex.poolpredictor.di.factory
 import android.content.Context
 import com.iwex.poolpredictor.presentation.resource.Dimensions
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
+import com.iwex.poolpredictor.presentation.viewmodel.LauncherViewModel
 import com.iwex.poolpredictor.presentation.viewmodel.OtherTabViewModel
 import com.iwex.poolpredictor.presentation.viewmodel.esp.EspSharedViewModel
 import com.iwex.poolpredictor.presentation.viewmodel.tablePosition.TablePositionSharedViewModel
 
 class ViewModelFactory private constructor(context: Context) {
-
     private val useCaseFactory = UseCaseFactory.getInstance(context)
+
+    val launcherViewModel: LauncherViewModel by lazy {
+        LauncherViewModel(useCaseFactory.getIsTableSetUseCase)
+    }
 
     val aimTabViewModel: AimTabViewModel by lazy {
         AimTabViewModel(
@@ -43,7 +47,6 @@ class ViewModelFactory private constructor(context: Context) {
     }
 
     companion object {
-
         private var instance: ViewModelFactory? = null
 
         fun getInstance(context: Context): ViewModelFactory {

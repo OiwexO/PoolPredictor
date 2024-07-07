@@ -47,10 +47,8 @@ class ViewModelFactory private constructor(context: Context) {
     companion object {
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(context: Context): ViewModelFactory {
-            return instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(context).also { instance = it }
-            }
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
+            instance ?: ViewModelFactory(context).also { instance = it }
         }
     }
 }

@@ -15,7 +15,6 @@ import com.iwex.poolpredictor.domain.usecase.table.GetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.table.SaveTablePositionUseCase
 
 class UseCaseFactory private constructor(context: Context) {
-
     private val repositoryFactory = RepositoryFactory.getInstance(context)
 
     val getAimSettingsUseCase: GetAimSettingsUseCase by lazy {
@@ -70,15 +69,10 @@ class UseCaseFactory private constructor(context: Context) {
     }
 
     companion object {
-
-        @Volatile
         private var instance: UseCaseFactory? = null
 
-        fun getInstance(context: Context): UseCaseFactory {
-            return instance ?: synchronized(this) {
-                instance ?: UseCaseFactory(context).also { instance = it }
-            }
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
+            instance ?: UseCaseFactory(context).also { instance = it }
         }
     }
-
 }

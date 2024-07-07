@@ -10,7 +10,6 @@ import com.iwex.poolpredictor.domain.repository.NativeRepository
 import com.iwex.poolpredictor.domain.repository.TablePositionRepository
 
 class RepositoryFactory private constructor(context: Context) {
-
     private val sharedPreferences: SharedPreferences by lazy {
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
     }
@@ -28,15 +27,11 @@ class RepositoryFactory private constructor(context: Context) {
     }
 
     companion object {
-
         private const val SHARED_PREFERENCES_NAME = "PoolPredictor"
         private var instance: RepositoryFactory? = null
 
-        fun getInstance(context: Context): RepositoryFactory {
-            return instance ?: synchronized(this) {
-                instance ?: RepositoryFactory(context).also { instance = it }
-            }
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
+            instance ?: RepositoryFactory(context).also { instance = it }
         }
     }
-
 }

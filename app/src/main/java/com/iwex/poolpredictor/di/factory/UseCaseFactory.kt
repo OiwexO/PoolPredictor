@@ -14,7 +14,7 @@ import com.iwex.poolpredictor.domain.usecase.table.GetIsTableSetUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.table.SaveTablePositionUseCase
 
-class UseCaseFactory private constructor(context: Context){
+class UseCaseFactory private constructor(context: Context) {
 
     private val repositoryFactory = RepositoryFactory.getInstance(context)
 
@@ -37,13 +37,16 @@ class UseCaseFactory private constructor(context: Context){
     val exitNativeUseCase: ExitNativeUseCase by lazy {
         ExitNativeUseCase(repositoryFactory.nativeRepository)
     }
-    
+
     val getShotResultUseCase: GetShotResultUseCase by lazy {
         GetShotResultUseCase(repositoryFactory.nativeRepository)
     }
 
     val setTablePositionNativeUseCase: SetTablePositionNativeUseCase by lazy {
-        SetTablePositionNativeUseCase(repositoryFactory.nativeRepository)
+        SetTablePositionNativeUseCase(
+            repositoryFactory.tablePositionRepository,
+            repositoryFactory.nativeRepository
+        )
     }
 
     val updateAimSettingsNativeUseCase: UpdateAimSettingsNativeUseCase by lazy {

@@ -39,7 +39,6 @@ class ViewModelFactory private constructor(context: Context) {
             useCaseFactory.getIsTableSetUseCase,
             useCaseFactory.getTablePositionUseCase,
             useCaseFactory.saveTablePositionUseCase,
-            useCaseFactory.setTablePositionNativeUseCase
         )
     }
 

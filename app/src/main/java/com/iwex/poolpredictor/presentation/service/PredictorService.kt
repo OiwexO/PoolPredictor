@@ -70,12 +70,17 @@ class PredictorService : Service() {
 
     private fun startPredictor() {
         Toast.makeText(this, Strings.TOAST_AUTHOR, Toast.LENGTH_LONG).show()
+        setTablePositionNative()
         val viewModelFactory = ViewModelFactory.getInstance(this)
         val espTabViewModel = viewModelFactory.espSharedViewModel
         val aimTabViewModel = viewModelFactory.aimTabViewModel
         val otherTabViewModel = viewModelFactory.otherTabViewModel
         setupPredictionView(espTabViewModel)
         setupFloatingMenu(aimTabViewModel, espTabViewModel, otherTabViewModel)
+    }
+
+    private fun setTablePositionNative() {
+        UseCaseFactory.getInstance(this).setTablePositionNativeUseCase.invoke()
     }
 
     private fun setupPredictionView(espTabViewModel: EspSharedViewModel) {

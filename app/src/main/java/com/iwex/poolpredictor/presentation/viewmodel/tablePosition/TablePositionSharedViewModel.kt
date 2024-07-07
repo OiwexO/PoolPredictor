@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iwex.poolpredictor.domain.model.TablePosition
-import com.iwex.poolpredictor.domain.usecase.native.SetTablePositionNativeUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetIsTableSetUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.table.SaveTablePositionUseCase
@@ -15,8 +14,7 @@ class TablePositionSharedViewModel(
     displayWidth: Int,
     private val getIsTableSetUseCase: GetIsTableSetUseCase,
     private val getTablePositionUseCase: GetTablePositionUseCase,
-    private val saveTablePositionUseCase: SaveTablePositionUseCase,
-    private val setTablePositionNativeUseCase: SetTablePositionNativeUseCase
+    private val saveTablePositionUseCase: SaveTablePositionUseCase
 ) : ViewModel(), TablePositionSetupViewModel, TableShapeViewModel {
 
     private val defaultTablePosition: TablePosition
@@ -82,7 +80,6 @@ class TablePositionSharedViewModel(
 
     override fun onTableSet() {
         saveTablePositionUseCase(currentTablePosition)
-        setTablePositionNativeUseCase(currentTablePosition)
     }
 
     private fun initDefaultTablePosition(displayHeight: Int, displayWidth: Int): TablePosition {

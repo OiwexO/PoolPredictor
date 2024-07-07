@@ -1,9 +1,8 @@
 package com.iwex.poolpredictor.di.factory
 
-import android.content.Context
+import android.app.Application
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetAimSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.GetEspSettingsUseCase
-import com.iwex.poolpredictor.domain.usecase.table.ResetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveAimSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveEspSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.native.ExitNativeUseCase
@@ -12,10 +11,11 @@ import com.iwex.poolpredictor.domain.usecase.native.SetTablePositionNativeUseCas
 import com.iwex.poolpredictor.domain.usecase.native.UpdateAimSettingsNativeUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetIsTableSetUseCase
 import com.iwex.poolpredictor.domain.usecase.table.GetTablePositionUseCase
+import com.iwex.poolpredictor.domain.usecase.table.ResetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.table.SaveTablePositionUseCase
 
-class UseCaseFactory private constructor(context: Context) {
-    private val repositoryFactory = RepositoryFactory.getInstance(context)
+class UseCaseFactory private constructor(application: Application) {
+    private val repositoryFactory = RepositoryFactory.getInstance(application)
 
     val getAimSettingsUseCase: GetAimSettingsUseCase by lazy {
         GetAimSettingsUseCase(repositoryFactory.menuSettingsRepository)
@@ -71,8 +71,8 @@ class UseCaseFactory private constructor(context: Context) {
     companion object {
         private var instance: UseCaseFactory? = null
 
-        fun getInstance(context: Context) = instance ?: synchronized(this) {
-            instance ?: UseCaseFactory(context).also { instance = it }
+        fun getInstance(application: Application) = instance ?: synchronized(this) {
+            instance ?: UseCaseFactory(application).also { instance = it }
         }
     }
 }

@@ -17,7 +17,7 @@ import com.iwex.poolpredictor.presentation.viewmodel.LauncherViewModel
 
 class LauncherActivity : Activity() {
     private val viewModel: LauncherViewModel by lazy {
-        ViewModelFactory.getInstance(this).launcherViewModel
+        ViewModelFactory.getInstance(this.application).launcherViewModel
     }
     private val isTableSetObserver = Observer<Boolean> {
         startPredictorService(it)

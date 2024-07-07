@@ -8,9 +8,7 @@ data class EspSettings(
     val shotStateCircleRadius: Int,
     val shotStateCircleOpacity: Int
 ) {
-
     companion object {
-
         val DEFAULT = EspSettings(
             lineWidth = 5,
             ballRadius = 21,

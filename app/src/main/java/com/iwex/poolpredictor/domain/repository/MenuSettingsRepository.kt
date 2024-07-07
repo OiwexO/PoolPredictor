@@ -4,7 +4,6 @@ import com.iwex.poolpredictor.domain.model.AimSettings
 import com.iwex.poolpredictor.domain.model.EspSettings
 
 interface MenuSettingsRepository {
-
     fun getAimSettings(): AimSettings
 
     fun putAimSettings(aimSettings: AimSettings)
@@ -12,5 +11,4 @@ interface MenuSettingsRepository {
     fun getEspSettings(): EspSettings
 
     fun putEspSettings(espSettings: EspSettings)
-
 }

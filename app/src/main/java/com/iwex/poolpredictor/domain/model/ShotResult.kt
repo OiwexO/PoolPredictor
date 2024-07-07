@@ -53,7 +53,6 @@ class ShotResult(shotResultArray: FloatArray) {
     }
 
     companion object {
-
         private const val ENABLED = 1.0f
 
         val EMPTY = ShotResult(floatArrayOf(0.0f, 0.0f))

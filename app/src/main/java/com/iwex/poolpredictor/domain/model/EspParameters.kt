@@ -12,7 +12,6 @@ data class EspParameters(
     val shotStateCircleRadius: Float,
     val shotStateCircleOpacity: Int
 ) {
-
     constructor(espSettings: EspSettings) : this(
         solidLineWidth = espSettings.lineWidth.toFloat(),
         stripeLineWidth = espSettings.lineWidth * STRIPE_LINE_WIDTH_SCALE,
@@ -31,7 +30,6 @@ data class EspParameters(
         if (isSolidBall(ballIndex)) solidBallRadius else stripeBallRadius
 
     companion object {
-
         private const val STRIPE_LINE_WIDTH_SCALE = 0.5f
         private const val STRIPE_BALL_RADIUS_SCALE = 0.25f
 

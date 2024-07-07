@@ -6,9 +6,7 @@ data class TablePosition(
     val right: Float,
     val bottom: Float
 ) {
-
     companion object {
-
         val DEFAULT = TablePosition(
             left = 0f,
             top = 0f,

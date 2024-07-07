@@ -8,9 +8,7 @@ data class AimSettings(
     val cuePower: Int,
     val cueSpin: Int
 ) {
-
     companion object {
-
         val DEFAULT = AimSettings(
             drawLinesEnabled = false,
             drawShotStateEnabled = false,
@@ -20,5 +18,4 @@ data class AimSettings(
             cueSpin = 0
         )
     }
-
 }

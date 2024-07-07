@@ -9,6 +9,7 @@ import com.iwex.poolpredictor.domain.usecase.table.GetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.table.SaveTablePositionUseCase
 import kotlin.math.roundToInt
 
+//TODO refactor TablePositionSharedViewModel
 class TablePositionSharedViewModel(
     displayHeight: Int,
     displayWidth: Int,
@@ -16,7 +17,6 @@ class TablePositionSharedViewModel(
     private val getTablePositionUseCase: GetTablePositionUseCase,
     private val saveTablePositionUseCase: SaveTablePositionUseCase
 ) : ViewModel(), TablePositionSetupViewModel, TableShapeViewModel {
-
     private val defaultTablePosition: TablePosition
     private var currentTablePosition: TablePosition
     private var isFirstPointSet = false
@@ -100,9 +100,7 @@ class TablePositionSharedViewModel(
     }
 
     companion object {
-
         private const val POINT_FIRST = 1
         private const val POINT_SECOND = 2
     }
-
 }

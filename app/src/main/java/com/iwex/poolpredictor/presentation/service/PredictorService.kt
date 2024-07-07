@@ -17,7 +17,6 @@ import com.iwex.poolpredictor.presentation.view.menu.FloatingMenuTouchListener
 import com.iwex.poolpredictor.presentation.view.menu.tabs.AimTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.EspTab
 import com.iwex.poolpredictor.presentation.view.menu.tabs.OtherTab
-import com.iwex.poolpredictor.presentation.view.tablePosition.OnTablePositionSetListener
 import com.iwex.poolpredictor.presentation.view.tablePosition.TablePositionSetupView
 import com.iwex.poolpredictor.presentation.view.tablePosition.TableShapeView
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
@@ -92,8 +91,7 @@ class PredictorService : Service() {
     private fun startTablePositionSetup() {
         val viewModelFactory = ViewModelFactory.getInstance(this)
         val tablePositionViewModel = viewModelFactory.tablePositionSharedViewModel
-        val tablePositionSetupView = TablePositionSetupView(this, tablePositionViewModel)
-        tablePositionSetupView.onTablePositionSetListener = OnTablePositionSetListener {
+        val tablePositionSetupView = TablePositionSetupView(this, tablePositionViewModel) {
             removeTablePositionSetup()
             startPredictor()
         }

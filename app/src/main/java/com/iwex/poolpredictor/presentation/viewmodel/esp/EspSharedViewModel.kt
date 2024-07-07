@@ -58,7 +58,7 @@ class EspSharedViewModel(
         resetTablePositionUseCase()
     }
 
-    override fun saveEspSettings() {
+    override fun saveSettings() {
         saveEspSettingsUseCase(espSettings)
     }
 }

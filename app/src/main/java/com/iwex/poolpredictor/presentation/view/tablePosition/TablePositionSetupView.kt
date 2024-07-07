@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintSet.END
 import androidx.constraintlayout.widget.ConstraintSet.PARENT_ID
 import androidx.constraintlayout.widget.ConstraintSet.START
 import androidx.constraintlayout.widget.ConstraintSet.TOP
+import androidx.lifecycle.Observer
 import com.iwex.poolpredictor.presentation.MenuWidgetFactory
 import com.iwex.poolpredictor.presentation.resource.Dimensions
 import com.iwex.poolpredictor.presentation.resource.Strings
@@ -25,46 +26,34 @@ import com.iwex.poolpredictor.presentation.viewmodel.tablePosition.TablePosition
 @SuppressLint("ViewConstructor")
 class TablePositionSetupView(
     context: Context,
-    private val viewModel: TablePositionSetupViewModel
+    private val viewModel: TablePositionSetupViewModel,
+    private val onTablePositionSetListener: OnTablePositionSetListener
 ) : ConstraintLayout(context) {
+    val layoutParams = initLayoutParams()
+    private val buttonLeft = MenuWidgetFactory.addArrowButtonLeft(context, this)
+    private val buttonTop = MenuWidgetFactory.addArrowButtonTop(context, this)
+    private val buttonRight = MenuWidgetFactory.addArrowButtonRight(context, this)
+    private val buttonBottom = MenuWidgetFactory.addArrowButtonBottom(context, this)
+    private val buttonReset =
+        MenuWidgetFactory.addButton(Strings.LABEL_RESET_BUTTON, true, context, this)
+    private val buttonSave =
+        MenuWidgetFactory.addButton(Strings.LABEL_SAVE_BUTTON, true, context, this)
 
-    val layoutParams: WindowManager.LayoutParams
-
-    var onTablePositionSetListener: OnTablePositionSetListener? = null
-
-    private val buttonLeft: ArrowButton
-    private val buttonTop: ArrowButton
-    private val buttonRight: ArrowButton
-    private val buttonBottom: ArrowButton
-    private val buttonReset: Button
-    private val buttonSave: Button
-
-    private val buttonMargin = Dimensions.getInstance(context).buttonMarginPx
+    private val currentPointIndexObserver = Observer<Int> {
+        buttonSave.text = formatStringWithNumber(Strings.LABEL_SAVE_BUTTON, it)
+    }
+    private val isTableSetObserver = Observer<Boolean> {
+        if (it) {
+            viewModel.onTableSet()
+            onTablePositionSetListener.onTablePositionSet()
+        }
+    }
 
     init {
-        buttonLeft = MenuWidgetFactory.addArrowButtonLeft(context, this)
-        buttonTop = MenuWidgetFactory.addArrowButtonTop(context, this)
-        buttonRight  = MenuWidgetFactory.addArrowButtonRight(context, this)
-        buttonBottom = MenuWidgetFactory.addArrowButtonBottom(context, this)
-        buttonReset = MenuWidgetFactory.addButton(Strings.LABEL_RESET_BUTTON, true, context, this)
-        buttonSave = MenuWidgetFactory.addButton(Strings.LABEL_SAVE_BUTTON,true, context, this)
-        observeViewModel()
-        layoutParams = initLayoutParams()
         setButtonIds()
         setButtonClickListeners()
         applyConstraints()
-    }
-
-    private fun observeViewModel() {
-        viewModel.currentPointIndex.observeForever {
-            buttonSave.text = formatStringWithNumber(Strings.LABEL_SAVE_BUTTON, it)
-        }
-        viewModel.isTableSet.observeForever {
-            if (it) {
-                viewModel.onTableSet()
-                onTablePositionSetListener?.onTablePositionSet()
-            }
-        }
+        observeViewModel()
     }
 
     private fun initLayoutParams(): WindowManager.LayoutParams {
@@ -98,6 +87,7 @@ class TablePositionSetupView(
     }
 
     private fun applyConstraints() {
+        val buttonMargin = Dimensions.getInstance(context).buttonMarginPx
         with(ConstraintSet()) {
             clone(this@TablePositionSetupView)
             connect(buttonLeft.id, START, PARENT_ID, START)
@@ -126,5 +116,16 @@ class TablePositionSetupView(
             setMargin(buttonReset.id, END, buttonMargin)
             applyTo(this@TablePositionSetupView)
         }
+    }
+
+    private fun observeViewModel() {
+        viewModel.currentPointIndex.observeForever(currentPointIndexObserver)
+        viewModel.isTableSet.observeForever(isTableSetObserver)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        viewModel.currentPointIndex.removeObserver(currentPointIndexObserver)
+        viewModel.isTableSet.removeObserver(isTableSetObserver)
     }
 }

@@ -5,10 +5,10 @@ import com.iwex.poolpredictor.domain.model.AimSettings
 import com.iwex.poolpredictor.domain.model.EspSettings
 import com.iwex.poolpredictor.domain.repository.MenuSettingsRepository
 
-class MenuSettingsRepositoryImpl(private val preferences: SharedPreferences) :
-    MenuSettingsRepository {
-
-    override fun getAimSettings(): AimSettings = with(preferences) {
+class MenuSettingsRepositoryImpl(
+    private val preferences: SharedPreferences,
+) : MenuSettingsRepository {
+    override fun getAimSettings() = with(preferences) {
         AimSettings(
             drawLinesEnabled = getBoolean(
                 KEY_DRAW_LINES_ENABLED,
@@ -42,7 +42,7 @@ class MenuSettingsRepositoryImpl(private val preferences: SharedPreferences) :
             .apply()
     }
 
-    override fun getEspSettings(): EspSettings = with(preferences) {
+    override fun getEspSettings() = with(preferences) {
         EspSettings(
             lineWidth = getInt(KEY_LINE_WIDTH, EspSettings.DEFAULT.lineWidth),
             ballRadius = getInt(KEY_BALL_RADIUS, EspSettings.DEFAULT.ballRadius),
@@ -77,7 +77,6 @@ class MenuSettingsRepositoryImpl(private val preferences: SharedPreferences) :
     }
 
     companion object {
-
         private const val KEY_DRAW_LINES_ENABLED = "draw_lines_enabled"
         private const val KEY_DRAW_SHOT_STATE_ENABLED = "draw_shot_state_enabled"
         private const val KEY_DRAW_OPPONENTS_LINES_ENABLED = "draw_opponents_lines_enabled"
@@ -92,5 +91,4 @@ class MenuSettingsRepositoryImpl(private val preferences: SharedPreferences) :
         private const val KEY_SHOT_STATE_CIRCLE_RADIUS = "shot_state_circle_radius"
         private const val KEY_SHOT_STATE_CIRCLE_OPACITY = "shot_state_circle_opacity"
     }
-
 }

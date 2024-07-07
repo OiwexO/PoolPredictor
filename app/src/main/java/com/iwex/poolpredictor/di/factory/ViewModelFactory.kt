@@ -40,8 +40,6 @@ class ViewModelFactory private constructor(context: Context) {
         TablePositionSharedViewModel(
             Dimensions.getInstance(context).displayHeight,
             Dimensions.getInstance(context).displayWidth,
-            useCaseFactory.getIsTableSetUseCase,
-            useCaseFactory.getTablePositionUseCase,
             useCaseFactory.saveTablePositionUseCase,
         )
     }

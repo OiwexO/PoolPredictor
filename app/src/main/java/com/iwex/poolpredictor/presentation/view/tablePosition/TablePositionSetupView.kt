@@ -6,7 +6,6 @@ import android.graphics.PixelFormat
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.WindowManager
-import android.widget.Button
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.constraintlayout.widget.ConstraintSet.BOTTOM
@@ -20,7 +19,6 @@ import com.iwex.poolpredictor.presentation.resource.Dimensions
 import com.iwex.poolpredictor.presentation.resource.Strings
 import com.iwex.poolpredictor.presentation.util.OverlayUtils
 import com.iwex.poolpredictor.presentation.util.StringUtils.Companion.formatStringWithNumber
-import com.iwex.poolpredictor.presentation.view.ArrowButton
 import com.iwex.poolpredictor.presentation.viewmodel.tablePosition.TablePositionSetupViewModel
 
 @SuppressLint("ViewConstructor")

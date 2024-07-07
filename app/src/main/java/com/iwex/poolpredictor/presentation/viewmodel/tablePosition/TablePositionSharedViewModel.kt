@@ -4,43 +4,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iwex.poolpredictor.domain.model.TablePosition
-import com.iwex.poolpredictor.domain.usecase.table.GetIsTableSetUseCase
-import com.iwex.poolpredictor.domain.usecase.table.GetTablePositionUseCase
 import com.iwex.poolpredictor.domain.usecase.table.SaveTablePositionUseCase
 import kotlin.math.roundToInt
 
-//TODO refactor TablePositionSharedViewModel
 class TablePositionSharedViewModel(
     displayHeight: Int,
     displayWidth: Int,
-    private val getIsTableSetUseCase: GetIsTableSetUseCase,
-    private val getTablePositionUseCase: GetTablePositionUseCase,
     private val saveTablePositionUseCase: SaveTablePositionUseCase
 ) : ViewModel(), TablePositionSetupViewModel, TableShapeViewModel {
-    private val defaultTablePosition: TablePosition
-    private var currentTablePosition: TablePosition
+    private val defaultTablePosition = initDefaultTablePosition(displayHeight, displayWidth)
+    private var currentTablePosition = defaultTablePosition.copy()
     private var isFirstPointSet = false
 
     private val _isTableSet: MutableLiveData<Boolean> = MutableLiveData(false)
     override val isTableSet: LiveData<Boolean> get() = _isTableSet
 
-    private val _tablePosition: MutableLiveData<TablePosition>
+    private val _tablePosition = MutableLiveData(currentTablePosition)
     override val tablePosition: LiveData<TablePosition> get() = _tablePosition
 
     private val _currentPointIndex = MutableLiveData(POINT_FIRST)
     override val currentPointIndex: LiveData<Int> get() = _currentPointIndex
-
-    init {
-        val isTableSet = getIsTableSetUseCase()
-        defaultTablePosition = if (isTableSet) {
-            getTablePositionUseCase()
-        } else {
-            initDefaultTablePosition(displayHeight, displayWidth)
-        }
-        currentTablePosition = defaultTablePosition.copy()
-        _tablePosition = MutableLiveData(currentTablePosition)
-        _isTableSet.postValue(isTableSet)
-    }
 
     override fun onButtonLeft() {
         updateTablePositionByDirection(-1, 0)
@@ -60,7 +43,7 @@ class TablePositionSharedViewModel(
 
     override fun onSaveButton() {
         with(currentTablePosition) {
-            if (this.left < this.right && this.top < this.bottom) {
+            if (left < right && top < bottom) {
                 if (isFirstPointSet) {
                     _isTableSet.value = true
                 } else {
@@ -92,9 +75,15 @@ class TablePositionSharedViewModel(
 
     private fun updateTablePositionByDirection(deltaX: Int, deltaY: Int) {
         currentTablePosition = if (isFirstPointSet) {
-            currentTablePosition.copy(right = currentTablePosition.right + deltaX, bottom = currentTablePosition.bottom + deltaY)
+            currentTablePosition.copy(
+                right = currentTablePosition.right + deltaX,
+                bottom = currentTablePosition.bottom + deltaY
+            )
         } else {
-            currentTablePosition.copy(left = currentTablePosition.left + deltaX, top = currentTablePosition.top + deltaY)
+            currentTablePosition.copy(
+                left = currentTablePosition.left + deltaX,
+                top = currentTablePosition.top + deltaY
+            )
         }
         _tablePosition.value = currentTablePosition
     }

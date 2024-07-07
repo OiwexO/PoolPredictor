@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import androidx.lifecycle.Observer
 import com.iwex.poolpredictor.domain.model.EspParameters
 import com.iwex.poolpredictor.domain.model.NUMBER_OF_BALLS
 import com.iwex.poolpredictor.domain.model.Point2D
@@ -19,12 +20,22 @@ class PredictionView(
     private val viewModel: PredictionViewModel
 ) : NonInteractiveOverlayView(context) {
 
+    private var params = EspParameters.DEFAULT
+    private var shotResult = ShotResult.EMPTY
+
     private val trajectoryPaints = Array(NUMBER_OF_BALLS) { Paint() }
     private val shotStatePaints = Array(2) { Paint() }
     private val trajectoryPath = Path()
 
-    private var params = EspParameters.DEFAULT
-    private var shotResult = ShotResult.EMPTY
+    private val espParametersObserver = Observer<EspParameters> {
+        params = it
+        updateEspParameters()
+        invalidate()
+    }
+    private val shotResultObserver = Observer<ShotResult> {
+        shotResult = it
+        invalidate()
+    }
 
     init {
         initPaints()
@@ -51,15 +62,8 @@ class PredictionView(
     }
 
     private fun observeViewModel() {
-        viewModel.espParameters.observeForever {
-            params = it
-            updateEspParameters()
-            invalidate()
-        }
-        viewModel.shotResult.observeForever {
-            shotResult = it
-            invalidate()
-        }
+        viewModel.espParameters.observeForever(espParametersObserver)
+        viewModel.shotResult.observeForever(shotResultObserver)
     }
 
     private fun updateEspParameters() {
@@ -112,5 +116,11 @@ class PredictionView(
             val next = positions[i]
             trajectoryPath.lineTo(next.x, next.y)
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        viewModel.espParameters.removeObserver(espParametersObserver)
+        viewModel.shotResult.removeObserver(shotResultObserver)
     }
 }

@@ -11,7 +11,6 @@ class FloatingMenuTouchListener(
     private val scaledTouchSlop: Float,
     private val onViewMoveListener: (View, WindowManager.LayoutParams) -> Unit
 ) : View.OnTouchListener {
-
     private var initialTouchX = 0f
     private var initialTouchY = 0f
     private var initialX = 0
@@ -61,7 +60,6 @@ class FloatingMenuTouchListener(
     }
 
     companion object {
-
         const val ALPHA_MIN = 0.5f
         const val ALPHA_MAX = 1f
     }

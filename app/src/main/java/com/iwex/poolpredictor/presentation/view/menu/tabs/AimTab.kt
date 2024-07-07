@@ -11,8 +11,10 @@ import com.iwex.poolpredictor.presentation.resource.Strings
 import com.iwex.poolpredictor.presentation.viewmodel.AimTabViewModel
 
 @SuppressLint("UseSwitchCompatOrMaterialCode", "ViewConstructor")
-class AimTab(context: Context, private val viewModel: AimTabViewModel) : BaseMenuTab(context) {
-
+class AimTab(
+    context: Context,
+    private val viewModel: AimTabViewModel
+) : BaseMenuTab(context, viewModel) {
     private val drawLinesSwitch: Switch
     private val drawShotStateSwitch: Switch
     private val drawOpponentsLinesSwitch: Switch
@@ -66,10 +68,5 @@ class AimTab(context: Context, private val viewModel: AimTabViewModel) : BaseMen
             context,
             this
         )
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        viewModel.saveAimSettings()
     }
 }

@@ -1,9 +1,8 @@
 package com.iwex.poolpredictor.presentation.resource
 
 class Strings {
-
     companion object {
-
+        const val TOAST_ENABLE_OVERLAY_PERMISSION = "Please enable Overlay Permission"
         const val TOAST_AUTHOR = "YouTube: @iwex\nEnjoy!"
         const val TOAST_LONG_CLICK_TO_RESET = "hold button to reset table position"
         const val TOAST_TABLE_WAS_RESET = "table has been reset, restart the app"

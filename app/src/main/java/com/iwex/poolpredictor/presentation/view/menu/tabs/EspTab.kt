@@ -10,8 +10,10 @@ import com.iwex.poolpredictor.presentation.resource.Strings
 import com.iwex.poolpredictor.presentation.viewmodel.esp.EspTabViewModel
 
 @SuppressLint("ViewConstructor")
-class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMenuTab(context) {
-
+class EspTab(
+    context: Context,
+    private val viewModel: EspTabViewModel
+) : BaseMenuTab(context, viewModel) {
     private val lineWidthSeekbar: SeekBar
     private val ballRadiusSeekbar: SeekBar
     private val trajectoryOpacitySeekbar: SeekBar
@@ -86,13 +88,7 @@ class EspTab(context: Context, private val viewModel: EspTabViewModel) : BaseMen
         }
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        viewModel.saveEspSettings()
-    }
-
     companion object {
-
         private const val MAX_LINE_WIDTH = 40
         private const val MAX_BALL_RADIUS = 80
         private const val MAX_TRAJECTORY_OPACITY = 100

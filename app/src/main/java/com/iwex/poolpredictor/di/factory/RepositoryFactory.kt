@@ -1,5 +1,6 @@
 package com.iwex.poolpredictor.di.factory
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.iwex.poolpredictor.data.repository.MenuSettingsRepositoryImpl
@@ -9,10 +10,9 @@ import com.iwex.poolpredictor.domain.repository.MenuSettingsRepository
 import com.iwex.poolpredictor.domain.repository.NativeRepository
 import com.iwex.poolpredictor.domain.repository.TablePositionRepository
 
-class RepositoryFactory private constructor(context: Context) {
-
+class RepositoryFactory private constructor(application: Application) {
     private val sharedPreferences: SharedPreferences by lazy {
-        context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
+        application.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
     }
 
     val menuSettingsRepository: MenuSettingsRepository by lazy {
@@ -28,15 +28,11 @@ class RepositoryFactory private constructor(context: Context) {
     }
 
     companion object {
-
         private const val SHARED_PREFERENCES_NAME = "PoolPredictor"
         private var instance: RepositoryFactory? = null
 
-        fun getInstance(context: Context): RepositoryFactory {
-            return instance ?: synchronized(this) {
-                instance ?: RepositoryFactory(context).also { instance = it }
-            }
+        fun getInstance(application: Application) = instance ?: synchronized(this) {
+            instance ?: RepositoryFactory(application).also { instance = it }
         }
     }
-
 }

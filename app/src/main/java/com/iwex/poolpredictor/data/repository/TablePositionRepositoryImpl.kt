@@ -7,8 +7,7 @@ import com.iwex.poolpredictor.domain.repository.TablePositionRepository
 class TablePositionRepositoryImpl(
     private val preferences: SharedPreferences
 ) : TablePositionRepository {
-
-    override fun getTablePosition(): TablePosition = with(preferences) {
+    override fun getTablePosition() = with(preferences) {
         TablePosition(
             left = getFloat(KEY_TABLE_LEFT, TablePosition.DEFAULT.left),
             top = getFloat(KEY_TABLE_TOP, TablePosition.DEFAULT.top),
@@ -26,19 +25,17 @@ class TablePositionRepositoryImpl(
             .apply()
     }
 
-    override fun getIsTableSet(): Boolean = preferences.getBoolean(KEY_IS_TABLE_SET, false)
+    override fun getIsTableSet() = preferences.getBoolean(KEY_IS_TABLE_SET, false)
 
     override fun putIsTableSet(isTableSet: Boolean) {
         preferences.edit().putBoolean(KEY_IS_TABLE_SET, isTableSet).apply()
     }
 
     companion object {
-
         private const val KEY_IS_TABLE_SET = "is_table_set"
         private const val KEY_TABLE_LEFT = "table_left"
         private const val KEY_TABLE_TOP = "table_top"
         private const val KEY_TABLE_RIGHT = "table_right"
         private const val KEY_TABLE_BOTTOM = "table_bottom"
     }
-
 }

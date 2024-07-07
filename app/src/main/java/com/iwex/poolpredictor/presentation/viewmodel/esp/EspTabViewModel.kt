@@ -1,9 +1,9 @@
 package com.iwex.poolpredictor.presentation.viewmodel.esp
 
 import com.iwex.poolpredictor.domain.model.EspSettings
+import com.iwex.poolpredictor.presentation.viewmodel.BaseMenuTabViewModel
 
-interface EspTabViewModel {
-
+interface EspTabViewModel : BaseMenuTabViewModel {
     fun getEspSettings(): EspSettings
 
     fun onLineWidthChange(width: Int)
@@ -19,6 +19,4 @@ interface EspTabViewModel {
     fun onShotStateCircleOpacityChange(opacity: Int)
 
     fun onResetTableListener()
-
-    fun saveEspSettings()
 }

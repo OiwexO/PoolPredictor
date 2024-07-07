@@ -10,8 +10,7 @@ import android.view.WindowManager.LayoutParams.MATCH_PARENT
 import com.iwex.poolpredictor.presentation.util.OverlayUtils
 
 abstract class NonInteractiveOverlayView(context: Context) : View(context) {
-
-    val layoutParams: LayoutParams = LayoutParams(
+    val layoutParams = LayoutParams(
         MATCH_PARENT,
         MATCH_PARENT,
         OverlayUtils.overlayWindowType,

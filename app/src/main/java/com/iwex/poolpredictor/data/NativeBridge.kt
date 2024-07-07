@@ -4,9 +4,7 @@ import com.iwex.poolpredictor.domain.repository.NativeRepository
 
 @Suppress("KotlinJniMissingFunction")
 class NativeBridge {
-
     companion object {
-
         init {
             System.loadLibrary("poolpredictor")
         }
@@ -30,5 +28,4 @@ class NativeBridge {
         @JvmStatic
         external fun setTablePosition(left: Float, top: Float, right: Float, bottom: Float)
     }
-
 }

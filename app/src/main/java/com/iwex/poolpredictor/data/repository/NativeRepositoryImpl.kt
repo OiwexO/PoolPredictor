@@ -9,7 +9,6 @@ import com.iwex.poolpredictor.domain.model.TablePosition
 import com.iwex.poolpredictor.domain.repository.NativeRepository
 
 class NativeRepositoryImpl : NativeRepository {
-
     private val _shotResult = MutableLiveData<ShotResult>()
     override val shotResult: LiveData<ShotResult> get() = _shotResult
 
@@ -17,20 +16,24 @@ class NativeRepositoryImpl : NativeRepository {
         NativeBridge.setNativeRepository(this)
     }
 
-    override fun updateAimSettings(aimSettings: AimSettings) = with(aimSettings) {
-        NativeBridge.updateAimSettings(
-            drawLinesEnabled = drawLinesEnabled,
-            drawShotStateEnabled = drawShotStateEnabled,
-            drawOpponentsLinesEnabled = drawOpponentsLinesEnabled,
-            preciseTrajectoriesEnabled = preciseTrajectoriesEnabled,
-            cuePower = cuePower,
-            cueSpin = cueSpin
-        )
+    override fun updateAimSettings(aimSettings: AimSettings) {
+        with(aimSettings) {
+            NativeBridge.updateAimSettings(
+                drawLinesEnabled = drawLinesEnabled,
+                drawShotStateEnabled = drawShotStateEnabled,
+                drawOpponentsLinesEnabled = drawOpponentsLinesEnabled,
+                preciseTrajectoriesEnabled = preciseTrajectoriesEnabled,
+                cuePower = cuePower,
+                cueSpin = cueSpin
+            )
+        }
     }
 
 
-    override fun setTablePosition(tablePosition: TablePosition) = with(tablePosition) {
-        NativeBridge.setTablePosition(left, top, right, bottom)
+    override fun setTablePosition(tablePosition: TablePosition) {
+        with(tablePosition) {
+            NativeBridge.setTablePosition(left, top, right, bottom)
+        }
     }
 
     override fun updateShotResult(shotResultArray: FloatArray) {

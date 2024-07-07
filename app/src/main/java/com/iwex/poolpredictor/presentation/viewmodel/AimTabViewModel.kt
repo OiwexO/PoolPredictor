@@ -7,16 +7,19 @@ import com.iwex.poolpredictor.domain.usecase.menu.tabs.SaveAimSettingsUseCase
 import com.iwex.poolpredictor.domain.usecase.native.UpdateAimSettingsNativeUseCase
 
 class AimTabViewModel(
-    private val getAimSettingsUseCase: GetAimSettingsUseCase,
+    getAimSettingsUseCase: GetAimSettingsUseCase,
     private val updateAimSettingsNativeUseCase: UpdateAimSettingsNativeUseCase,
     private val saveAimSettingsUseCase: SaveAimSettingsUseCase
-) : ViewModel() {
-
+) : ViewModel(), BaseMenuTabViewModel {
     private var aimSettings = getAimSettingsUseCase()
         set(value) {
             field = value
             updateAimSettingsNativeUseCase(aimSettings)
         }
+
+    init {
+        updateAimSettingsNativeUseCase(aimSettings)
+    }
 
     fun getAimSettings(): AimSettings = aimSettings
 
@@ -44,7 +47,7 @@ class AimTabViewModel(
         aimSettings = aimSettings.copy(cueSpin = spin)
     }
 
-    fun saveAimSettings() {
+    override fun saveSettings() {
         saveAimSettingsUseCase(aimSettings)
     }
 }

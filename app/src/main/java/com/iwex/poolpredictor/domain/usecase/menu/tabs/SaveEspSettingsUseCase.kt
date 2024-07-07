@@ -4,8 +4,5 @@ import com.iwex.poolpredictor.domain.model.EspSettings
 import com.iwex.poolpredictor.domain.repository.MenuSettingsRepository
 
 class SaveEspSettingsUseCase(private val repository: MenuSettingsRepository) {
-
-    operator fun invoke(espSettings: EspSettings) {
-        repository.putEspSettings(espSettings)
-    }
+    operator fun invoke(espSettings: EspSettings) = repository.putEspSettings(espSettings)
 }

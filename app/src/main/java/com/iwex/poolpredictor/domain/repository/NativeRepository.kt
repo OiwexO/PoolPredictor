@@ -6,7 +6,6 @@ import com.iwex.poolpredictor.domain.model.ShotResult
 import com.iwex.poolpredictor.domain.model.TablePosition
 
 interface NativeRepository {
-
     val shotResult: LiveData<ShotResult>
 
     fun updateAimSettings(aimSettings: AimSettings)

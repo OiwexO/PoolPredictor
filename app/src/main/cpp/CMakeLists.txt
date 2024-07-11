@@ -12,8 +12,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-format-security")
 
 # used for mocking data in debug builds
 if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
+    add_definitions(-DBUILD_TYPE_DEBUG)
 endif()
-add_definitions(-DBUILD_TYPE_DEBUG)
 
 # Enables/disables logs
 add_definitions(-DENABLE_LOGS)
